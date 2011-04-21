@@ -68,6 +68,10 @@
 
 	// Callback for when browse is ready
 	var onDocumentReady = function() {
+
+		var ge = new RealtimeMultiplayerGame.GameEntity();
+		ge.doSomething();
+		console.log( ge );
 		// Create an instance of CAATHelloWorld
 		var helloWorldInstance = new CAATHelloWorld();
 		helloWorldInstance.create();

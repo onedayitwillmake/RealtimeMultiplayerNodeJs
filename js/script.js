@@ -1,8 +1,3 @@
-$(function(){
-	$("#jquery-test").html("jQuery is loaded");
-});
-
-
 (function() {
 
 	// Let's self contain our demo within a CAATHelloWorld object
@@ -13,7 +8,7 @@ $(function(){
 	CAATHelloWorld.prototype.create = function()
 	{
 		// Create the director instance
-		var director = new CAAT.Director().initialize(600, 600);
+		var director = new CAAT.Director().initialize(700, 600);
 		// Create a scene, all directors must have at least one scene - this is where all your stuff goes
 		var scene = new CAAT.Scene();
 		scene.create();	// Notice we call create when creating this, and ShapeActor below. Both are Actors
@@ -37,6 +32,10 @@ $(function(){
 
 		// Every tick, the scene will call this function
 		var that = this; // Store a reference to a the 'CAATHelloWorld' instnace
+		scene.beginAnimate = function(director,time)
+		{
+			debugger;
+		}
 		scene.endAnimate = function(director,time)
 		{
 			// Move the circle 1 pixel randomly up/down/left/right
@@ -72,9 +71,39 @@ $(function(){
 		// Create an instance of CAATHelloWorld
 		var helloWorldInstance = new CAATHelloWorld();
 		helloWorldInstance.create();
+
+		var socket = new io.Socket(null, {port: 8080, transports:["websocket"], rememberTransport: false});
+		socket.connect();
+		socket.on('connect', function(){
+			message({ message: ['System', 'Connected']});
+		});
+
+		socket.on('message', function(obj){
+		 message({ message: ['System', 'message']});
+		});
+
+		socket.on('disconnect', function(){
+		 message({ message: ['System', 'Disconnected']})
+		});
 //		helloWorldInstance.initStats();
 
 	}
+
+	var message = function(obj){
+        var el = document.createElement('p');
+        if ('announcement' in obj) el.innerHTML = '<em>' + esc(obj.announcement) + '</em>';
+        else if ('message' in obj) el.innerHTML = '<b>' + esc(obj.message[0]) + ':</b> ' + esc(obj.message[1]);
+
+		// Log if possible
+        if( obj.message && window.console && console.log ) console.log(obj.message[0], obj.message[1]);
+
+        document.getElementsByTagName('aside')[0].appendChild(el);
+        document.getElementsByTagName('aside')[0].scrollTop = 1000000;
+	};
+
+	var esc = function (msg){
+        return msg.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+     };
 
 
 	// Listen for ready

@@ -85,6 +85,10 @@ aside{
 	text-shadow:none;
 }
 
+aside p {
+	font: 10px;
+}
+
 #main header h2{
 	padding-bottom:30px;
 }

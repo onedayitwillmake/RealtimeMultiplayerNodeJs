@@ -1,0 +1,132 @@
+
+/*
+    // ========================================== \\
+   ||                                              ||
+   ||               Your styles !                  ||
+   ||                                              ||
+    \\ ========================================== //
+*/
+
+body{
+	font-family:Helvetica, Helvetica Neue, Arial, sans-serif;
+}
+
+.wrapper{
+	margin:auto;
+	width:960px;
+}
+
+#header-container{
+	background-color: #333333;
+	height:130px;
+	border-bottom:20px solid #666666;
+	margin-bottom:50px;
+	-webkit-box-shadow:0 40px 40px -40px #AAA;
+	   -moz-box-shadow:0 40px 40px -40px #AAA;
+	        box-shadow:0 40px 40px -40px #AAA;
+}
+
+h2, h3{
+	margin:30px 0;
+}
+
+#title, h2, h3{
+	font-weight:normal;
+}
+
+#title{
+	font-size: 80px;
+	color:white;
+	padding-top:35px;
+	float:left;
+}
+
+h2{
+	font-size: 55px;
+}
+
+h3{
+	font-size: 20px;
+}
+
+nav{
+	float:right;
+	margin-top:100px;
+}
+
+nav ul, nav ul li{
+	display:inline;
+}
+
+nav a{
+	padding:20px;
+	color:white;
+	text-decoration:none;
+	background-color: #666666;
+}
+
+aside{
+	color:white;
+	padding:20px;
+	float:right;
+	height:500px;
+	width:200px;
+	background-color: #333333;
+	border-bottom:20px solid #333333;
+	margin-bottom:50px;
+	-webkit-box-shadow:0 0px 40px -10px #000000;
+	   -moz-box-shadow:0 0px 40px -10px #000000;
+	        box-shadow:0 0px 40px -10px #000000;
+}
+
+#main p{
+	font:16px/26px Helvetica, Helvetica Neue, Arial;
+	width:620px;
+	text-shadow:none;
+}
+
+#main header h2{
+	padding-bottom:30px;
+}
+
+/*
+article header{
+	margin-bottom:50px;
+	padding-bottom:30px;
+	width:700px;
+	-webkit-box-shadow:0 45px 60px -60px #AAA;
+	   -moz-box-shadow:0 45px 60px -60px #AAA;
+	        box-shadow:0 45px 60px -60px #AAA;
+}
+*/
+
+#footer-container{
+	background-color: #333333;
+	height:240px;
+	border-top:20px solid #666666;
+	margin-top:50px;
+	-webkit-box-shadow:0 -40px 40px -40px #AAA;
+	   -moz-box-shadow:0 -40px 40px -40px #AAA;
+	        box-shadow:0 -40px 40px -40px #AAA;
+}
+
+#footer-container footer{
+	color:white;
+}
+
+.info{
+	position:absolute;
+	top:5px;
+	background-color:white;
+	padding:10px;
+}
+
+#jquery-test{
+	top:45px;
+}
+
+
+
+
+
+

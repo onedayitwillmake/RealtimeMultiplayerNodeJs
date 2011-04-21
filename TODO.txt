@@ -1,0 +1,40 @@
+	.___       .__  __  .__       .__  .__                
+	|   | ____ |__|/  |_|__|____  |  | |__|______________ 
+	|   |/    \|  \   __\  \__  \ |  | |  \___   /\_  __ \
+	|   |   |  \  ||  | |  |/ __ \|  |_|  |/    /  |  | \/
+	|___|___|  /__||__| |__(____  /____/__/_____ \ |__|   
+	         \/                 \/              \/        
+
+Your HTML5 project is almost ready! This is a little list of what you still have to do:
+
+- Change lang="en" in the <html> tag if your page is not in English
+
+- Fill:
+	<title></title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+- Change the favicons
+
+- Remove the jQuery test in index.html and script.js, and the link to this TODO list.
+
+- Make a 404.html page if you have a 404 redirection in your server configuration file
+
+== Recommendations and usage =====
+
+- Use CSS versionning to force the cache refresh:
+	<link rel="stylesheet" href="css/style.css?v=[current_version]">	
+	
+- To fix the PNG background image of an element in IE6, add the .png_bg class to this element.
+
+- To apply a particular style to an element in a specific version of Internet Explorer,
+use the .ie6, .ie7, .ie8 and .ie9 in the CSS selector for this element:
+
+.ie6 #myelement{
+	margin-left: 20px;
+}
+
+== Contact =======================
+
+Please let me know your feedback with a tweet to @jverrecchia or send a mail to initializr@gmail.com !
+Enjoy ;)

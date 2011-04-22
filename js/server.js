@@ -30,26 +30,3 @@ require("./demo/DemoServerGame.js");
 
 var game = new DemoApp.DemoServerGame();
 game.startGameClock();
-
-//// Create a minimal http server to listen
-//var server = http.createServer(function(req, res){});
-//server.listen(8080);
-//
-//// socket.io, I choose you
-//// simplest chat application evar
-//var io = io.listen(server);
-//var buffer = [];
-//io.on('connection', function(client){
-//	console.log( client.sessionId);
-//  client.send({ buffer: buffer });
-//  client.broadcast({ announcement: client.sessionId + ' connected' });
-//  client.on('message', function(message){
-//    var msg = { message: [client.sessionId, message] };
-//    buffer.push(msg);
-//    if (buffer.length > 15) buffer.shift();
-//    client.broadcast(msg);
-//  });
-//  client.on('disconnect', function(){
-//    client.broadcast({ announcement: client.sessionId + ' disconnected' });
-//  });
-//});

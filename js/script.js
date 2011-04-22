@@ -32,10 +32,6 @@
 
 		// Every tick, the scene will call this function
 		var that = this; // Store a reference to a the 'CAATHelloWorld' instnace
-		scene.beginAnimate = function(director,time)
-		{
-			debugger;
-		}
 		scene.endAnimate = function(director,time)
 		{
 			// Move the circle 1 pixel randomly up/down/left/right
@@ -51,18 +47,18 @@
 	 */
 	CAATHelloWorld.prototype.initStats = function()
 	{
-//		var stats = new Stats();
-//		stats.domElement.style.position = 'absolute';
-//		stats.domElement.style.left = '0px';
-//		stats.domElement.style.top = '0px';
-//
-//		// Update
-//		setInterval( function () {
-//			stats.update();
-//		}, 1000 / 30 );
-//
-//		// Add to <div>
-//		document.getElementById('container').appendChild(stats.domElement);
+		var stats = new Stats();
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.left = '0px';
+		stats.domElement.style.top = '0px';
+
+		// Update
+		setInterval( function () {
+			stats.update();
+		}, 1000 / 30 );
+
+		// Add to <div>
+		document.getElementById('header-container').appendChild(stats.domElement);
 	}
 
 
@@ -88,7 +84,7 @@
 		socket.on('disconnect', function(){
 		 message({ message: ['System', 'Disconnected']})
 		});
-//		helloWorldInstance.initStats();
+		helloWorldInstance.initStats();
 
 		var joystickTest = new Joystick();
 		joystickTest.attachEvents();

@@ -70,8 +70,7 @@
 	var onDocumentReady = function() {
 
 		var ge = new RealtimeMultiplayerGame.GameEntity();
-		ge.doSomething();
-		console.log( ge );
+		console.log( ge.radius );
 		// Create an instance of CAATHelloWorld
 		var helloWorldInstance = new CAATHelloWorld();
 		helloWorldInstance.create();

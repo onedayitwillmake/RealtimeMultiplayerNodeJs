@@ -1,16 +1,32 @@
-// Import
+/**
+File:
+	server.js
+Created By:
+	Mario Gonzalez
+Project:
+	RealtimeMultiplayerNodeJS
+Abstract:
+	This is the base server module for starting RealtimeMultiplayerGame
+Basic Usage:
+ 	node server.js
+Version:
+	1.0
+*/
+
 var http = require('http'),
     url = require('url'),
     fs = require('fs'),
     sys = require(process.binding('natives').util ? 'util' : 'sys');
 var io = require('./lib/Socket.IO-node');
-require("../namespace.js");
+
+require("../RealtimeMutliplayerGame.js");
 require("../Constants.js");
 require("../GameEntity.js");
 require("../AbstractGame.js");
+require("../AbstractServerGame.js");
 
 
-var game = new RealtimeMultiplayerGame.AbstractGame();
+var game = new RealtimeMultiplayerGame.AbstractServerGame();
 game.startGameClock();
 
 //// Create a minimal http server to listen

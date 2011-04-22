@@ -1,3 +1,25 @@
+/**
+File:
+	AbstractGame.js
+Created By:
+	Mario Gonzalez
+Project:
+	RealtimeMultiplayerNodeJS
+Abstract:
+	This class is the base Game controller in RealtimeMultiplayerGame it provides things such as, keeping track of the current game clock, starting and stopping the game clock
+Basic Usage:
+ 	[This class is not instantiated! - below is an example of using this class by extending it]
+
+ 	(function(){
+		MyGameClass = function() {
+			return this;
+ 		}
+
+		RealtimeMultiplayerGame.extend(MyGameClass, RealtimeMultiplayerGame.AbstractGame, null);
+	};
+Version:
+	1.0
+*/
 (function(){
 	RealtimeMultiplayerGame.AbstractGame = function() {
 		return this;
@@ -27,6 +49,8 @@
 			// 1.0 means running at exactly the correct speed, 0.5 means half-framerate. (otherwise faster machines which can update themselves more accurately will have an advantage)
 			var speedFactor = delta / ( this.intervalTargetDelta );
 			if (speedFactor <= 0) speedFactor = 1;
+
+			console.log("Tick:" + this.gameClock);
 		},
 
 

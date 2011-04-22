@@ -29,7 +29,13 @@ Version:
 	};
 
 	RealtimeMultiplayerGame.AbstractServerGame.prototype = {
+		netChannel: null,
 
+
+		// Methods
+		setupNetChannel: function() {
+
+		}
 	}
 
 

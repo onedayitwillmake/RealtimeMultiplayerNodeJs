@@ -22,6 +22,7 @@ var io = require('./lib/Socket.IO-node');
 require("./core/RealtimeMutliplayerGame.js");
 require("./model/Constants.js");
 require("./core/AbstractGame.js");
+require("./ServerNetChannel.js");
 require("./core/AbstractServerGame.js");
 require("./GameEntity.js");
 require("./demo/DemoApp.js");

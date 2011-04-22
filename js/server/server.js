@@ -7,9 +7,12 @@ var io = require('./lib/Socket.IO-node');
 require("../namespace.js");
 require("../Constants.js");
 require("../GameEntity.js");
+require("../AbstractGame.js");
 
-var ge = new RealtimeMultiplayerGame.GameEntity();
-console.log( RealtimeMultiplayerGame.Constants.ENTITY_DEFAULT_RADIUS );
+
+var game = new RealtimeMultiplayerGame.AbstractGame();
+game.startGameClock();
+
 //// Create a minimal http server to listen
 //var server = http.createServer(function(req, res){});
 //server.listen(8080);

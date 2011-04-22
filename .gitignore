@@ -1,0 +1,5 @@
+# https://github.com/github/gitignore/blob/master/Global/IntelliJ.gitignore
+*.iml
+*.ipr
+*.iws
+.idea/

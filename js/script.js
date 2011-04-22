@@ -67,6 +67,9 @@
 
 		var ge = new RealtimeMultiplayerGame.GameEntity();
 		console.log( ge.radius );
+
+		clientGame = new DemoApp.DemoClientGame();
+		console.log('ClientGame', clientGame);
 		// Create an instance of CAATHelloWorld
 		var helloWorldInstance = new CAATHelloWorld();
 		helloWorldInstance.create();

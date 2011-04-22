@@ -22,6 +22,7 @@ Version:
 */
 (function(){
 	RealtimeMultiplayerGame.AbstractGame = function() {
+		this.setupNetChannel();
 		return this;
 	};
 
@@ -33,6 +34,7 @@ Version:
 		intervalGameTick		: null,											// Setinterval for gametick
 		intervalFramerate		: 60,											// Try to call our tick function this often, intervalFramerate, is used to determin how often to call settimeout - we can set to lower numbers for slower computers
 		intervalTargetDelta		: NaN,	// this.targetDelta, milliseconds between frames. Normally it is 16ms or 60FPS. The framerate the game is designed against - used to create framerate independent motion
+		netChannel				: null,											// ServerNetChannel / ClientNetChannel determined by subclass
 
 		// Methods
 		tick: function() {
@@ -71,8 +73,16 @@ Version:
 		stopGameClock: function()
 		{
 			clearInterval( this.intervalGameTick );
-		}
+		},
 
 		// Accessors
+
+		// Memory
+		dealloc: function() {
+			if( this.netChannel ) this.netChannel.dealloc();
+			this.netChannel = null;
+
+			clearInterval( this.intervalGameTick );
+		}
 	}
 })();

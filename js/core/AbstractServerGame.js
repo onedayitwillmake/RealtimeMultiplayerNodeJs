@@ -25,15 +25,10 @@ Version:
 
 	RealtimeMultiplayerGame.AbstractServerGame = function() {
 		RealtimeMultiplayerGame.AbstractServerGame.superclass.constructor.call(this);
-
-		this.setupNetChannel();
 		return this;
 	};
 
 	RealtimeMultiplayerGame.AbstractServerGame.prototype = {
-		netChannel: null,
-
-
 		// Methods
 		setupNetChannel: function() {
 			this.netChannel = new RealtimeMultiplayerGame.network.ServerNetChannel();

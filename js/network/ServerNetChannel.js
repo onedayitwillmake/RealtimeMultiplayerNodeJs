@@ -42,6 +42,7 @@ Version:
 		httpserver				: null,					// A minimal HTTP server which socket.io can listen on
 		socketio 				: null,					// Socket.IO server
 		clients					: null,					// SortedLookupTable
+		delegate				: null,					// Should conform to ServerNetChannel delegate
 
 	// Methods
 		/**
@@ -61,6 +62,7 @@ Version:
 			this.socketio.on('clientDisconnect', function(client){ that.onSocketClosed(client) });
 		},
 
+	// Socket.IO callbacks
 		/**
 		 * Callback from socket.io when a client has connected
 		 * @param client
@@ -81,7 +83,10 @@ Version:
 			console.log("onSocketClosed");
 		},
 
-		// Accessors
-		getNextClientID: function() { return nextClientID++ }
+	// Accessors
+		getNextClientID: function() { return nextClientID++ },
+		setDelegate: function( aDelegate ) {
+			this.delegate = aDelegate;
+		}
 	}
 })();

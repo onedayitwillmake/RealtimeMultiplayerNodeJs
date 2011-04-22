@@ -16,7 +16,14 @@ Version:
 */
 (function(){
 	RealtimeMultiplayerGame.Constants = {
+
 		ENTITY_DEFAULT_RADIUS: 10,
+
+		CLIENT_SETTING:
+		{
+			UPDATE_RATE	: 1000/25, 					// How often to request a world-update from the server
+			CMD_RATE	: 1000/30                  // How often a client can send messages to server
+		},
 
 		CMDS: {
 			PLAYER_CONNECT		: 1 << 0,			// Initial connection to the server, not in game yet
@@ -25,6 +32,20 @@ Version:
 			PLAYER_JOINED		: 1 << 3,           // Player has joined the current game
 			PLAYER_DISCONNECT	: 1 << 4,           // Player has disconnected
 			PLAYER_UPDATE		: 1 << 5			// Player is sending sampled input
+		},
+
+
+		// The client sends this bitmask to the server
+		// See (Joystick.js)
+		INPUT_BITMASK:
+		{
+			UP		: 1 << 0,
+			DOWN	: 1 << 1,
+			LEFT	: 1 << 2,
+			RIGHT	: 1 << 3,
+			SPACE	: 1 << 4,
+			SHIFT	: 1 << 5,
+			TAB		: 1 << 6
 		}
 	}
 })();

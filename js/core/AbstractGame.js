@@ -50,7 +50,7 @@ Version:
 			var speedFactor = delta / ( this.intervalTargetDelta );
 			if (speedFactor <= 0) speedFactor = 1;
 
-			console.log("Tick:" + this.gameClock);
+//			console.log("Tick:" + this.gameClock);
 		},
 
 

@@ -25,6 +25,8 @@ Version:
 
 	RealtimeMultiplayerGame.AbstractServerGame = function() {
 		RealtimeMultiplayerGame.AbstractServerGame.superclass.constructor.call(this);
+
+		this.setupNetChannel();
 		return this;
 	};
 
@@ -34,10 +36,11 @@ Version:
 
 		// Methods
 		setupNetChannel: function() {
-
+			this.netChannel = new RealtimeMultiplayerGame.ServerNetChannel();
 		}
 	}
 
 
+	// Extend RealtimeMultiplayerGame.AbstractGame
 	RealtimeMultiplayerGame.extend(RealtimeMultiplayerGame.AbstractServerGame, RealtimeMultiplayerGame.AbstractGame, null);
 })()

@@ -17,7 +17,7 @@ Version:
 (function(){
 
 	DemoApp.DemoServerGame = function() {
-		RealtimeMultiplayerGame.AbstractServerGame.superclass.constructor.call(this);
+		DemoApp.DemoServerGame.superclass.constructor.call(this);
 		return this;
 	};
 

@@ -86,6 +86,8 @@
 		});
 		helloWorldInstance.initStats();
 
+		var joystickTest = new Joystick();
+		joystickTest.attachEvents();
 	}
 
 	var message = function(obj){

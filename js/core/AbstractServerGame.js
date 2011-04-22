@@ -36,7 +36,7 @@ Version:
 
 		// Methods
 		setupNetChannel: function() {
-			this.netChannel = new RealtimeMultiplayerGame.ServerNetChannel();
+			this.netChannel = new RealtimeMultiplayerGame.network.ServerNetChannel();
 		}
 	}
 

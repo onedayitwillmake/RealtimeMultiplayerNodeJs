@@ -30,7 +30,7 @@ Version:
 		return this;
 	};
 
-	RealtimeMultiplayerGame.AbstractServerGame.prototype = {
+	RealtimeMultiplayerGame.network.Client.prototype = {
 		connection				: null,				// SocketIO connection for this specific client
 
 		// Configuration
@@ -50,6 +50,21 @@ Version:
 		 */
 		canSendMessage: function( gameClock ) {
 			return (gameClock - this.lastSentMessageTime) > this.cl_updateRate;
+		},
+
+		/**
+		 * Returns the sessionId as created by Socket.io for this client
+		 * @return {String} A hash representing the session id
+		 */
+		getSessionID: function() {
+			return this.connection.sessionId
+		},
+
+		/**
+		 * @return {
+		 */
+		getConnection: function() {
+			return this.connection;
 		}
 	}
 })();

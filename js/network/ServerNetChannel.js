@@ -18,22 +18,30 @@ Version:
 	1.0
 */
 (function(){
-	// Import
+	// Node.JS Imports
 	var http = require('http');
     var url = require('url');
     var fs = require('fs');
     var sys = require(process.binding('natives').util ? 'util' : 'sys');
-	var io = require('./lib/Socket.IO-node');
+	var io = require('../lib/Socket.IO-node');
+
+	// Local variables for private things in this class
+	var nextClientID = 0;
+
+	// Retrieve the namespace
+	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.network");
 
 	// Ctr
-	RealtimeMultiplayerGame.ServerNetChannel = function() {
+	RealtimeMultiplayerGame.network.ServerNetChannel = function() {
+		this.clients = new SortedLookupTable();
 		this.initializeSocketIO();
 		return this;
 	};
 
-	RealtimeMultiplayerGame.ServerNetChannel.prototype = {
-		httpserver:				null,					// A minimal HTTP server which socket.io can listen on
-		socketio: 				null,					// Socket.IO server
+	RealtimeMultiplayerGame.network.ServerNetChannel.prototype = {
+		httpserver				: null,					// A minimal HTTP server which socket.io can listen on
+		socketio 				: null,					// Socket.IO server
+		clients					: null,					// SortedLookupTable
 
 	// Methods
 		/**
@@ -57,21 +65,12 @@ Version:
 		 * Callback from socket.io when a client has connected
 		 * @param client
 		 */
-		onSocketConnection: function(client) {
-			console.log("onSocketConnection");
+		onSocketConnection: function( clientConnection ) {
+			var aClient = new RealtimeMultiplayerGame.network.Client( clientConnection );
 
-			client.send({ buffer: buffer });
-			client.broadcast({ announcement: client.sessionId + ' connected' });
-			client.on('message', function(message) {
-				var msg = { message: [client.sessionId, message] };
-				buffer.push(msg);
-				if (buffer.length > 15) buffer.shift();
-				client.broadcast(msg);
-			});
-			client.on('disconnect', function()
-			{
-				client.broadcast({ announcement: client.sessionId + ' disconnected' });
-			});
+			// Add to our list of connected users
+			this.clients.setObjectForKey( aClient, aClient.getSessionID() );
+			aClient.getConnection().send({"A": "B"});
 		},
 
 		/**
@@ -80,8 +79,9 @@ Version:
 		 */
 		onSocketClosed: function(client) {
 			console.log("onSocketClosed");
-		}
+		},
 
-
+		// Accessors
+		getNextClientID: function() { return nextClientID++ }
 	}
 })();

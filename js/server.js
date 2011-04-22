@@ -12,10 +12,12 @@ Basic Usage:
 Version:
 	1.0
 */
+require("./lib/SortedLookupTable.js");
 require("./core/RealtimeMutliplayerGame.js");
 require("./model/Constants.js");
 require("./core/AbstractGame.js");
-require("./ServerNetChannel.js");
+require("./network/Client.js");
+require("./network/ServerNetChannel.js");
 require("./core/AbstractServerGame.js");
 require("./GameEntity.js");
 require("./demo/DemoApp.js");

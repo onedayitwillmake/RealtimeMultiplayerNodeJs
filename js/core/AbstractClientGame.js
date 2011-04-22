@@ -21,14 +21,18 @@ Version:
 	1.0
 */
 (function(){
-
 	RealtimeMultiplayerGame.AbstractClientGame = function() {
 		RealtimeMultiplayerGame.AbstractClientGame.superclass.constructor.call(this);
+		this.view = new RealtimeMultiplayerGame.View.GameView();
+
+		this.fieldController = new RealtimeMultiplayerGame.Controller.FieldController();
+		
 		return this;
 	};
 
 	RealtimeMultiplayerGame.AbstractClientGame.prototype = {
 		view	    : null,								// View
+		fieldController: null,							// FieldController
 		nickname	: '',								// User 'nickname'
 
 

@@ -40,8 +40,8 @@
 		 */
 		function attachEvents()
 		{
-			document.addEventListener('keydown', function(e) { keyDown(e); });
-			document.addEventListener('keyup', function(e) { keyUp(e); });
+			document.addEventListener('keydown', function(e) { keyDown(e); }, false);
+			document.addEventListener('keyup', function(e) { keyUp(e); }, false);
 		}
 
 		function isKeyPressed() {

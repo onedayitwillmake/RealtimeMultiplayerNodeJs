@@ -61,8 +61,8 @@ Version:
 		netChannelDidConnect: function (messageData)
 		{
 			// Sync time with server
-			this.gameClock = messageData.gameClock;
-			this.joinGame(nickname);
+			this.gameClock = messageData.payload.gameClock;
+			this.joinGame();
 		},
 
 		/**
@@ -72,10 +72,8 @@ Version:
 		joinGame: function(aNickname)
 		{
 			this.nickname = aNickname;
-
 			// Create a 'join' message and queue it in ClientNetChannel
-			var message = this.netChannel.composeCommand( RealtimeMultiplayerGame.Constants.CMDS.PLAYER_JOINED, { nickname: this.nickname } );
-			this.netChannel.addMessageToQueue( true, message );
+			this.netChannel.addMessageToQueue( true, RealtimeMultiplayerGame.Constants.CMDS.PLAYER_JOINED, { nickname: this.nickname } );
 		},
 
 		/**

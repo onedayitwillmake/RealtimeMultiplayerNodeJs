@@ -41,12 +41,17 @@ Version:
 
 		// connection info
 		latency						: 1000,					// Current latency time from server
+		gameClock					: -1,					// Store last time from server
 		lastSentTime 				: -1,                   // Time of last sent message
 		lastRecievedTime 			: -1,					// Time of last recieved message
 
 		// Data
 		messageBuffer						: [],		// Store last N messages to be sent
+		outgoingSequenceNumber				: 0,
 		incomingWorldUpdateBuffer			: [],		// Store last N received WorldDescriptions
+		reliableBuffer						: null,		// We sent a 'reliable' message and are waiting for acknowledgement that it was sent
+
+		verboseMode							: true,
 
 
 		setupSocketIO: function() {
@@ -56,7 +61,7 @@ Version:
 
 			var that = this;
 			this.socketio.on('connect', function( obj ){ that.onSocketConnect( obj ) });
-			this.socketio.on('message', function( obj ){ that.onSocketMessage( obj ) });
+			this.socketio.on('message', function( obj ){ that.onSocketDidAcceptConnection( obj ) });
 			this.socketio.on('disconnect', function( obj ){ that.onSocketDisconnect( obj ) });
 		},
 
@@ -65,15 +70,31 @@ Version:
 			console.log("(ClientNetChannel):onSocketConnect", this.socketio);
 		},
 
-		onSocketMessage: function( aNetChannelMessage ) {
-
-			// This is a special command after connecting and the server OK-ing us - it's the first real message we receive
-			// So we have to put it here, because otherwise e don't actually have a true client ID yet so the code below this will not work
-			if(aNetChannelMessage.cmd == RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT) {
-				this.clientid = aNetChannelMessage.id;
+		/**
+		 * Called when ServerNetChannel has accepted your connection and given you a client id
+		 * This is only called once, use the info to set some properties
+		 */
+		onSocketDidAcceptConnection: function(  aNetChannelMessage ) {
+			// We don't actually have a true client ID yet so the code below this will not work
+			if(aNetChannelMessage.cmd != RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT) {
+				throw "(ClientNetChannel):onSocketDidAcceptConnection recieved but cmd != SERVER_CONNECT ";
 				return;
 			}
 
+			this.clientid = aNetChannelMessage.id;
+			this.delegate.netChannelDidConnect( aNetChannelMessage );
+
+			// Set onMessage function back to normal
+			//this.socketio.removeEvent("message", function( obj ){ that.onSocketDidAcceptConnection( obj ) });
+			//this.socketio.on('message', function( obj ){ that.onSocketMessage( obj ) });
+			this.onSocketDidAcceptConnection = this.onSocketMessage;
+		},
+
+		/**
+		 * Called when Socket.io has received a new message
+		 * @param aNetChannelMessage
+		 */
+		onSocketMessage: function( aNetChannelMessage ) {
 			console.log("(ClientNetChannel):onSocketMessage", arguments);
 		},
 
@@ -81,6 +102,40 @@ Version:
 			console.log("(ClientNetChannel)::onSocketDisconnect", arguments);
 		},
 
+
+		tick: function( )
+		{
+			this.gameClock = this.delegate.getGameClock();
+
+			// Can't send new message, still waiting for last imporant message to be returned
+			if(this.reliableBuffer !== null) return;
+
+			var hasReliableMessages = false;
+			var firstUnreliableMessageFound = null;
+
+			var len = this.messageBuffer.length;
+			for (var i = 0; i < len; i++)
+			{
+				var message = this.messageBuffer[i];
+				if(message.isReliable) // We have more important things to tend to sir.
+				{
+					hasReliableMessages = true;
+					this.sendMessage(message);
+					break;
+				}
+			}
+
+			// No reliable messages waiting, enough time has passed to send an update
+			if(!hasReliableMessages && this.canSendMessage() && this.nextUnreliable != null)
+			{
+				this.sendMessage( this.nextUnreliable )
+			}
+		},
+
+		/**
+		 * Sends a message via socket.io
+		 * @param aMessageInstance
+		 */
 		sendMessage: function( aMessageInstance ) {
 			if(this.socketio == undefined) {
 				console.log("(ClientNetChannel)::sendMessage - socketio is undefined!");
@@ -100,7 +155,7 @@ Version:
 				this.reliableBuffer = aMessageInstance; // Block new connections
 			}
 
-			this.socketio.send(val);
+			this.socketio.send( aMessageInstance );
 
 			if(this.verboseMode) console.log('(NetChannel) Sending Message, isReliable', aMessageInstance.isReliable, BISON.decode(aMessageInstance.encodedSelf()));
 		},
@@ -112,32 +167,19 @@ Version:
 		 */
 		addMessageToQueue: function( isReliable, aCommandConstant, payload )
 		{
-			// Create a command
-//			var command = {};
-//			// Fill in the data
-//				command.cmd = aCommandConstant;
-//			command.data = commandData || {};
-//			composeCommand( this.config.CMDS.PLAYER_JOINED, { theme: this.theme, nickname: this.nickname } );
-//			this.outgoingSequenceNumber += 1;
-//
-//			// Create a message
-//			var messageData = {};
-//			messageData.cmd = aCommandConstant;
-//			messageData.data = payload;
-//
-//
-//			var message = new RealtimeMultiplayerGame.model.NetChannelMessage( this.outgoingSequenceNumber, isReliable, anUnencodedMessage );
-//			message.clientID = this.socketio.sessionid;
-//
-//			// Add to array the queue
-//			this.messageBuffer[ this.outgoingSequenceNumber & this.MESSAGE_BUFFER_MASK ] = message;
-//
-//			if(isReliable) {
-//				this.messageBuffer[ this.outgoingSequenceNumber & this.MESSAGE_BUFFER_MASK ] = message;
-//			} else {
-//				this.nextUnreliable = message;
-//			}
-//
+			console.log("YEAH")
+			++this.outgoingSequenceNumber;
+
+			// Create a NetChannelMessage
+			var message = new RealtimeMultiplayerGame.model.NetChannelMessage( this.outgoingSequenceNumber, this.clientID, isReliable, aCommandConstant, payload );
+
+			// Add to array the queue using bitmask to wrap values
+			this.messageBuffer[ this.outgoingSequenceNumber & this.MESSAGE_BUFFER_MASK ] = message;
+
+			if(isReliable) {
+				this.nextUnreliable = message;
+			}
+
 //			if( this.verboseMode ) console.log('(NetChannel) Adding Message to que', this.messageBuffer[this.outgoingSequenceNumber & this.MESSAGE_BUFFER_MASK], " ReliableBuffer currently contains: ", this.reliableBuffer);
 		},
 
@@ -195,7 +237,7 @@ Version:
 		*/
 		canSendMessage: function ()
 		{
-			var isReady = (this.gameClock > this.lastSentTime + this.cl_updateRate);
+			var isReady = (this.gameClock > this.lastSentTime + this.cl_updateRate + 10000) ;
 			console.log( "(NetChannel) isReady: " + isReady );
 		}
 	}

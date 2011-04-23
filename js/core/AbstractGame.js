@@ -62,6 +62,7 @@ Version:
 			if (speedFactor <= 0) speedFactor = 1;
 
 			this.fieldController.tick(speedFactor, this.clockActualTime, this.gameTick)
+			this.netChannel.tick();
 		},
 
 

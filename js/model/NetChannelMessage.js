@@ -37,12 +37,12 @@ Version:
 	 * @param isReliable			A message is 'reliable' if it must be sent, for example fireweapon / disconnect. It is 'unreliable', if it can be overwritten with newer data, i.e. currentPosition
 	 * @param aPayload				The message to send
 	 */
-	RealtimeMultiplayerGame.model.NetChannelMessage = function(aSequenceNumber, isReliable, aCommandType, aPayload)
+	RealtimeMultiplayerGame.model.NetChannelMessage = function(aSequenceNumber, aClientID, isReliable, aCommandType, aPayload)
 	{
+
 		// Info
 		this.sequenceNumber = aSequenceNumber;
-		this.clientid = -1; // Server gives us one when we first  connect to it
-
+		this.id = aClientID; 					// Server gives us one when we first  connect to it
 		this.cmd = aCommandType;
 
 		// Data
@@ -60,7 +60,7 @@ Version:
 		cmd					: 0,
 		aPayload			: null,
 		sequenceNumber		: -1,
-		clientid			: -1,
+		id					: -1,
 		messageTime			: -1,
 
 		/**
@@ -68,7 +68,7 @@ Version:
 		 */
 		encodeSelf: function()
 		{
-			if(this.clientid == -1) {
+			if(this.id == -1) {
 				console.log("(Message) Sending message without clientid. Note this is ok, if it's the first message to the server.");
 			}
 

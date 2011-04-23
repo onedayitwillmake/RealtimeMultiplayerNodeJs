@@ -22,11 +22,11 @@ DemoApp = (typeof DemoApp === 'undefined') ? {} : DemoApp;
 DemoApp.namespace = function(ns_string)
 {
 	var parts = ns_string.split('.'),
-		parent = RealtimeMultiplayerGame,
+		parent = DemoApp,
 		i = 0;
 
 	// strip redundant leading global
-	if (parts[0] === "RealtimeMultiplayerGame") {
+	if (parts[0] === "DemoApp") {
 		parts = parts.slice(1);
 	}
 

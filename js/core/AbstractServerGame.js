@@ -32,6 +32,26 @@ Version:
 		// Methods
 		setupNetChannel: function() {
 			this.netChannel = new RealtimeMultiplayerGame.network.ServerNetChannel();
+		},
+
+
+		/**
+		 * Updates the gameworld
+		 * Creates a WorldEntityDescription which it sends to NetChannel
+		 */
+		tick: function()
+		{
+			RealtimeMultiplayerGame.AbstractServerGame.superclass.tick.call(this);
+
+			// Create a new world-entity-description,
+			var worldEntityDescription = new WorldEntityDescription( this );
+
+			this.netChannel.tick( this.gameClock, worldEntityDescription );
+
+
+			if( this.gameClock > this.model.gameDuration) {
+				this.shouldEndGame();
+			}
 		}
 	}
 

@@ -18,6 +18,8 @@ Version:
 
 	DemoApp.DemoClientGame = function() {
 		DemoApp.DemoClientGame.superclass.constructor.call(this);
+
+		this.fieldController.getView().insertIntoHTMLElementWithId( "gamecontainer" );
 		return this;
 	};
 

@@ -15,6 +15,7 @@ Version:
 require("./lib/SortedLookupTable.js");
 require("./core/RealtimeMutliplayerGame.js");
 require("./model/Constants.js");
+require("./Controller/FieldController.js");
 require("./core/AbstractGame.js");
 require("./network/Client.js");
 require("./network/ServerNetChannel.js");

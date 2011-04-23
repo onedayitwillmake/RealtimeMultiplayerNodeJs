@@ -19,10 +19,16 @@ Version:
 
 		ENTITY_DEFAULT_RADIUS: 10,
 
+		SERVER_SETTING:
+		{
+			SOCKET_PORT	: 8080
+		},
+
 		CLIENT_SETTING:
 		{
 			UPDATE_RATE	: 1000/25, 					// How often to request a world-update from the server
-			CMD_RATE	: 1000/30                  // How often a client can send messages to server
+			CMD_RATE	: 1000/30,                  // How often a client can send messages to server
+			MAX_BUFFER	: 31
 		},
 
 		CMDS: {

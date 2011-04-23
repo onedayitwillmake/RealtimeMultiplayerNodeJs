@@ -15,6 +15,7 @@ Version:
 	1.0
 */
 (function(){
+	require("./ImprovedNoise.js");
 
 	DemoApp.DemoServerGame = function() {
 		DemoApp.DemoServerGame.superclass.constructor.call(this);

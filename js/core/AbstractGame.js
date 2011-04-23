@@ -23,6 +23,7 @@ Version:
 (function(){
 	RealtimeMultiplayerGame.AbstractGame = function() {
 		this.setupNetChannel();
+		this.fieldController = new RealtimeMultiplayerGame.Controller.FieldController();
 		return this;
 	};
 
@@ -34,7 +35,10 @@ Version:
 		intervalGameTick		: null,											// Setinterval for gametick
 		intervalFramerate		: 60,											// Try to call our tick function this often, intervalFramerate, is used to determin how often to call settimeout - we can set to lower numbers for slower computers
 		intervalTargetDelta		: NaN,	// this.targetDelta, milliseconds between frames. Normally it is 16ms or 60FPS. The framerate the game is designed against - used to create framerate independent motion
+
 		netChannel				: null,											// ServerNetChannel / ClientNetChannel determined by subclass
+		fieldController			: null,							// FieldController
+
 
 		// Methods
 		tick: function() {
@@ -52,7 +56,7 @@ Version:
 			var speedFactor = delta / ( this.intervalTargetDelta );
 			if (speedFactor <= 0) speedFactor = 1;
 
-//			console.log("Tick:" + this.gameClock);
+			this.fieldController.tick(speedFactor, this.clockActualTime, this.gameTick)
 		},
 
 

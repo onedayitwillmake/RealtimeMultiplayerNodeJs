@@ -23,17 +23,16 @@ Version:
 (function(){
 	RealtimeMultiplayerGame.AbstractClientGame = function() {
 		RealtimeMultiplayerGame.AbstractClientGame.superclass.constructor.call(this);
-		this.view = new RealtimeMultiplayerGame.View.GameView();
 
-		this.fieldController = new RealtimeMultiplayerGame.Controller.FieldController();
-		
+		this.view = new RealtimeMultiplayerGame.View.GameView();
+		this.fieldController.setupView();
+
 		return this;
 	};
 
 	RealtimeMultiplayerGame.AbstractClientGame.prototype = {
-		view	    : null,								// View
-		fieldController: null,							// FieldController
-		nickname	: '',								// User 'nickname'
+		view										: null,							// View
+		nickname									: '',							// User 'nickname'
 
 
 		// Methods
@@ -97,7 +96,7 @@ Version:
 
 			RealtimeMultiplayerGame.AbstractClientGame.superclass.dealloc.call(this);
 		}
-	}
+	};
 
 
 	// Extend RealtimeMultiplayerGame.AbstractGame

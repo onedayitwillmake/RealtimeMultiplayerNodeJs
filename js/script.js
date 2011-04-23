@@ -14,20 +14,6 @@
 		var clientGame = new DemoApp.DemoClientGame();
 		console.log('ClientGame', clientGame);
 
-		var socket = new io.Socket(null, {port: 8080, transports:["websocket"], rememberTransport: false});
-		socket.connect();
-		socket.on('connect', function(){
-			message({ message: ['System', 'Connected']});
-		});
-
-		socket.on('message', function(obj){
-		 message({ message: ['System', 'message']});
-		});
-
-		socket.on('disconnect', function(){
-		 message({ message: ['System', 'Disconnected']});
-		});
-
 		var joystickTest = new RealtimeMultiplayerGame.Input.Keyboard();
 		joystickTest.attachEvents();
 	}

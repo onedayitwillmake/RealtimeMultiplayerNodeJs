@@ -34,7 +34,7 @@ Version:
 	// Ctr
 	RealtimeMultiplayerGame.network.ServerNetChannel = function() {
 		this.clients = new SortedLookupTable();
-		this.initializeSocketIO();
+		this.setupSocketIO();
 		return this;
 	};
 
@@ -48,10 +48,10 @@ Version:
 		/**
 		 * Initializes socket.io
 		 */
-		initializeSocketIO: function() {
+		setupSocketIO: function() {
 			// Create a minimal http server to listen
 			this.httpserver = http.createServer(function(req, res) {});
-			this.httpserver.listen(8080);
+			this.httpserver.listen( RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PORT );
 			// Start socket.io
 			this.socketio = io.listen(this.httpserver);
 

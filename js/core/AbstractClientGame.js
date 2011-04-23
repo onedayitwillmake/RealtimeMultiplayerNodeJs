@@ -36,8 +36,12 @@ Version:
 
 
 		// Methods
+
 		setupNetChannel: function() {
-//			this.netChannel = new RealtimeMultiplayerGame.network.ServerNetChannel();
+			console.log("RealtimeMultiplayerGame.AbstractClientGame.superclass", RealtimeMultiplayerGame.AbstractClientGame.superclass)
+//			debugger;
+			RealtimeMultiplayerGame.AbstractClientGame.superclass.setupNetChannel.call(this);
+			this.netChannel = new RealtimeMultiplayerGame.ClientNetChannel( this );
 		},
 
 		renderAtTime: function(t) {
@@ -89,13 +93,16 @@ Version:
 		},
 
 
-	// Memory
+		///// Memory
 		dealloc: function() {
 			if(this.view) this.view.dealloc();
 			this.view = null;
 
 			RealtimeMultiplayerGame.AbstractClientGame.superclass.dealloc.call(this);
-		}
+		},
+
+		///// Accessors
+		getGameClock: function() { return this.gameClock; }
 	};
 
 

@@ -60,16 +60,16 @@ Version:
 		},
 
 		///// SocketIO Callbacks
-		onSocketConnect: function( obj ) {
-
+		onSocketConnect: function() {
+			console.log("(ClientNetChannel):onSocketConnect", this.socketio);
 		},
 
 		onSocketMessage: function( obj ) {
-
+			console.log("(ClientNetChannel):onSocketMessage", arguments);
 		},
 
 		onSocketDisconnect: function( obj ) {
-
+			console.log("(ClientNetChannel):onSocketDisconnect", arguments);
 		},
 
 		sendMessage: function( aMessageInstance ) {
@@ -132,15 +132,16 @@ Version:
 		 */
 		setDelegate: function( aDelegate )
 		{
-			var isValid = false; // Assume false
-
-			if(aDelegate &&  aDelegate.netChannelDidConnect && aDelegate.netChannelDidReceiveMessage && aDelegate.netChannelDidDisconnect && aDelegate.getGameClock ) {
-				isValid = true;
-			} else {
-				throw "(ClientNetChannel): Object does not conform to required ClientNetChannel delegate methods";
+			var theInterface = RealtimeMultiplayerGame.ClientNetChannelDelegateProtocol;
+			for (var member in theInterface) {
+				if ( (typeof aDelegate[member] != typeof theInterface[member]) ) {
+					console.error("object failed to implement interface member " + member);
+					return false;
+				}
 			}
 
-			return isValid;
+			// Checks passed
+			this.delegate = aDelegate;
 		},
 
 		/**
@@ -151,6 +152,15 @@ Version:
 			var isReady = (this.gameClock > this.lastSentTime + this.cl_updateRate);
 			console.log( "(NetChannel) isReady: " + isReady );
 		}
+	}
 
+	/**
+	 * Required methods for the ClientNetChannel delegate
+	 */
+	RealtimeMultiplayerGame.ClientNetChannelDelegateProtocol = {
+		netChannelDidConnect: function() {},
+		netChannelDidReceiveMessage: function( aMessage ) {},
+		netChannelDidDisconnect: function() {},
+		getGameClock: function() {}
 	}
 })()

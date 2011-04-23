@@ -40,6 +40,11 @@ Version:
 		fieldController			: null,							// FieldController
 
 
+		/**
+		 * Setup the ClientNetChannel or ServerNetChannel
+		 */
+		setupNetChannel: function(){},
+
 		// Methods
 		tick: function() {
 			// Store previous time and update current

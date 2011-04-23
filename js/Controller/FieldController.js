@@ -26,9 +26,19 @@
 		tick: function(speedFactor, gameClock, gameTick)
 		{
 			// Update entities
-			this.allEntities.forEach( function(key, entity){
+			this.entities.forEach( function(key, entity){
 				entity.tick(speedFactor, gameClock, gameTick);
 			}, this );
+
+			this.rankPlayers();
+		},
+
+		/**
+		 * Allow to arbitrarily rank players.
+		 * Left in as example, however it is not implemented in framework for you
+		 */
+		rankPlayers: function() {
+			return;
 
 			// Rank players
 			this.playersArray.sort(function(a, b) {
@@ -52,7 +62,7 @@
 		 * @param {EntityDescription}	entityDesc	An object containing new properties for this entity
 		 */
 		updateEntity: function( objectID, newPosition, newRotation, entityDesc ) {
-			var entity = this.allEntities.objectForKey( objectID );
+			var entity = this.entities.objectForKey( objectID );
 
 			if( entity != null ) {
 				entity.position.x = newPosition.x;
@@ -96,13 +106,13 @@
 		 */
 		removeEntity: function( objectID )
 		{
-			var entity = this.allEntities.objectForKey( objectID );
+			var entity = this.entities.objectForKey( objectID );
 
 			if( this.view )
 				this.view.removeEntity( entity.view );
 
 			entity.dealloc();
-			this.allEntities.remove( objectID );
+			this.entities.remove( objectID );
 		},
 
 		/**
@@ -112,7 +122,7 @@
 		 */
 		removeExpiredEntities: function( activeEntities )
 		{
-			var entityKeysArray = this.allEntities._keys,
+			var entityKeysArray = this.entities._keys,
 			i = entityKeysArray.length,
 			key;
 			var totalRemoved = 0;
@@ -126,7 +136,7 @@
 					continue;
 
 				// This entity is not active, check if it belongs to the server
-				var entity = this.allEntities.objectForKey(key);
+				var entity = this.entities.objectForKey(key);
 
 //				if(entity.clientID == 0)  {
 //					continue;
@@ -152,19 +162,19 @@
 				this.removePlayer(entity.sessionId);
 			}, this );
 
-			this.allEntities.forEach( function(key, entity){
+			this.entities.forEach( function(key, entity){
 				this.removeEntity(entity.objectID);
 			}, this );
 
 
-			this.allEntities.dealloc();
+			this.entities.dealloc();
 			this.players.dealloc();
 
 			if(this.view) this.view.dealloc();
 
 			delete this.view;
 			delete this.players;
-			delete this.allEntities;
+			delete this.entities;
 		},
 
 ///// Accessors

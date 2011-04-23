@@ -31,9 +31,8 @@ Version:
 	RealtimeMultiplayerGame.AbstractServerGame.prototype = {
 		// Methods
 		setupNetChannel: function() {
-			this.netChannel = new RealtimeMultiplayerGame.network.ServerNetChannel();
+			this.netChannel = new RealtimeMultiplayerGame.network.ServerNetChannel( this );
 		},
-
 
 		/**
 		 * Updates the gameworld
@@ -53,6 +52,29 @@ Version:
 				this.shouldEndGame();
 			}
 		}
+
+		////// ServerNetChannelDelegate
+//		/**
+//		 * Player has joined the match
+//		 * @param connection		The clients WebSocket connection
+//		 * @param aDecodedMessage	A message containing client information
+//		 */
+//		onPlayerJoined: function( entityID, clientID, characterModel )
+//		{
+//			// Create an entity ID for this new player
+//			// This is done here, because shouldAddPlayer is the same on client and server, and only the server can define client entities
+//			var entityID = this.delegate.getNextEntityID(),
+//                clientID = connection.se,
+//                aClient = this.clients.objectForKey( clientID );
+//
+//            // if set to false then clients will stay in the game
+//            aClient.isPlaying = true;
+//
+//			var characterModel = {theme: aDecodedMessage.cmds.data.theme, nickname: aDecodedMessage.cmds.data.nickname};
+//			this.delegate.shouldAddPlayer(entityID, clientID, characterModel );
+//
+//			connection.send( BISON.encode(aDecodedMessage) );
+//		},
 	}
 
 

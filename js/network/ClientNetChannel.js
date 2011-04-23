@@ -34,6 +34,7 @@ Version:
 	RealtimeMultiplayerGame.ClientNetChannel.prototype = {
 		delegate					:null,				// Object informed when ClientNetChannel does interesting stuff
 		socketio					:null,
+		clientid					:null,				// A client id is set by the server on first connect
 
 		// Settings
 		cl_updateRate				: RealtimeMultiplayerGame.Constants.CLIENT_SETTING.CMD_RATE,		// How often we can receive messages per sec
@@ -64,24 +65,33 @@ Version:
 			console.log("(ClientNetChannel):onSocketConnect", this.socketio);
 		},
 
-		onSocketMessage: function( obj ) {
+		onSocketMessage: function( aNetChannelMessage ) {
+
+			// This is a special command after connecting and the server OK-ing us - it's the first real message we receive
+			// So we have to put it here, because otherwise e don't actually have a true client ID yet so the code below this will not work
+			if(aNetChannelMessage.cmd == RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT) {
+				this.clientid = aNetChannelMessage.id;
+				return;
+			}
+
 			console.log("(ClientNetChannel):onSocketMessage", arguments);
 		},
 
 		onSocketDisconnect: function( obj ) {
-			console.log("(ClientNetChannel):onSocketDisconnect", arguments);
+			console.log("(ClientNetChannel)::onSocketDisconnect", arguments);
 		},
 
 		sendMessage: function( aMessageInstance ) {
-			if(this.connection == undefined) {
-				console.log("connection is undefined!");
+			if(this.socketio == undefined) {
+				console.log("(ClientNetChannel)::sendMessage - socketio is undefined!");
 				return;
-
 			}
 
-			if(this.connection.readyState == WebSocket.CLOSED) {
+			if(!this.socketio.connected) { // Socket.IO is not connectd, probably not ready yet
+				// console.log("(ClientNetChannel)::sendMessage - socketio is undefined!");
 				return;      //some error here
 			}
+
 			aMessageInstance.messageTime = this.delegate.getGameClock(); // Store to determine latency
 
 			this.lastSentTime = this.gameClock;
@@ -93,6 +103,42 @@ Version:
 			this.socketio.send(val);
 
 			if(this.verboseMode) console.log('(NetChannel) Sending Message, isReliable', aMessageInstance.isReliable, BISON.decode(aMessageInstance.encodedSelf()));
+		},
+
+		/**
+		 * Prepare a message for sending at next available time
+		 * @param isReliable
+		 * @param anUnencodedMessage
+		 */
+		addMessageToQueue: function( isReliable, aCommandConstant, payload )
+		{
+			// Create a command
+//			var command = {};
+//			// Fill in the data
+//				command.cmd = aCommandConstant;
+//			command.data = commandData || {};
+//			composeCommand( this.config.CMDS.PLAYER_JOINED, { theme: this.theme, nickname: this.nickname } );
+//			this.outgoingSequenceNumber += 1;
+//
+//			// Create a message
+//			var messageData = {};
+//			messageData.cmd = aCommandConstant;
+//			messageData.data = payload;
+//
+//
+//			var message = new RealtimeMultiplayerGame.model.NetChannelMessage( this.outgoingSequenceNumber, isReliable, anUnencodedMessage );
+//			message.clientID = this.socketio.sessionid;
+//
+//			// Add to array the queue
+//			this.messageBuffer[ this.outgoingSequenceNumber & this.MESSAGE_BUFFER_MASK ] = message;
+//
+//			if(isReliable) {
+//				this.messageBuffer[ this.outgoingSequenceNumber & this.MESSAGE_BUFFER_MASK ] = message;
+//			} else {
+//				this.nextUnreliable = message;
+//			}
+//
+//			if( this.verboseMode ) console.log('(NetChannel) Adding Message to que', this.messageBuffer[this.outgoingSequenceNumber & this.MESSAGE_BUFFER_MASK], " ReliableBuffer currently contains: ", this.reliableBuffer);
 		},
 
 		adjustRate: function() {

@@ -44,6 +44,10 @@ Version:
 			this.netChannel = new RealtimeMultiplayerGame.ClientNetChannel( this );
 		},
 
+		tick: function() {
+			RealtimeMultiplayerGame.AbstractClientGame.superclass.tick.call(this);
+		},
+
 		renderAtTime: function(t) {
 			//
 		},
@@ -99,10 +103,9 @@ Version:
 			this.view = null;
 
 			RealtimeMultiplayerGame.AbstractClientGame.superclass.dealloc.call(this);
-		},
+		}
 
 		///// Accessors
-		getGameClock: function() { return this.gameClock; }
 	};
 
 

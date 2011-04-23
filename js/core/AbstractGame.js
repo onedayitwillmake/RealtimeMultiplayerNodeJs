@@ -84,14 +84,15 @@ Version:
 			clearInterval( this.intervalGameTick );
 		},
 
-		// Accessors
-
 		// Memory
 		dealloc: function() {
 			if( this.netChannel ) this.netChannel.dealloc();
 			this.netChannel = null;
 
 			clearInterval( this.intervalGameTick );
-		}
+		},
+
+		///// Accessors
+		getGameClock: function() { return this.gameClock; }
 	}
 })();

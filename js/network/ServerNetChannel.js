@@ -32,8 +32,9 @@ Version:
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.network");
 
 	// Ctr
-	RealtimeMultiplayerGame.network.ServerNetChannel = function() {
+	RealtimeMultiplayerGame.network.ServerNetChannel = function( aDelegate ) {
 		this.clients = new SortedLookupTable();
+		this.setDelegate( aDelegate );
 		this.setupSocketIO();
 		return this;
 	};
@@ -58,7 +59,8 @@ Version:
 
 			var that = this;
 			this.socketio.on('request', function(client){ that.onSocketRequest(client) });
-			this.socketio.on('connection', function(client){ that.onSocketConnection(client) });
+			this.socketio.on('connection', function(client){ console.log(arguments); that.onSocketConnection(client) });
+			this.socketio.on('clientMessage', function(data, client){ that.onSocketMessage( data, client ) });
 			this.socketio.on('clientDisconnect', function(client){ that.onSocketClosed(client) });
 		},
 
@@ -70,9 +72,19 @@ Version:
 		onSocketConnection: function( clientConnection ) {
 			var aClient = new RealtimeMultiplayerGame.network.Client( clientConnection );
 
+
+			// Setup callbacks
+			var that = this;
+
+			//RealtimeMultiplayerGame.model.NetChannelMessage = function(aSequenceNumber, isReliable, anUnencodedMessage)
+			var connectMessage = new RealtimeMultiplayerGame.model.NetChannelMessage( 0, true, RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT, { id: this.getNextClientID(), gameClock: this.delegate.getGameClock() });
+			connectMessage.messageTime = that.delegate.getGameClock();
+//			client.on('message', function(message){
+//			aClient.getConnection().on('message', function( aMessage ) { that._onClientMessage( )
+
 			// Add to our list of connected users
 			this.clients.setObjectForKey( aClient, aClient.getSessionID() );
-			aClient.getConnection().send({"A": "B"});
+			aClient.getConnection().send( connectMessage );
 		},
 
 		/**
@@ -81,6 +93,22 @@ Version:
 		 */
 		onSocketClosed: function(client) {
 			console.log("onSocketClosed");
+		},
+
+		onClientMessage: function( data, client )
+		{
+
+			 console.log("onClientMessage", data, client);
+//			client.on('message', function(message){
+//			var msg = { message: [client.sessionId, message] };
+//			buffer.push(msg);
+//			if (buffer.length > 15) buffer.shift();
+//			client.broadcast(msg);
+//		  });
+//
+//		  client.on('disconnect', function(){
+//			client.broadcast({ announcement: client.sessionId + ' disconnected' });
+//		  });
 		},
 
 	// Accessors

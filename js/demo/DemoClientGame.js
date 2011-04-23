@@ -20,12 +20,15 @@ Version:
 		DemoApp.DemoClientGame.superclass.constructor.call(this);
 
 		this.fieldController.getView().insertIntoHTMLElementWithId( "gamecontainer" );
+
+		this.startGameClock();
 		return this;
 	};
 
 	DemoApp.DemoClientGame.prototype = {
 		tick: function() {
 			DemoApp.DemoClientGame.superclass.tick.call(this);
+			this.netChannel.addMessageToQueue("ABC");
 		},
 
 		joinGame: function(aNickname)

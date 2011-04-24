@@ -37,8 +37,10 @@ Version:
 	 * @param isReliable			A message is 'reliable' if it must be sent, for example fireweapon / disconnect. It is 'unreliable', if it can be overwritten with newer data, i.e. currentPosition
 	 * @param aPayload				The message to send
 	 */
+	//var message = new RealtimeMultiplayerGame.model.NetChannelMessage( this.outgoingSequenceNumber, this.clientID, isReliable, aCommandConstant, payload );
 	RealtimeMultiplayerGame.model.NetChannelMessage = function(aSequenceNumber, aClientID, isReliable, aCommandType, aPayload)
 	{
+		debugger;
 
 		// Info
 		this.sequenceNumber = aSequenceNumber;

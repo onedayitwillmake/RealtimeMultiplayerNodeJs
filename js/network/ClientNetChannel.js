@@ -25,6 +25,9 @@ Version:
 */
 (function(){
 
+	// Retrieve the namespace
+	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.network");
+
 	RealtimeMultiplayerGame.ClientNetChannel = function( aDelegate ) {
 		this.setDelegate( aDelegate );
 		this.setupSocketIO();
@@ -51,23 +54,21 @@ Version:
 		incomingWorldUpdateBuffer			: [],		// Store last N received WorldDescriptions
 		reliableBuffer						: null,		// We sent a 'reliable' message and are waiting for acknowledgement that it was sent
 
-		verboseMode							: true,
-
 
 		setupSocketIO: function() {
 
-		    this.socketio = new io.Socket(null, {port: RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PORT, transports:["websocket"], rememberTransport: false});
+		    this.socketio = new io.Socket(null, {port: RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PORT, transports:["websocket"], reconnect: false, rememberTransport: false});
 			this.socketio.connect();
 
 			var that = this;
-			this.socketio.on('connect', function( obj ){ that.onSocketConnect( obj ) });
+			this.socketio.on('connect', function(){ that.onSocketConnect() });
 			this.socketio.on('message', function( obj ){ that.onSocketDidAcceptConnection( obj ) });
 			this.socketio.on('disconnect', function( obj ){ that.onSocketDisconnect( obj ) });
 		},
 
-		///// SocketIO Callbacks
+	///// SocketIO Callbacks
 		onSocketConnect: function() {
-			console.log("(ClientNetChannel):onSocketConnect", this.socketio);
+			console.log("(ClientNetChannel):onSocketConnect", arguments, this.socketio);
 		},
 
 		/**
@@ -75,6 +76,9 @@ Version:
 		 * This is only called once, use the info to set some properties
 		 */
 		onSocketDidAcceptConnection: function(  aNetChannelMessage ) {
+
+			console.log("(ClientNetChannel)::onSocketDidAcceptConnection", aNetChannelMessage);
+
 			// We don't actually have a true client ID yet so the code below this will not work
 			if(aNetChannelMessage.cmd != RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT) {
 				throw "(ClientNetChannel):onSocketDidAcceptConnection recieved but cmd != SERVER_CONNECT ";
@@ -84,7 +88,8 @@ Version:
 			this.clientid = aNetChannelMessage.id;
 			this.delegate.netChannelDidConnect( aNetChannelMessage );
 
-			// Set onMessage function back to normal
+			// Set onMessage function back to normal - removing event listener didn't work, so for now changing the mapping
+			// TODO: Do via removeEvent
 			//this.socketio.removeEvent("message", function( obj ){ that.onSocketDidAcceptConnection( obj ) });
 			//this.socketio.on('message', function( obj ){ that.onSocketMessage( obj ) });
 			this.onSocketDidAcceptConnection = this.onSocketMessage;
@@ -103,8 +108,7 @@ Version:
 		},
 
 
-		tick: function( )
-		{
+		tick: function( ) {
 			this.gameClock = this.delegate.getGameClock();
 
 			// Can't send new message, still waiting for last imporant message to be returned
@@ -157,7 +161,7 @@ Version:
 
 			this.socketio.send( aMessageInstance );
 
-			if(this.verboseMode) console.log('(NetChannel) Sending Message, isReliable', aMessageInstance.isReliable, BISON.decode(aMessageInstance.encodedSelf()));
+			if( RealtimeMultiplayerGame.Constants.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Sending Message, isReliable', aMessageInstance.isReliable, aMessageInstance);
 		},
 
 		/**
@@ -165,9 +169,7 @@ Version:
 		 * @param isReliable
 		 * @param anUnencodedMessage
 		 */
-		addMessageToQueue: function( isReliable, aCommandConstant, payload )
-		{
-			console.log("YEAH")
+		addMessageToQueue: function( isReliable, aCommandConstant, payload ) {
 			++this.outgoingSequenceNumber;
 
 			// Create a NetChannelMessage
@@ -180,7 +182,7 @@ Version:
 				this.nextUnreliable = message;
 			}
 
-//			if( this.verboseMode ) console.log('(NetChannel) Adding Message to que', this.messageBuffer[this.outgoingSequenceNumber & this.MESSAGE_BUFFER_MASK], " ReliableBuffer currently contains: ", this.reliableBuffer);
+			if( RealtimeMultiplayerGame.Constants.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Adding Message to que', this.messageBuffer[this.outgoingSequenceNumber & this.MESSAGE_BUFFER_MASK], " ReliableBuffer currently contains: ", this.reliableBuffer);
 		},
 
 		adjustRate: function() {
@@ -218,8 +220,7 @@ Version:
 		 * Set the NetChannelDelegate after validation
 		 * @param aDelegate
 		 */
-		setDelegate: function( aDelegate )
-		{
+		setDelegate: function( aDelegate ) {
 			var theInterface = RealtimeMultiplayerGame.ClientNetChannelDelegateProtocol;
 			for (var member in theInterface) {
 				if ( (typeof aDelegate[member] != typeof theInterface[member]) ) {
@@ -235,10 +236,8 @@ Version:
 		/**
 		* Determines if it's ok for the client to send a unreliable new message yet
 		*/
-		canSendMessage: function ()
-		{
+		canSendMessage: function () {
 			var isReady = (this.gameClock > this.lastSentTime + this.cl_updateRate + 10000) ;
-			console.log( "(NetChannel) isReady: " + isReady );
 		}
 	}
 

@@ -28,11 +28,9 @@ Version:
 	DemoApp.DemoClientGame.prototype = {
 		tick: function() {
 			DemoApp.DemoClientGame.superclass.tick.call(this);
-			this.netChannel.addMessageToQueue("ABC");
 		},
 
-		joinGame: function(aNickname)
-		{
+		joinGame: function(aNickname) {
 			this.nickname = "Demo!";
 			DemoApp.DemoClientGame.superclass.joinGame.call(this);
 		}

@@ -29,9 +29,25 @@ Version:
 	};
 
 	RealtimeMultiplayerGame.AbstractServerGame.prototype = {
+		cmdMap					: {},					// Map the CMD constants to functions
+		nextEntityID			: 0,					// Incremented for everytime a new object is created
+
 		// Methods
 		setupNetChannel: function() {
 			this.netChannel = new RealtimeMultiplayerGame.network.ServerNetChannel( this );
+		},
+
+		/**
+		 * Map RealtimeMultiplayerGame.Constants.CMDS to functions
+		 * If ServerNetChannel does not contain a function, it will check to see if it is a special function which the delegate wants to catch
+		 * If it is set, it will call that CMD on its delegate
+		 */
+		setupCmdMap: function() {
+			this.cmdMap = {};
+			// These are left in as an example
+//			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_JOINED] = this.onPlayerJoined;
+//			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE] = this.onPlayerUpdate;
+//			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_DISCONNECT] = this.onPlayerDisconnect;
 		},
 
 		/**
@@ -51,30 +67,25 @@ Version:
 			if( this.gameClock > this.model.gameDuration) {
 				this.shouldEndGame();
 			}
-		}
+		},
 
-		////// ServerNetChannelDelegate
-//		/**
-//		 * Player has joined the match
-//		 * @param connection		The clients WebSocket connection
-//		 * @param aDecodedMessage	A message containing client information
-//		 */
-//		onPlayerJoined: function( entityID, clientID, characterModel )
-//		{
-//			// Create an entity ID for this new player
-//			// This is done here, because shouldAddPlayer is the same on client and server, and only the server can define client entities
-//			var entityID = this.delegate.getNextEntityID(),
-//                clientID = connection.se,
-//                aClient = this.clients.objectForKey( clientID );
-//
-//            // if set to false then clients will stay in the game
-//            aClient.isPlaying = true;
-//
-//			var characterModel = {theme: aDecodedMessage.cmds.data.theme, nickname: aDecodedMessage.cmds.data.nickname};
-//			this.delegate.shouldAddPlayer(entityID, clientID, characterModel );
-//
-//			connection.send( BISON.encode(aDecodedMessage) );
-//		},
+		shouldAddPlayer: function( client, data ) {
+			console.log("(AbstractServerGame)::onPlayerJoined");
+		},
+
+		shouldUpdatePlayer: function( client, data ) {
+			console.log("(AbstractServerGame)::onPlayerUpdate");
+		},
+
+		shouldRemovePlayer: function( client, data ) {
+			console.log("(AbstractServerGame)::onPlayerDisconnect");
+		},
+
+
+		///// Accessors
+		getNextEntityID: function() {
+			return ++this.nextEntityID;
+		}
 	}
 
 

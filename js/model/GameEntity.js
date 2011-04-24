@@ -16,11 +16,15 @@ Version:
 	1.0
 */
 (function(){
-	RealtimeMultiplayerGame.GameEntity = function() {
+	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.model");
+
+	RealtimeMultiplayerGame.model.GameEntity = function() {
+		this.position = RealtimeMultiplayerGame.model.Point(0,0);
 		return this;
 	};
 
-	RealtimeMultiplayerGame.GameEntity.prototype = {
-		radius: RealtimeMultiplayerGame.Constants.ENTITY_DEFAULT_RADIUS
+	RealtimeMultiplayerGame.model.GameEntity.prototype = {
+		position	: null,
+		radius		: RealtimeMultiplayerGame.Constants.ENTITY_DEFAULT_RADIUS
 	}
 })();

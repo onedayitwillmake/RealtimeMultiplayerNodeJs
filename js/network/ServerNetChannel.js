@@ -31,11 +31,16 @@ Version:
 	// Retrieve the namespace
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.network");
 
-	// Ctr
+	/**
+	 * Creates a new ServerNetChannel instance
+	 * @param {RealtimeMultiplayerGame.network.ServerNetChannelDelegateProtocol} aDelegate A delegate that conforms to RealtimeMultiplayerGame.network.ServerNetChannelDelegateProtocol
+	 */
 	RealtimeMultiplayerGame.network.ServerNetChannel = function( aDelegate ) {
 		this.clients = new SortedLookupTable();
+
 		this.setDelegate( aDelegate );
 		this.setupSocketIO();
+		this.setupCmdMap();
 		return this;
 	};
 
@@ -45,6 +50,7 @@ Version:
 		clients					: null,					// SortedLookupTable
 		delegate				: null,					// Should conform to ServerNetChannel delegate
 		outgoingSequenceNumber	: 0,					// A unique ID for each message
+		cmdMap					: {},					// Map the CMD constants to functions
 
 	// Methods
 		/**
@@ -65,6 +71,14 @@ Version:
 			this.socketio.on('clientDisconnect', function(client){ that.onSocketClosed(client) });
 		},
 
+		/**
+		 * Map RealtimeMultiplayerGame.Constants.CMDS to functions
+		 */
+		setupCmdMap: function() {
+			this.cmdMap = {};
+			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_JOINED] = this.onPlayerJoined;
+		},
+
 	// Socket.IO callbacks
 		/**
 		 * Callback from socket.io when a client has connected
@@ -73,20 +87,13 @@ Version:
 		onSocketConnection: function( clientConnection ) {
 			var aClient = new RealtimeMultiplayerGame.network.Client( clientConnection );
 
-
-			// Setup callbacks
-			var that = this;
-
-			//RealtimeMultiplayerGame.model.NetChannelMessage = function(aSequenceNumber, isReliable, anUnencodedMessage)
-			//this.getNextClientID()
-			var connectMessage = new RealtimeMultiplayerGame.model.NetChannelMessage( ++this.outgoingSequenceNumber, aClient.getSessionID(), true, RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT, { gameClock: this.delegate.getGameClock() });
-			connectMessage.messageTime = that.delegate.getGameClock();
-//			client.on('message', function(message){
-//			aClient.getConnection().on('message', function( aMessage ) { that._onClientMessage( )
+			// Send the first message back to the client, which gives them a clientid
+			var connectMessage = new RealtimeMultiplayerGame.model.NetChannelMessage( ++this.outgoingSequenceNumber, aClient.getSessionId(), true, RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT, { gameClock: this.delegate.getGameClock() });
+			connectMessage.messageTime = this.delegate.getGameClock();
+			aClient.getConnection().send( connectMessage );
 
 			// Add to our list of connected users
-			this.clients.setObjectForKey( aClient, aClient.getSessionID() );
-			aClient.getConnection().send( connectMessage );
+			this.clients.setObjectForKey( aClient, aClient.getSessionId() );
 		},
 
 		/**
@@ -94,29 +101,78 @@ Version:
 		 * @param client
 		 */
 		onSocketClosed: function(client) {
-			console.log("onSocketClosed");
+			//console.log("onSocketClosed");
 		},
 
-		onSocketMessage: function( data, client )
+		/**
+		 * Callback from socket.io when a ClientNetChannel has sent us a message
+		 * @param data
+		 * @param connection
+		 */
+		onSocketMessage: function( data, connection )
 		{
+			var client = this.clients.objectForKey(connection.sessionId);
+			//that.CMD_TO_FUNCTION[decodedMessage.cmds.cmd].apply(that, [connection, decodedMessage]);
 
-			 console.log("onClientMessage", data, client);
-//			client.on('message', function(message){
-//			var msg = { message: [client.sessionId, message] };
-//			buffer.push(msg);
-//			if (buffer.length > 15) buffer.shift();
-//			client.broadcast(msg);
-//		  });
-//
-//		  client.on('disconnect', function(){
-//			client.broadcast({ announcement: client.sessionId + ' disconnected' });
-//		  });
+			// Allow the client to track that data was received
+			if(client) {
+				client.onMessage( data );
+			} else {
+				console.log("(NetChannel)::onSocketMessage - no such client!");
+				return;
+			}
+
+			//// Call the mapped function, always pass the connection. Also pass data if available
+			if( this.cmdMap[data.cmd] )
+				this.cmdMap[data.cmd].call(this, client, data);
+			else
+				console.log("(NetChannel)::onSocketMessage could not map '" + data.cmd + "' to function!");
+		},
+
+	////// Game callbacks
+		/**
+		 * Callback for when a player has joined the match.
+		 * Note that joining the match, happens after connecting.
+		 * For example a player might be able to connect to the match, and watch the game for a while then want to join the match
+		 * @param client
+		 * @param data
+		 */
+		onPlayerJoined: function( client, data ) {
+			// Create an entity ID for this new player
+			var entityID = this.delegate.getNextEntityID();
+			this.delegate.shouldAddPlayer( client.getId(), data);
+			client.getConnection().send( data );
 		},
 
 	// Accessors
 		getNextClientID: function() { return nextClientID++ },
+		/**
+		 * Checks that an object contains the required methods and sets it as the delegate for this ServerNetChannel instance
+		 * @param {RealtimeMultiplayerGame.network.ServerNetChannelDelegateProtocol} aDelegate A delegate that conforms to RealtimeMultiplayerGame.network.ServerNetChannelDelegateProtocol
+		 */
 		setDelegate: function( aDelegate ) {
+			var theInterface = RealtimeMultiplayerGame.network.ServerNetChannelDelegateProtocol;
+			for (var member in theInterface) {
+				if ( (typeof aDelegate[member] != typeof theInterface[member]) ) {
+					console.log("object failed to implement interface member " + member);
+					return false;
+				}
+			}
+
+			// Checks passed
 			this.delegate = aDelegate;
 		}
+	}
+
+	/**
+	 * Required methods for the ServerNetChannel delegate
+	 */
+	RealtimeMultiplayerGame.network.ServerNetChannelDelegateProtocol = {
+		setupCmdMap: function() {},
+		shouldUpdatePlayer: function( clientID, data ) {},
+		shouldAddPlayer: function( entityID, clientID, data ) {},
+		shouldRemovePlayer: function( clientID ) {},
+		getNextEntityID: function() {},
+		getGameClock: function() {}
 	}
 })();

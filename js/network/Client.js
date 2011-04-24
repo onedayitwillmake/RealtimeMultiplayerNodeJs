@@ -32,7 +32,7 @@ Version:
 
 	RealtimeMultiplayerGame.network.Client.prototype = {
 		connection				: null,				// SocketIO connection for this specific client
-
+		id						: -1,				// UUID for this client
 		// Configuration
 		cl_updateRate			: RealtimeMultiplayerGame.Constants.CLIENT_SETTING.UPDATE_RATE,		// How often we can receive messages per sec
 		outgoingMessageBuffer	: [],				// Store array of incoming messages, slots are resused
@@ -44,6 +44,15 @@ Version:
 		lastSentMessageTime 	: -1,
 		lastReceivedMessageTime : -1,
 
+
+		onMessage: function( messageData )
+		{
+			var messageIndex = this.incomingSequenceNumber & RealtimeMultiplayerGame.Constants.CLIENT_SETTING.UPDATE_RATE;
+			this.incomingMessageBuffer[messageIndex] = messageData;
+			this.incomingSequenceNumber++;
+		},
+
+	///// ACCESSORS
 		/**
 		 * Returns true if its ok to send this client a new message
 		 * @param {Number} gameClock
@@ -56,8 +65,12 @@ Version:
 		 * Returns the sessionId as created by Socket.io for this client
 		 * @return {String} A hash representing the session id
 		 */
-		getSessionID: function() {
+		getSessionId: function() {
 			return this.connection.sessionId
+		},
+
+		getId: function() {
+			return this.getSessionId();
 		},
 
 		/**

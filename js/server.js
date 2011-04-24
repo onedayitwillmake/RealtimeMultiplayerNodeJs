@@ -14,6 +14,9 @@ Version:
 */
 require("./lib/SortedLookupTable.js");
 require("./core/RealtimeMutliplayerGame.js");
+require("./model/Point.js");
+require("./lib/circlecollision/Circle.js");
+require("./lib/circlecollision/CircleManager.js");
 require("./model/Constants.js");
 require("./model/NetChannelMessage.js");
 require("./Controller/FieldController.js");
@@ -21,9 +24,10 @@ require("./core/AbstractGame.js");
 require("./network/Client.js");
 require("./network/ServerNetChannel.js");
 require("./core/AbstractServerGame.js");
-require("./GameEntity.js");
+require("./model/GameEntity.js");
 require("./demo/DemoApp.js");
 require("./demo/DemoServerGame.js");
+
 
 
 var game = new DemoApp.DemoServerGame();

@@ -16,8 +16,13 @@ Version:
 */
 (function(){
 	RealtimeMultiplayerGame.Constants = {
-
 		ENTITY_DEFAULT_RADIUS: 10,
+
+		DEBUG_SETTING:
+		{
+			SERVER_NETCHANNEL_DEBUG : true,
+			CLIENT_NETCHANNEL_DEBUG : true
+		},
 
 		SERVER_SETTING:
 		{

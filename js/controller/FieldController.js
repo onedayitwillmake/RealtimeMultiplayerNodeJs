@@ -72,24 +72,16 @@
 		/**
 		 * Updates the entity based on new information (called by AbstractClientGame::renderAtTime)
 		 * @param {int}		entityid  	entityid we want to update
-		 * @param {Vector}	newPosition	position
+		 * @param {RealtimeMultiplayerGame.model.Point}	newPosition	position
 		 * @param {Number}	newRotation	rotation
-		 * @param {EntityDescription}	entityDesc	An object containing new properties for this entity
 		 */
-		updateEntity: function( entityid, newPosition, newRotation, entityDesc ) {
+		updateEntity: function( entityid, newPosition, newRotation ) {
 			var entity = this.entities.objectForKey( entityid );
 
 			if( entity != null ) {
 				entity.position.x = newPosition.x;
 				entity.position.y = newPosition.y;
 				entity.rotation = newRotation;
-
-//				entity.themeMask = entityDesc.themeMask;
-//
-//				(entityDesc.nickname && (entity.model.nickname = entityDesc.nickname));
-//				// Set if sent
-//				(entityDesc.theme && (entity.theme = entityDesc.theme));
-//				(entityDesc.score && (entity.score = entityDesc.score));
 			} else {
 				console.log("(FieldController)::updateEntity - Error: Cannot find entity with entityid", entityid);
 			}

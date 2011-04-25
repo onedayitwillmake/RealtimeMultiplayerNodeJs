@@ -78,7 +78,7 @@ Version:
 
 			// if the distance between prev and next is too great - don't interpolate
 			var maxInterpolationDistance = 150,
-				maxInterpolationDistanceSquared = maxInterpolationDistance*maxInterpolationDistance;
+				maxInterpSQ = maxInterpolationDistance*maxInterpolationDistance;
 
 			// Store the next world-entity-description before and after the desired render time
 			var nextWED = null,
@@ -140,61 +140,34 @@ Version:
 			{
 				// Catch garbage values
 				var entityid = entityDesc.entityid;
-				var entity = this.fieldController.getEntityWithid( entityDesc.entityid );
+				var entity = this.fieldController.getEntityWithid( entityid );
 
 				// We don't have this entity - create it!
-				if( !entity )
-				{
-					var connectionID = entityDesc.clientid,
-//						isCharacter  = entityDesc.entityType == this.config.ENTITY_MODEL.ENTITY_MAP.CHARACTER,
-						isOwnedByMe = connectionID == this.netChannel.clientid;
-
-					// Take care of the special things we have to do when adding a character
-					if(isCharacter)
-					{
-						// This character actually belongs to us
-//						var aCharacter = this.shouldAddPlayer( objectID, connectionID, entityDesc, this.fieldController );
-
-						// If this character is owned by the us, allow it to be controlled by the keyboard
-						if(isOwnedByMe)
-						{
-//							var clientControlledTrait = TraitFactory.createTraitWithName('ClientControlledTrait');
-//							aCharacter.addTraitAndExecute( new clientControlledTrait() );
-//							this.config.CAAT.CLIENT_CHARACTER = this.clientCharacter = aCharacter;
-						}
-					}
-					else // Every other kind of entity - is just a glorified view as far as the client game is concerned
-					{
-//						 this.fieldController.createAndAddEntityFromDescription(entityDesc);
-					}
-
-					// Place it where it will be
-//					newPosition.set(entityDesc.x, entityDesc.y);
-//					newRotation = entityDesc.rotation || 0;
+				if( !entity ) {
+					this.createEntityFromDesc( entityDesc );
 				}
-				else // We already have this entity - update it
-				{
-//					var previousEntityDescription = previousWED.objectForKey(objectID);
-//
-//					if(!previousEntityDescription) { // Couldn't find any info for this entity, will try again next render loop
-//						return;
-//					}
-//					// Store past and future positions to compare
-//					entityPositionPast.set(previousEntityDescription.x, previousEntityDescription.y);
-//					entityRotationPast = previousEntityDescription.rotation;
-//
-//					entityPositionFuture.set(entityDesc.x, entityDesc.y);
-//					entityRotationFuture = entityDesc.rotation;
-//
-//					// if the distance between prev and next is too great - don't interpolate
-//					if(entityPositionPast.distanceSquared(entityPositionFuture) > maxInterpolationDistanceSquared) {
-//						t = 1;
-//					}
-//
-//					// Interpolate the objects position by multiplying the Delta times T, and adding the previous position
-//					newPosition.x = ( (entityPositionFuture.x - entityPositionPast.x) * t ) + entityPositionPast.x;
-//					newPosition.y = ( (entityPositionFuture.y - entityPositionPast.y) * t ) + entityPositionPast.y;
-//					newRotation =  ( (entityRotationFuture - entityRotationPast) * t ) + entityRotationPast;
+				else
+				{ // We already have this entity - update it
+					var previousEntityDescription = previousWED.objectForKey(entityid);
+
+					// Could not find info for this entity in previous description
+					// This can happen if this is this entities first frame in the game
+					if(!previousEntityDescription) return;
+
+					// Store past and future positions to compare
+					entityPositionPast.set(previousEntityDescription.x, previousEntityDescription.y);
+					entityRotationPast = previousEntityDescription.rotation;
+
+					entityPositionFuture.set(entityDesc.x, entityDesc.y);
+					entityRotationFuture = entityDesc.rotation;
+
+					// if the distance between prev and next is too great - don't interpolate
+					if(entityPositionPast.getDistanceSquared(entityPositionFuture) > maxInterpSQ) { t = 1; }
+
+					// Interpolate the objects position by multiplying the Delta times T, and adding the previous position
+					newPosition.x = ( (entityPositionFuture.x - entityPositionPast.x) * t ) + entityPositionPast.x;
+					newPosition.y = ( (entityPositionFuture.y - entityPositionPast.y) * t ) + entityPositionPast.y;
+					newRotation =  ( (entityRotationFuture - entityRotationPast) * t ) + entityRotationPast;
 				}
 
 				// Update the entity with the new information, and insert it into the activeEntities array
@@ -210,6 +183,11 @@ Version:
 //
 //			this.director.render( this.clockActualTime - this.director.timeline );
 //			this.director.timeline = this.clockActualTime;
+		},
+
+
+		createEntityFromDesc: function( entityDesc ) {
+			// OVERRIDE
 		},
 
 	//////	ClientNetChannelDelegate

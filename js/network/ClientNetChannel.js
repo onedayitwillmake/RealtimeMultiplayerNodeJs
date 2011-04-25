@@ -24,6 +24,7 @@ Version:
 	1.0
 */
 (function(){
+	var BUFFER_MASK = RealtimeMultiplayerGame.Constants.CLIENT_SETTING.MAX_BUFFER;
 
 	// Retrieve the namespace
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.network");
@@ -62,7 +63,7 @@ Version:
 
 			var that = this;
 			this.socketio.on('connect', function(){ that.onSocketConnect() });
-			this.socketio.on('message', function( obj ){ that.onSocketDidAcceptConnection( obj ) });
+			this.socketio.on('message', function( obj ){ console.log("B"); that.onSocketDidAcceptConnection( obj ) });
 			this.socketio.on('disconnect', function( obj ){ that.onSocketDisconnect( obj ) });
 		},
 
@@ -170,19 +171,18 @@ Version:
 		 * @param anUnencodedMessage
 		 */
 		addMessageToQueue: function( isReliable, aCommandConstant, payload ) {
-			++this.outgoingSequenceNumber;
-
 			// Create a NetChannelMessage
 			var message = new RealtimeMultiplayerGame.model.NetChannelMessage( this.outgoingSequenceNumber, this.clientID, isReliable, aCommandConstant, payload );
 
 			// Add to array the queue using bitmask to wrap values
-			this.messageBuffer[ this.outgoingSequenceNumber & this.MESSAGE_BUFFER_MASK ] = message;
+			this.messageBuffer[ this.outgoingSequenceNumber & BUFFER_MASK ] = message;
 
 			if(isReliable) {
 				this.nextUnreliable = message;
 			}
 
-			if( RealtimeMultiplayerGame.Constants.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Adding Message to que', this.messageBuffer[this.outgoingSequenceNumber & this.MESSAGE_BUFFER_MASK], " ReliableBuffer currently contains: ", this.reliableBuffer);
+			++this.outgoingSequenceNumber;
+			if( RealtimeMultiplayerGame.Constants.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Adding Message to queue', this.messageBuffer[this.outgoingSequenceNumber & BUFFER_MASK], " ReliableBuffer currently contains: ", this.reliableBuffer);
 		},
 
 		adjustRate: function() {

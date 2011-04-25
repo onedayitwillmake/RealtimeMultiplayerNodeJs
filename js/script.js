@@ -8,8 +8,6 @@
 	// Callback for when browse is ready
 	var onDocumentReady = function() {
 		message({ message: ['Client', 'domReady'] });
-		var ge = new RealtimeMultiplayerGame.GameEntity();
-		console.log( ge.radius );
 
 		var clientGame = new DemoApp.DemoClientGame();
 		console.log('ClientGame', clientGame);

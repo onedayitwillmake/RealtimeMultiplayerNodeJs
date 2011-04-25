@@ -15,11 +15,12 @@ Version:
 	1.0
 */
 (function(){
-	require("./ImprovedNoise.js");
+	require("../model/ImprovedNoise.js");
 
 	DemoApp.DemoServerGame = function() {
 		DemoApp.DemoServerGame.superclass.constructor.call(this);
 		this.setupCollisionManager();
+		this.setGameDuration( DemoApp.Constants.GAME_DURATION );
 		return this;
 	};
 
@@ -46,8 +47,10 @@ Version:
 			var total = 25;
 
 //			// temp place groups into array to pull from randomly
-//			for(var i = 0; i < total; i++)
-//			{
+			for(var i = 0; i < total; i++)
+			{
+				console.log( RealtimeMultiplayerGame.model.noise(10, 10, i/total) );
+			}
 //				// Size
 //				var aRadius = 18;
 //
@@ -75,22 +78,14 @@ Version:
 		},
 
 		/**
-		 * Updates the gameworld
+		 * Updates the game
 		 * Creates a WorldEntityDescription which it sends to NetChannel
 		 */
-		tick: function()
-		{
-			RealtimeMultiplayerGame.AbstractServerGame.superclass.tick.call(this);
+		tick: function() {
+		   	this.collisionManager.handleCollisions();
 
-			// Create a new world-entity-description,
-			var worldEntityDescription = new WorldEntityDescription( this );
-
-			this.netChannel.tick( this.gameClock, worldEntityDescription );
-
-
-			if( this.gameClock > this.model.gameDuration) {
-				this.shouldEndGame();
-			}
+			// Note we call superclass's implementation after we're done
+			DemoApp.DemoServerGame.superclass.tick.call(this);
 		},
 
 		onPlayerJoined: function( client, data )

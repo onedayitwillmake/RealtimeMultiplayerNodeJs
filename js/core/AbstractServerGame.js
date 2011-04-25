@@ -54,17 +54,14 @@ Version:
 		 * Updates the gameworld
 		 * Creates a WorldEntityDescription which it sends to NetChannel
 		 */
-		tick: function()
-		{
+		tick: function() {
 			RealtimeMultiplayerGame.AbstractServerGame.superclass.tick.call(this);
 
 			// Create a new world-entity-description,
-			var worldEntityDescription = new WorldEntityDescription( this );
-
+			var worldEntityDescription = new RealtimeMultiplayerGame.model.WorldEntityDescription( this, this.fieldController.getEntities() );
 			this.netChannel.tick( this.gameClock, worldEntityDescription );
 
-
-			if( this.gameClock > this.model.gameDuration) {
+			if( this.gameClock > this.gameDuration ) {
 				this.shouldEndGame();
 			}
 		},

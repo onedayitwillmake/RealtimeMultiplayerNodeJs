@@ -25,10 +25,14 @@ require("./network/Client.js");
 require("./network/ServerNetChannel.js");
 require("./core/AbstractServerGame.js");
 require("./model/GameEntity.js");
+require("./model/WorldEntityDescription.js");
+
+
 require("./demo/DemoApp.js");
+require("./demo/DemoAppConstants.js");
 require("./demo/DemoServerGame.js");
 
 
 
 var game = new DemoApp.DemoServerGame();
-//game.startGameClock();
+game.startGameClock();

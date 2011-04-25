@@ -38,8 +38,8 @@
 	}
 
 	// Retrieve the namespace
-	DemoApp.namespace("DemoApp.utils");
-	DemoApp.utils.noise  = function (x, y, z) {
+	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.model");
+	RealtimeMultiplayerGame.model.noise  = function (x, y, z) {
 
 		var floorX = ~~x, floorY = ~~y, floorZ = ~~z;
 

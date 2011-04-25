@@ -51,7 +51,7 @@ Version:
 		delegate				: null,					// Should conform to ServerNetChannel delegate
 		outgoingSequenceNumber	: 0,					// A unique ID for each message
 		cmdMap					: {},					// Map the CMD constants to functions
-
+		__DEBUG_LAST_CLIENT		: null,
 	// Methods
 		/**
 		 * Initializes socket.io
@@ -79,12 +79,42 @@ Version:
 			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_JOINED] = this.onPlayerJoined;
 		},
 
+		/**
+		 * Checks all the clients to see if its ready for a new message.
+		 * If they are, have the client perform delta-compression on the worldDescription and send it off.
+		 * @param gameClock		   The current (zero-based) game clock
+		 * @param worldDescription A description of all the entities currently in the world
+		 */
+		tick: function( gameClock, worldDescription )
+		{
+			if(this.__DEBUG_LAST_CLIENT) {
+				console.log("(ServerNetChannel)::sending");
+				this.__DEBUG_LAST_CLIENT.send(gameClock)
+			}
+			// Send client the current world info
+			this.clients.forEach( function(key, client)
+			{
+				client.getConnection().send(gameClock)
+				// Collapse delta - store the world state
+				client.compressDeltaAndQueueMessage( worldDescription, gameClock );
+
+				// Ask if enough time passed, and send a new world update
+				if ( client.canSendMessage(gameClock) ) {
+					client.sendQueuedCommands(gameClock);
+				}
+
+			}, this );
+		},
+
 	// Socket.IO callbacks
 		/**
 		 * Callback from socket.io when a client has connected
 		 * @param client
 		 */
 		onSocketConnection: function( clientConnection ) {
+
+			this.__DEBUG_LAST_CLIENT = clientConnection;
+
 			var aClient = new RealtimeMultiplayerGame.network.Client( clientConnection );
 
 			// Send the first message back to the client, which gives them a clientid
@@ -138,6 +168,8 @@ Version:
 		 * @param data
 		 */
 		onPlayerJoined: function( client, data ) {
+
+
 			// Create an entity ID for this new player
 			var entityID = this.delegate.getNextEntityID();
 			this.delegate.shouldAddPlayer( client.getId(), data);

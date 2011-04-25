@@ -35,6 +35,7 @@ Version:
 		intervalGameTick		: null,											// Setinterval for gametick
 		intervalFramerate		: 60,											// Try to call our tick function this often, intervalFramerate, is used to determin how often to call settimeout - we can set to lower numbers for slower computers
 		intervalTargetDelta		: NaN,	// this.targetDelta, milliseconds between frames. Normally it is 16ms or 60FPS. The framerate the game is designed against - used to create framerate independent motion
+		gameDuration			: Number.MAX_VALUE,								// Gameduration
 
 		netChannel				: null,											// ServerNetChannel / ClientNetChannel determined by subclass
 		fieldController			: null,							// FieldController
@@ -61,8 +62,7 @@ Version:
 			var speedFactor = delta / ( this.intervalTargetDelta );
 			if (speedFactor <= 0) speedFactor = 1;
 
-			this.fieldController.tick(speedFactor, this.clockActualTime, this.gameTick)
-			this.netChannel.tick();
+			this.fieldController.tick(speedFactor, this.clockActualTime, this.gameTick);
 		},
 
 
@@ -85,6 +85,8 @@ Version:
 			clearInterval( this.intervalGameTick );
 		},
 
+		setGameDuration: function() {},
+
 		// Memory
 		dealloc: function() {
 			if( this.netChannel ) this.netChannel.dealloc();
@@ -94,6 +96,7 @@ Version:
 		},
 
 		///// Accessors
-		getGameClock: function() { return this.gameClock; }
+		getGameClock: function() { return this.gameClock; },
+		getGameTick: function() { return this.gameTick; }
 	}
 })();

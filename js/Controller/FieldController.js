@@ -178,6 +178,7 @@
 		},
 
 ///// Accessors
-		getView: function (){ return this.view }
+		getView: function (){ return this.view },
+		getEntities: function() { return this.entities }
 	};
 })();

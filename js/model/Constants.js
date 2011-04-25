@@ -43,7 +43,8 @@ Version:
 			PLAYER_CONNECT		: 1 << 4,			// Initial connection to the server, not in game yet
 			PLAYER_JOINED		: 1 << 5,           // Player has joined the current game
 			PLAYER_DISCONNECT	: 1 << 6,           // Player has disconnected
-			PLAYER_UPDATE		: 1 << 7			// Player is sending sampled input
+			PLAYER_UPDATE		: 1 << 7,			// Player is sending sampled input
+			SERVER_FULL_UPDATE	: 1 << 8			// Player is sending sampled input
 		},
 
 

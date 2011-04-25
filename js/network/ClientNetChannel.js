@@ -32,28 +32,31 @@ Version:
 	RealtimeMultiplayerGame.ClientNetChannel = function( aDelegate ) {
 		this.setDelegate( aDelegate );
 		this.setupSocketIO();
+		this.setupCmdMap();
 		return this;
 	};
 
 	RealtimeMultiplayerGame.ClientNetChannel.prototype = {
-		delegate					:null,				// Object informed when ClientNetChannel does interesting stuff
-		socketio					:null,
-		clientid					:null,				// A client id is set by the server on first connect
+		delegate							:null,				// Object informed when ClientNetChannel does interesting stuff
+		socketio							:null,
+		clientid							:null,				// A client id is set by the server on first connect
 
 		// Settings
-		cl_updateRate				: RealtimeMultiplayerGame.Constants.CLIENT_SETTING.CMD_RATE,		// How often we can receive messages per sec
+		cl_updateRate						: RealtimeMultiplayerGame.Constants.CLIENT_SETTING.CMD_RATE,		// How often we can receive messages per sec
 
 		// connection info
-		latency						: 1000,					// Current latency time from server
-		gameClock					: -1,					// Store last time from server
-		lastSentTime 				: -1,                   // Time of last sent message
-		lastRecievedTime 			: -1,					// Time of last recieved message
+		latency								: 1000,				// Current latency time from server
+		gameClock							: -1,				// Store last time from server
+		lastSentTime						: -1,				// Time of last sent message
+		lastRecievedTime					: -1,				// Time of last recieved message
 
 		// Data
-		messageBuffer						: [],		// Store last N messages to be sent
+		messageBuffer						: [],				// Store last N messages to be sent
 		outgoingSequenceNumber				: 0,
-		incomingWorldUpdateBuffer			: [],		// Store last N received WorldDescriptions
-		reliableBuffer						: null,		// We sent a 'reliable' message and are waiting for acknowledgement that it was sent
+		incomingWorldUpdateBuffer			: [],				// Store last N received WorldDescriptions
+		reliableBuffer						: null,				// We sent a 'reliable' message and are waiting for acknowledgement that it was sent
+
+		cmdMap								: {},				// Map the CMD constants to functions
 
 
 		setupSocketIO: function() {
@@ -63,8 +66,16 @@ Version:
 
 			var that = this;
 			this.socketio.on('connect', function(){ that.onSocketConnect() });
-			this.socketio.on('message', function( obj ){ console.log("B"); that.onSocketDidAcceptConnection( obj ) });
+			this.socketio.on('message', function( obj ){ that.onSocketDidAcceptConnection( obj ) });
 			this.socketio.on('disconnect', function( obj ){ that.onSocketDisconnect( obj ) });
+		},
+
+		/**
+		 * Map RealtimeMultiplayerGame.Constants.CMDS to functions
+		 */
+		setupCmdMap: function() {
+			this.cmdMap = {};
+			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.SERVER_FULL_UPDATE] = this.onServerWorldUpdate;
 		},
 
 	///// SocketIO Callbacks
@@ -101,7 +112,38 @@ Version:
 		 * @param aNetChannelMessage
 		 */
 		onSocketMessage: function( aNetChannelMessage ) {
-			console.log("(ClientNetChannel):onSocketMessage", arguments);
+
+			this.lastReceivedTime = this.delegate.getGameClock();
+			this.adjustRate(aNetChannelMessage);
+
+			if(aNetChannelMessage.id == this.clientid) // We sent this, clear our reliable buffer que
+			{
+				if(aNetChannelMessage.cmd == RealtimeMultiplayerGame.Constants.CMDS.SERVER_FULL_UPDATE) {
+					debugger; //  IF CALLED THIS IS A BUG
+				}
+
+				var messageIndex =  aNetChannelMessage.seq & BUFFER_MASK;
+				var message = this.messageBuffer[messageIndex];
+
+				// Free up reliable buffer to allow for new message to be sent
+				if(this.reliableBuffer === message) {
+					this.reliableBuffer = null;
+				}
+
+				// Remove from memory
+				delete this.messageBuffer[messageIndex];
+				delete message;
+
+				return;
+			}
+
+			// Call the mapped function
+			if( this.cmdMap[aNetChannelMessage.cmd] )
+				this.cmdMap[aNetChannelMessage.cmd].call(this, aNetChannelMessage);
+			else
+				console.log("(NetChannel)::onSocketMessage could not map '" + aNetChannelMessage.cmd + "' to function!");
+
+//			console.log("(ClientNetChannel):onSocketMessage", arguments);
 		},
 
 		onSocketDisconnect: function( obj ) {
@@ -109,6 +151,9 @@ Version:
 		},
 
 
+		/**
+		 * Send queued messages
+		 */
 		tick: function( ) {
 			this.gameClock = this.delegate.getGameClock();
 
@@ -135,6 +180,76 @@ Version:
 			{
 				this.sendMessage( this.nextUnreliable )
 			}
+		},
+
+		/**
+		 *
+		 * @param aNetChannelMessage
+		 */
+		onServerWorldUpdate: function( aNetChannelMessage )
+		{
+			var len = aNetChannelMessage.data.length;
+			var i = -1;
+
+			// Store all world updates contained in the message.
+			while(++i < len) // Want to parse through them in correct order, so no fancy --len
+			{
+				var singleWorldUpdate = aNetChannelMessage.data[i];
+				var worldEntityDescription = this.createWorldEntityDescriptionFromString(singleWorldUpdate);
+
+				// Add it to the incommingCmdBuffer and drop oldest element
+				this.incomingWorldUpdateBuffer.push(worldEntityDescription);
+				if(this.incomingWorldUpdateBuffer.length > BUFFER_MASK)
+					this.incomingWorldUpdateBuffer.shift();
+			}
+		},
+
+		/**
+		 * Takes a WorldUpdateMessage that contains the information about all the elements inside of a string
+		 * and creates SortedLookupTable out of it with the objectID's as the keys
+		 * @param {String} singleWorldUpdate
+		 */
+		createWorldEntityDescriptionFromString: function(aWorldUpdateMessage)
+		{
+			// Create a new WorldEntityDescription and store the clock and gametick in it
+			var worldDescription = new SortedLookupTable();
+			worldDescription.gameTick = aWorldUpdateMessage.gameTick;
+			worldDescription.gameClock = aWorldUpdateMessage.gameClock;
+
+
+			var allEntities = aWorldUpdateMessage.entities.split('|'),
+				allEntitiesLen = allEntities.length; //
+
+			// Loop through each entity
+			while(--allEntitiesLen)   // allEntities[0] is garbage, so by using prefix we avoid it
+			{
+				// Loop through the string representing the entities properties
+				var entityDescAsArray = allEntities[allEntitiesLen].split(','),
+					entityDescription = {};
+
+				// GUARANTEED TO BE IN ORDER.
+				// SEE GameEntity.js::constructEntityDescription
+				// Using the unary operator to convert string to number as it is the fastest.
+				entityDescription.objectID = +entityDescAsArray[0];
+				entityDescription.clientID = +entityDescAsArray[1];
+//				entityDescription.entityType = +entityDescAsArray[2]; // convert to int
+//				entityDescription.theme = +entityDescAsArray[3];
+//				entityDescription.themeMask = +entityDescAsArray[4];
+				entityDescription.x = +entityDescAsArray[5];
+				entityDescription.y = +entityDescAsArray[6];
+//				entityDescription.rotation = +entityDescAsArray[7];
+
+				// If we were sent a score, or a nickname use them
+				// If we receive a nickname, it ALWAYS comes after a score
+				if(entityDescAsArray[8]) entityDescription.score = +entityDescAsArray[8];
+				if(entityDescAsArray[9]) entityDescription.nickname = entityDescAsArray[9];
+
+				// Store the final result using the objectID
+				worldDescription.setObjectForKey(entityDescription, entityDescription.objectID);
+			}
+
+
+			return worldDescription;
 		},
 
 		/**
@@ -185,7 +300,11 @@ Version:
 			if( RealtimeMultiplayerGame.Constants.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Adding Message to queue', this.messageBuffer[this.outgoingSequenceNumber & BUFFER_MASK], " ReliableBuffer currently contains: ", this.reliableBuffer);
 		},
 
-		adjustRate: function() {
+		/**
+		 * Adjust the message chokerate based on latency
+		 * @param serverMessage
+		 */
+		adjustRate: function( serverMessage ) {
 			var deltaTime = this.gameClock - serverMessage.gameClock;
 			this.latency = deltaTime;
 

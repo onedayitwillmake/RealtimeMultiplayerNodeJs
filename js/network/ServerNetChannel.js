@@ -51,7 +51,6 @@ Version:
 		delegate				: null,					// Should conform to ServerNetChannel delegate
 		outgoingSequenceNumber	: 0,					// A unique ID for each message
 		cmdMap					: {},					// Map the CMD constants to functions
-		__DEBUG_LAST_CLIENT		: null,
 	// Methods
 		/**
 		 * Initializes socket.io
@@ -87,14 +86,13 @@ Version:
 		 */
 		tick: function( gameClock, worldDescription )
 		{
-			if(this.__DEBUG_LAST_CLIENT) {
-				console.log("(ServerNetChannel)::sending");
-				this.__DEBUG_LAST_CLIENT.send(gameClock)
-			}
+//			if(this.__DEBUG_LAST_CLIENT) {
+//				console.log("(ServerNetChannel)::sending");
+//				this.__DEBUG_LAST_CLIENT.send(gameClock)
+//			}
 			// Send client the current world info
 			this.clients.forEach( function(key, client)
 			{
-				client.getConnection().send(gameClock)
 				// Collapse delta - store the world state
 				client.compressDeltaAndQueueMessage( worldDescription, gameClock );
 

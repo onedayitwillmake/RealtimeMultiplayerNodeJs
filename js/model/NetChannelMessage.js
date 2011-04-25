@@ -40,8 +40,6 @@ Version:
 	//var message = new RealtimeMultiplayerGame.model.NetChannelMessage( this.outgoingSequenceNumber, this.clientID, isReliable, aCommandConstant, payload );
 	RealtimeMultiplayerGame.model.NetChannelMessage = function(aSequenceNumber, aClientID, isReliable, aCommandType, aPayload)
 	{
-		debugger;
-
 		// Info
 		this.sequenceNumber = aSequenceNumber;
 		this.id = aClientID; 					// Server gives us one when we first  connect to it

@@ -31,7 +31,7 @@ Version:
 
 		CLIENT_SETTING:
 		{
-			UPDATE_RATE	: 1000/25, 					// How often to request a world-update from the server
+			UPDATE_RATE	: 1000/2, 					// How often to request a world-update from the server
 			CMD_RATE	: 1000/30,                  // How often a client can send messages to server
 			MAX_BUFFER	: 31
 		},

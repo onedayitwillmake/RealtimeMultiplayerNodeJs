@@ -124,8 +124,6 @@ Version:
 		 */
 		sendMessage: function( anEncodedMessage, gameClock )
 		{
-			return;
-			console.log("Sending>")
 			this.lastSentMessageTime = gameClock;
 
 			// Store inside our outgoingMessageBuffer - which holds 'MESSAGE_BUFFER_MASK' lerped number of messages

@@ -27,7 +27,8 @@ Version:
 	// Retrieve the namespace
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.network");
 
-	RealtimeMultiplayerGame.network.Client = function( aConnection ) {
+	RealtimeMultiplayerGame.network.Client = function( aConnection, aClientid ) {
+		this.clientid = aClientid;
 		this.connection = aConnection;
 		this.stagnantEntities = new SortedLookupTable();
 		return this;
@@ -35,7 +36,7 @@ Version:
 
 	RealtimeMultiplayerGame.network.Client.prototype = {
 		connection				: null,				// SocketIO connection for this specific client
-		id						: -1,				// UUID for this client
+		clientid				: -1,				// UUID for this client
 		// Configuration
 		cl_updateRate			: RealtimeMultiplayerGame.Constants.CLIENT_SETTING.UPDATE_RATE,		// How often we can receive messages per sec
 		outgoingMessageBuffer	: [],				// Store array of incoming messages, slots are resused
@@ -152,11 +153,15 @@ Version:
 		 * @return {String} A hash representing the session id
 		 */
 		getSessionId: function() {
-			return this.connection.sessionId
+			return this.connection.sessionId;
 		},
 
-		getId: function() {
-			return this.getSessionId();
+		/**
+		 * UUID given to us by ServerNetChannel
+		 * This is used instead of sessionid since we send this around a lot and sessionid is a 12 digit string
+		 */
+		getClientid: function() {
+			return this.clientid;
 		},
 
 		/**

@@ -51,7 +51,7 @@ Version:
 		 */
 		setupRandomField: function() {
 			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
-			var total = 25;
+			var total = 2;
 			for(var i = 0; i < total; i++) {
 				var radius = Math.floor( Math.random() * 10 + 5 );
 				this.createCircleEntity( radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
@@ -95,7 +95,7 @@ Version:
 		},
 
 		shouldAddPlayer: function( aClientid, anEntityid, data ) {
-			this.createCircleEntity( 10, anEntityid, aClientid);
+//			this.createCircleEntity( 10, anEntityid, aClientid);
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {

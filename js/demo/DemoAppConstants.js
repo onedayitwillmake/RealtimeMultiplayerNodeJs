@@ -18,7 +18,7 @@ Version:
 	DemoApp.Constants = {
 		ENTITY_DEFAULT_RADIUS	: 10,
 		GAME_WIDTH				: 700,
-		GAME_HEIGHT				: 500,
+		GAME_HEIGHT				: 450,
 		MAX_CIRCLES				: 20,
 		GAME_DURATION			: 1000*300
 	}

@@ -38,7 +38,7 @@ Version:
 
 	RealtimeMultiplayerGame.ClientNetChannel.prototype = {
 		delegate							:null,				// Object informed when ClientNetChannel does interesting stuff
-		socketio							:null,
+		socketio							:null,				// Reference to singluar Socket.IO instance
 		clientid							:null,				// A client id is set by the server on first connect
 
 		// Settings
@@ -109,7 +109,6 @@ Version:
 		 * @param aNetChannelMessage
 		 */
 		onSocketMessage: function( aNetChannelMessage ) {
-			console.log( aNetChannelMessage );
 			this.lastReceivedTime = this.delegate.getGameClock();
 			this.adjustRate(aNetChannelMessage);
 
@@ -139,8 +138,6 @@ Version:
 				this.cmdMap[aNetChannelMessage.cmd].call(this, aNetChannelMessage);
 			else
 				console.log("(NetChannel)::onSocketMessage could not map '" + aNetChannelMessage.cmd + "' to function!");
-
-//			console.log("(ClientNetChannel):onSocketMessage", arguments);
 		},
 
 		onSocketDisconnect: function( obj ) {
@@ -177,6 +174,7 @@ Version:
 
 			// No reliable messages waiting, enough time has passed to send an update
 			if(!hasReliableMessages && this.canSendMessage() && this.nextUnreliable != null) {
+				debugger;
 				this.sendMessage( this.nextUnreliable )
 			}
 		},
@@ -229,7 +227,7 @@ Version:
 				// GUARANTEED TO BE IN ORDER.
 				// SEE GameEntity.js::constructEntityDescription
 				// Using the unary operator to convert string to number as it is the fastest.
-				entityDescription.enitityid = +entityDescAsArray[0];
+				entityDescription.entityid = +entityDescAsArray[0];
 				entityDescription.clientid = +entityDescAsArray[1];
 				entityDescription.entityType = +entityDescAsArray[2]; // convert to int
 				entityDescription.x = +entityDescAsArray[3];
@@ -278,13 +276,14 @@ Version:
 		 * @param anUnencodedMessage
 		 */
 		addMessageToQueue: function( isReliable, aCommandConstant, payload ) {
+			debugger;
 			// Create a NetChannelMessage
 			var message = new RealtimeMultiplayerGame.model.NetChannelMessage( this.outgoingSequenceNumber, this.clientid, isReliable, aCommandConstant, payload );
 
 			// Add to array the queue using bitmask to wrap values
 			this.messageBuffer[ this.outgoingSequenceNumber & BUFFER_MASK ] = message;
 
-			if(!isReliable) {
+			if(isReliable) {
 				this.nextUnreliable = message;
 			}
 
@@ -350,8 +349,8 @@ Version:
 		canSendMessage: function () {
 			var isReady = (this.gameClock > this.lastSentTime + this.cl_updateRate + 10000) ;
 		},
-
-		getClientid: function(){ return this.clientid }
+		getClientid: function(){ return this.clientid },
+		getIncomingWorldUpdateBuffer: function() { return this.incomingWorldUpdateBuffer }
 	}
 
 	/**

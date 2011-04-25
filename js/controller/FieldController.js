@@ -194,6 +194,7 @@
 
 ///// Accessors
 		getView: function (){ return this.view },
-		getEntities: function() { return this.entities }
+		getEntities: function() { return this.entities },
+		getEntityWithid: function( anEntityid ) { return this.entities.objectForKey(anEntityid); }
 	};
 })();

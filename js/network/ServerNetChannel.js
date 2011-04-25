@@ -86,10 +86,6 @@ Version:
 		 */
 		tick: function( gameClock, worldDescription )
 		{
-//			if(this.__DEBUG_LAST_CLIENT) {
-//				console.log("(ServerNetChannel)::sending");
-//				this.__DEBUG_LAST_CLIENT.send(gameClock)
-//			}
 			// Send client the current world info
 			this.clients.forEach( function(key, client)
 			{
@@ -111,12 +107,10 @@ Version:
 		 */
 		onSocketConnection: function( clientConnection ) {
 
-			this.__DEBUG_LAST_CLIENT = clientConnection;
-
-			var aClient = new RealtimeMultiplayerGame.network.Client( clientConnection );
+			var aClient = new RealtimeMultiplayerGame.network.Client( clientConnection, this.getNextClientID() );
 
 			// Send the first message back to the client, which gives them a clientid
-			var connectMessage = new RealtimeMultiplayerGame.model.NetChannelMessage( ++this.outgoingSequenceNumber, aClient.getSessionId(), true, RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT, { gameClock: this.delegate.getGameClock() });
+			var connectMessage = new RealtimeMultiplayerGame.model.NetChannelMessage( ++this.outgoingSequenceNumber, aClient.getClientid(), true, RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT, { gameClock: this.delegate.getGameClock() });
 			connectMessage.messageTime = this.delegate.getGameClock();
 			aClient.getConnection().send( connectMessage );
 

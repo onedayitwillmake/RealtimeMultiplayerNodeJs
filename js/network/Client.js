@@ -11,11 +11,11 @@ Basic Usage:
  	var aNewClient = new Client(this, connection, false);
 
 	// Add to our list of connected users
-	this.clients[clientID] = aNewClient;
+	this.clients[clientid] = aNewClient;
 
 	// broadcast message to all clients
-	for( var clientID in this.clients ) {
-		this.clients[clientID].sendMessage(encodedMessage);
+	for( var clientid in this.clients ) {
+		this.clients[clientid].sendMessage(encodedMessage);
 	}
 Version:
 	1.0
@@ -65,24 +65,25 @@ Version:
 			var allEntities = worldDescription.entities,
 				len = allEntities.length;
 
+			console.log()
 			var resultDescStr = '';
 			while(len--) {
 				var anEntityDescStr = allEntities[len],
 					anEntityDesc = anEntityDescStr.split(','),
-					objectID = +anEntityDesc[0],
-					clientID = +anEntityDesc[1];
+					entityid = +anEntityDesc[0],
+					clientid = +anEntityDesc[1];
 
-				// 0 = Server owned
+
 				var hasNewData = true;
-				if(clientID == 0) {
-				   var previouslySentEntityDescription = this.stagnentEntities.objectForKey(objectID);
+				if(clientid == RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID) {
+				   var previouslySentEntityDescription = this.stagnentEntities.objectForKey(entityid);
 				   if(previouslySentEntityDescription) {
 					   // hasNewData = false;
 				   }
 				}
 
 				// Store for next time
-				// this.stagnentEntities.setObjectForKey(anEntityDesc, objectID);
+				// this.stagnentEntities.setObjectForKey(anEntityDesc, entityid);
 
 				// Only send if it has new data
 				if(hasNewData) {

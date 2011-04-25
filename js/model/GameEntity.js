@@ -18,7 +18,9 @@ Version:
 (function(){
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.model");
 
-	RealtimeMultiplayerGame.model.GameEntity = function() {
+	RealtimeMultiplayerGame.model.GameEntity = function( aClientid, anEntityid) {
+		this.clientid = aClientid;
+		this.entityid = anEntityid;
 		this.traits = new SortedLookupTable();
 		return this;
 	};
@@ -27,12 +29,8 @@ Version:
 		// Connection info
 		clientid    : -1,														// Owner of this object
 		entityid	: -1,														// UUID for this entity
-		entityType	: -1,
-
-		// Physical info
+		entityType	: -1,														// A special interger representing the entityType sent via along with other network info
 		position	: RealtimeMultiplayerGame.model.Point.prototype.ZERO,  		// Current position of this entity
-		radius		: RealtimeMultiplayerGame.Constants.ENTITY_DEFAULT_RADIUS,	// Generic property, to remove
-		// Meta info
 		traits		: null,														// A sortedlookuptable of our traits
 
 	/**

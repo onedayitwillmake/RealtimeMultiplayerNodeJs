@@ -203,7 +203,7 @@ Version:
 
 		/**
 		 * Takes a WorldUpdateMessage that contains the information about all the elements inside of a string
-		 * and creates SortedLookupTable out of it with the objectID's as the keys
+		 * and creates SortedLookupTable out of it with the entityid's as the keys
 		 * @param {String} singleWorldUpdate
 		 */
 		createWorldEntityDescriptionFromString: function(aWorldUpdateMessage)
@@ -234,8 +234,8 @@ Version:
 				entityDescription.y = +entityDescAsArray[4];
 				entityDescription.rotation = +entityDescAsArray[5];
 
-				// Store the final result using the objectID
-				worldDescription.setObjectForKey(entityDescription, entityDescription.objectID);
+				// Store the final result using the entityid
+				worldDescription.setObjectForKey(entityDescription, entityDescription.entityid);
 			}
 
 
@@ -265,7 +265,6 @@ Version:
 				this.reliableBuffer = aMessageInstance; // Block new connections
 			}
 
-			console.log("Sending", aMessageInstance )
 			this.socketio.send( aMessageInstance );
 
 			if( RealtimeMultiplayerGame.Constants.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Sending Message, isReliable', aMessageInstance.isReliable, aMessageInstance);
@@ -278,7 +277,7 @@ Version:
 		 */
 		addMessageToQueue: function( isReliable, aCommandConstant, payload ) {
 			// Create a NetChannelMessage
-			var message = new RealtimeMultiplayerGame.model.NetChannelMessage( this.outgoingSequenceNumber, this.clientID, isReliable, aCommandConstant, payload );
+			var message = new RealtimeMultiplayerGame.model.NetChannelMessage( this.outgoingSequenceNumber, this.clientid, isReliable, aCommandConstant, payload );
 
 			// Add to array the queue using bitmask to wrap values
 			this.messageBuffer[ this.outgoingSequenceNumber & BUFFER_MASK ] = message;

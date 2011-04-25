@@ -38,11 +38,11 @@ Version:
 	 * @param aPayload				The message to send
 	 */
 	//var message = new RealtimeMultiplayerGame.model.NetChannelMessage( this.outgoingSequenceNumber, this.clientID, isReliable, aCommandConstant, payload );
-	RealtimeMultiplayerGame.model.NetChannelMessage = function(aSequenceNumber, aClientID, isReliable, aCommandType, aPayload)
+	RealtimeMultiplayerGame.model.NetChannelMessage = function(aSequenceNumber, aClientid, isReliable, aCommandType, aPayload)
 	{
 		// Info
 		this.sequenceNumber = aSequenceNumber;
-		this.id = aClientID; 					// Server gives us one when we first  connect to it
+		this.id = aClientid; 					// Server gives us one when we first  connect to it
 		this.cmd = aCommandType;
 
 		// Data

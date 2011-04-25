@@ -34,6 +34,21 @@
 		},
 
 		/**
+		 * Internal function. Adds an entity to our collection, and adds it to the view if we have one
+		 * @param anEntity	An entity to add, should already be created and contain a unique entityid
+		 */
+		addEntity: function(anEntity)
+		{
+			this.entities.setObjectForKey( anEntity, anEntity.entityid );
+
+			// If we have a view, then add the player to it
+			if( this.view ) {
+				this.view.addEntity( anEntity.getView() );
+			}
+
+		},
+
+		/**
 		 * Allow to arbitrarily rank players.
 		 * Left in as example, however it is not implemented in framework for you
 		 */
@@ -56,13 +71,13 @@
 
 		/**
 		 * Updates the entity based on new information (called by AbstractClientGame::renderAtTime)
-		 * @param {int}		objectID  	ObjectID we want to update
+		 * @param {int}		entityid  	entityid we want to update
 		 * @param {Vector}	newPosition	position
 		 * @param {Number}	newRotation	rotation
 		 * @param {EntityDescription}	entityDesc	An object containing new properties for this entity
 		 */
-		updateEntity: function( objectID, newPosition, newRotation, entityDesc ) {
-			var entity = this.entities.objectForKey( objectID );
+		updateEntity: function( entityid, newPosition, newRotation, entityDesc ) {
+			var entity = this.entities.objectForKey( entityid );
 
 			if( entity != null ) {
 				entity.position.x = newPosition.x;
@@ -76,7 +91,7 @@
 //				(entityDesc.theme && (entity.theme = entityDesc.theme));
 //				(entityDesc.score && (entity.score = entityDesc.score));
 			} else {
-				console.log("(FieldController)::updateEntity - Error: Cannot find entity with objectID", objectID);
+				console.log("(FieldController)::updateEntity - Error: Cannot find entity with entityid", entityid);
 			}
 		},
 
@@ -95,24 +110,24 @@
 				return;
 			}
 
-			this.removeEntity( player.objectID );
+			this.removeEntity( player.entityid );
 			this.players.remove(player.sessionId);
 		},
 
 
 		/**
 		 * Removes an entity by it's ID
-		 * @param objectID
+		 * @param entityid
 		 */
-		removeEntity: function( objectID )
+		removeEntity: function( entityid )
 		{
-			var entity = this.entities.objectForKey( objectID );
+			var entity = this.entities.objectForKey( entityid );
 
 			if( this.view )
 				this.view.removeEntity( entity.view );
 
 			entity.dealloc();
-			this.entities.remove( objectID );
+			this.entities.remove( entityid );
 		},
 
 		/**
@@ -138,12 +153,12 @@
 				// This entity is not active, check if it belongs to the server
 				var entity = this.entities.objectForKey(key);
 
-//				if(entity.clientID == 0)  {
+//				if(entity.clientid == 0)  {
 //					continue;
 //				}
 
 				if( GAMECONFIG.ENTITY_MODEL.ENTITY_MAP.CHARACTER == entity.entityType ) {
-					this.removePlayer( entity.clientID );
+					this.removePlayer( entity.clientid );
 				} else {
 					// Is not active, and does not belong to the server
 					this.removeEntity(key);
@@ -163,7 +178,7 @@
 			}, this );
 
 			this.entities.forEach( function(key, entity){
-				this.removeEntity(entity.objectID);
+				this.removeEntity(entity.entityid);
 			}, this );
 
 

@@ -69,8 +69,8 @@ Basic Usage:
 		constructEntityDescription: function(gameTick, wantsFullUpdate)
 		{
 			return {
-				objectID: this.objectID,
-				clientID: this.clientID,
+				entityid: this.entityid,
+				clientid: this.clientid,
 				input: this.input.constructInputBitmask()
 			}
 		},

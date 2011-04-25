@@ -40,7 +40,6 @@ Version:
 
 		setupNetChannel: function() {
 			console.log("RealtimeMultiplayerGame.AbstractClientGame.superclass", RealtimeMultiplayerGame.AbstractClientGame.superclass)
-//			debugger;
 			RealtimeMultiplayerGame.AbstractClientGame.superclass.setupNetChannel.call(this);
 			this.netChannel = new RealtimeMultiplayerGame.ClientNetChannel( this );
 		},
@@ -61,6 +60,8 @@ Version:
 				if(this.gameTick % 10 == 0)
 					this.view.update();
 			}
+
+			this.netChannel.tick();
 		},
 
 		renderAtTime: function(t) {
@@ -77,7 +78,6 @@ Version:
 		{
 			// Sync time with server
 			this.gameClock = messageData.payload.gameClock;
-			this.joinGame();
 		},
 
 		/**

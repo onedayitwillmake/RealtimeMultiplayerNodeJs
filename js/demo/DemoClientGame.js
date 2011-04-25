@@ -30,9 +30,10 @@ Version:
 			DemoApp.DemoClientGame.superclass.tick.call(this);
 		},
 
-		joinGame: function(aNickname) {
-			this.nickname = "Demo!";
-			DemoApp.DemoClientGame.superclass.joinGame.call(this);
+		netChannelDidConnect: function (messageData)
+		{
+			DemoApp.DemoClientGame.superclass.netChannelDidConnect( messageData );
+			this.joinGame("Player" + this.netChannel.getClientid() ); // Automatically join the game with some name
 		}
 	}
 

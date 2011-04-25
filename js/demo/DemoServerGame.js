@@ -88,21 +88,17 @@ Version:
 			DemoApp.DemoServerGame.superclass.tick.call(this);
 		},
 
-		onPlayerJoined: function( client, data )
-		{
-			console.log("(AbstractServerGame)::onPlayerJoined");
+		shouldUpdatePlayer: function( clientID, data ) {
+			console.log("DEMO::UPDATEPLAYER");
 		},
 
-		onPlayerUpdate: function( client, data )
-		{
-			console.log("(AbstractServerGame)::onPlayerUpdate");
+		shouldAddPlayer: function( entityID, clientID, data ) {
+			console.log("DEMO::ADDPLAYER");
 		},
 
-		onPlayerDisconnect: function( client, data )
-		{
-			console.log("(AbstractServerGame)::onPlayerDisconnect");
+		shouldRemovePlayer: function( clientID ) {
+			console.log("DEMO::REMOVEPLAYER");
 		}
-
 	}
 
 	// extend RealtimeMultiplayerGame.AbstractServerGame

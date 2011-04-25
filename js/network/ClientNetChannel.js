@@ -91,11 +91,8 @@ Version:
 
 			console.log("(ClientNetChannel)::onSocketDidAcceptConnection", aNetChannelMessage);
 
-			// We don't actually have a true client ID yet so the code below this will not work
-			if(aNetChannelMessage.cmd != RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT) {
-				throw "(ClientNetChannel):onSocketDidAcceptConnection recieved but cmd != SERVER_CONNECT ";
-				return;
-			}
+			// Should not have received this msg
+			if(aNetChannelMessage.cmd != RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT) { throw "(ClientNetChannel):onSocketDidAcceptConnection recieved but cmd != SERVER_CONNECT ";}
 
 			this.clientid = aNetChannelMessage.id;
 			this.delegate.netChannelDidConnect( aNetChannelMessage );
@@ -230,19 +227,12 @@ Version:
 				// GUARANTEED TO BE IN ORDER.
 				// SEE GameEntity.js::constructEntityDescription
 				// Using the unary operator to convert string to number as it is the fastest.
-				entityDescription.objectID = +entityDescAsArray[0];
-				entityDescription.clientID = +entityDescAsArray[1];
-//				entityDescription.entityType = +entityDescAsArray[2]; // convert to int
-//				entityDescription.theme = +entityDescAsArray[3];
-//				entityDescription.themeMask = +entityDescAsArray[4];
-				entityDescription.x = +entityDescAsArray[5];
-				entityDescription.y = +entityDescAsArray[6];
-//				entityDescription.rotation = +entityDescAsArray[7];
-
-				// If we were sent a score, or a nickname use them
-				// If we receive a nickname, it ALWAYS comes after a score
-				if(entityDescAsArray[8]) entityDescription.score = +entityDescAsArray[8];
-				if(entityDescAsArray[9]) entityDescription.nickname = entityDescAsArray[9];
+				entityDescription.enitityid = +entityDescAsArray[0];
+				entityDescription.clientid = +entityDescAsArray[1];
+				entityDescription.entityType = +entityDescAsArray[2]; // convert to int
+				entityDescription.x = +entityDescAsArray[3];
+				entityDescription.y = +entityDescAsArray[4];
+				entityDescription.rotation = +entityDescAsArray[5];
 
 				// Store the final result using the objectID
 				worldDescription.setObjectForKey(entityDescription, entityDescription.objectID);
@@ -275,6 +265,7 @@ Version:
 				this.reliableBuffer = aMessageInstance; // Block new connections
 			}
 
+			console.log("Sending", aMessageInstance )
 			this.socketio.send( aMessageInstance );
 
 			if( RealtimeMultiplayerGame.Constants.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Sending Message, isReliable', aMessageInstance.isReliable, aMessageInstance);
@@ -357,7 +348,9 @@ Version:
 		*/
 		canSendMessage: function () {
 			var isReady = (this.gameClock > this.lastSentTime + this.cl_updateRate + 10000) ;
-		}
+		},
+
+		getClientid: function(){ return this.clientid }
 	}
 
 	/**

@@ -139,6 +139,7 @@ Version:
 		 */
 		onSocketMessage: function( data, connection )
 		{
+			console.log("onSocketMessage", data );
 			var client = this.clients.objectForKey(connection.sessionId);
 			//that.CMD_TO_FUNCTION[decodedMessage.cmds.cmd].apply(that, [connection, decodedMessage]);
 
@@ -166,8 +167,6 @@ Version:
 		 * @param data
 		 */
 		onPlayerJoined: function( client, data ) {
-
-
 			// Create an entity ID for this new player
 			var entityID = this.delegate.getNextEntityID();
 			this.delegate.shouldAddPlayer( client.getId(), data);

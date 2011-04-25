@@ -29,6 +29,7 @@ Version:
 
 	RealtimeMultiplayerGame.network.Client = function( aConnection ) {
 		this.connection = aConnection;
+		this.stagnantEntities = new SortedLookupTable();
 		return this;
 	};
 
@@ -47,6 +48,8 @@ Version:
 		lastSentMessageTime 	: -1,
 		lastReceivedMessageTime : -1,
 
+		// Entries that have not changed since the last frame
+		stagnantEntities		: null,
 
 		onMessage: function( messageData )
 		{
@@ -75,14 +78,14 @@ Version:
 
 				var hasNewData = true;
 				if(clientid == RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID) {
-				   var previouslySentEntityDescription = this.stagnentEntities.objectForKey(entityid);
+				   var previouslySentEntityDescription = this.stagnantEntities.objectForKey(entityid);
 				   if(previouslySentEntityDescription) {
 					   // hasNewData = false;
 				   }
 				}
 
 				// Store for next time
-				// this.stagnentEntities.setObjectForKey(anEntityDesc, entityid);
+				//this.stagnentEntities.setObjectForKey(anEntityDesc, entityid);
 
 				// Only send if it has new data
 				if(hasNewData) {

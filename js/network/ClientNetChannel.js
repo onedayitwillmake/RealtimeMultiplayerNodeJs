@@ -165,17 +165,18 @@ Version:
 			{
 				var message = this.messageBuffer[i];
 				if(!message) continue;	// Slot is empty
-				if(message.isReliable) // We have more important things to tend to sir.
+
+				// We have more important things to tend to sir.
+				if(message.isReliable)
 				{
 					hasReliableMessages = true;
 					this.sendMessage(message);
-					break;
+					return;
 				}
 			}
 
 			// No reliable messages waiting, enough time has passed to send an update
-			if(!hasReliableMessages && this.canSendMessage() && this.nextUnreliable != null)
-			{
+			if(!hasReliableMessages && this.canSendMessage() && this.nextUnreliable != null) {
 				this.sendMessage( this.nextUnreliable )
 			}
 		},

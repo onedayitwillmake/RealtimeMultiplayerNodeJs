@@ -24,9 +24,16 @@ Version:
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.model");
 
 	RealtimeMultiplayerGame.model.WorldEntityDescription = function( aGameInstance, allEntities ) {
-		this.entities = allEntities;
 		this.gameClock = aGameInstance.getGameClock();
 		this.gameTick = aGameInstance.getGameTick();
+
+
+		// Ask each entity to create it's EntityDescriptionString
+		this.entities = [];
+		allEntities.forEach( function(key, entity) {
+			this.entities.push( entity.constructEntityDescription(this.gameTick) );
+		}, this );
+
 		return this;
 	};
 

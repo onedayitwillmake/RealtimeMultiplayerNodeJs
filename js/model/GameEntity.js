@@ -19,12 +19,32 @@ Version:
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.model");
 
 	RealtimeMultiplayerGame.model.GameEntity = function() {
-		this.position = RealtimeMultiplayerGame.model.Point(0,0);
 		return this;
 	};
 
 	RealtimeMultiplayerGame.model.GameEntity.prototype = {
-		position	: null,
-		radius		: RealtimeMultiplayerGame.Constants.ENTITY_DEFAULT_RADIUS
+		position	: RealtimeMultiplayerGame.model.Point.prototype.ZERO,  		// Current position of this entity
+		clientid    : -1,														// Owner of this object
+		entityid	: -1,														// UUID for this entity
+		radius		: RealtimeMultiplayerGame.Constants.ENTITY_DEFAULT_RADIUS,	// Generic property, to remove
+
+
+		/**
+		 * Construct an entity description for this object, it is essentually a CSV so you have to know how to read it on the receiving end
+		 * @param wantsFullUpdate	If true, certain things that are only sent when changed are always sent
+		 */
+		constructEntityDescription: function(gameTick, wantsFullUpdate)
+		{
+			var returnString = this.objectID;
+				returnString += ","+this.clientID;
+				returnString += ","+this.entityType;
+				returnString += ","+this.theme;
+				returnString += ","+this.themeMask; // Used to send stuff like whether we have a trait - and which trait for example
+				returnString += ","+Math.round(this.position.x);
+				returnString += ","+Math.round(this.position.y);
+				returnString += ","+Math.round(this.rotation*57.2957795);
+
+			return returnString;
+		}
 	}
 })();

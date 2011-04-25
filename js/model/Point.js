@@ -19,13 +19,13 @@
      *
      * @constructor
      */
-	RealtimeMultiplayerGame.model.Point= function(xpos, ypos) {
+	RealtimeMultiplayerGame.model.Point = function(xpos, ypos) {
 		this.x = xpos || 0;
 		this.y = ypos || 0;
 		return this;
 	};
 
-	RealtimeMultiplayerGame.model.Point.prototype= {
+	RealtimeMultiplayerGame.model.Point.prototype = {
 		x:	0,
 		y: 	0,
 
@@ -207,4 +207,6 @@
                     " y:" + String(Math.round(Math.floor(this.y*10))/10);
 		}
 	};
+
+	RealtimeMultiplayerGame.model.Point.prototype.ZERO = new RealtimeMultiplayerGame.model.Point(0,0);
 })();

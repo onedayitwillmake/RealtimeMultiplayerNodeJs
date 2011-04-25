@@ -33,6 +33,7 @@ Version:
 	RealtimeMultiplayerGame.AbstractClientGame.prototype = {
 		view										: null,							// View
 		nickname									: '',							// User 'nickname'
+		clientCharacter								: null,							// Reference to this users character
 
 
 		// Methods
@@ -46,6 +47,20 @@ Version:
 
 		tick: function() {
 			RealtimeMultiplayerGame.AbstractClientGame.superclass.tick.call(this);
+
+			// Continuously store information about our input
+			if( this.clientCharacter != null )
+			{
+				var characterStatus = this.clientCharacter.constructEntityDescription();
+				var newMessage = this.netChannel.composeCommand( this.config.CMDS.PLAYER_MOVE, characterStatus );
+
+				// create a message with our characters updated information and send it off
+				this.netChannel.addMessageToQueue( false, newMessage );
+
+				// Don't update html TOO often
+				if(this.gameTick % 10 == 0)
+					this.view.update();
+			}
 		},
 
 		renderAtTime: function(t) {

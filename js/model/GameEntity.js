@@ -18,7 +18,7 @@ Version:
 (function(){
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.model");
 
-	RealtimeMultiplayerGame.model.GameEntity = function( aClientid, anEntityid) {
+	RealtimeMultiplayerGame.model.GameEntity = function( anEntityid, aClientid ) {
 		this.clientid = aClientid;
 		this.entityid = anEntityid;
 		this.traits = new SortedLookupTable();

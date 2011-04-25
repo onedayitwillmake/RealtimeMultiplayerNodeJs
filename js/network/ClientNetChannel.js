@@ -109,7 +109,6 @@ Version:
 		 * @param aNetChannelMessage
 		 */
 		onSocketMessage: function( aNetChannelMessage ) {
-
 			this.lastReceivedTime = this.delegate.getGameClock();
 			this.adjustRate(aNetChannelMessage);
 

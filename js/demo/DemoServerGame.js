@@ -53,28 +53,35 @@ Version:
 			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
 			var total = 25;
 			for(var i = 0; i < total; i++) {
-
 				var radius = Math.floor( Math.random() * 10 + 5 );
-
-				// Create a randomly sized circle, that will represent this entity in the collision manager
-				var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
-					collisionCircle.setRadius( radius );
-
-
-				// Create the GameEntity
-				var circleEntity = new DemoApp.CircleEntity( this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
-				circleEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT );
-				circleEntity.setCollisionCircle( collisionCircle );
-
-				// Place the circle and collision circle into corresponding containers
-				this.collisionManager.addCircle( circleEntity.getCollisionCircle() );
-				this.fieldController.addEntity( circleEntity );
+				this.createCircleEntity( radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
 			}
 		},
 
-//		createCircleEntity: function( aRadius, position ) {
-//
-//		},
+		/**
+		 * Helper method to create a single CircleEntity
+		 * @param {Number} aRadius
+		 * @param {Number} anEntityid
+		 * @param {Number} aClientid
+		 */
+		createCircleEntity: function( aRadius, anEntityid, aClientid ) {
+			// Create a randomly sized circle, that will represent this entity in the collision manager
+			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
+				collisionCircle.setRadius( aRadius );
+
+
+
+			// Create the GameEntity
+			var circleEntity = new DemoApp.CircleEntity( aClientid, anEntityid );
+			circleEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT );
+			circleEntity.setCollisionCircle( collisionCircle );
+
+			// Place the circle and collision circle into corresponding containers
+			this.collisionManager.addCircle( circleEntity.getCollisionCircle() );
+			this.fieldController.addEntity( circleEntity );
+
+			return circleEntity;
+		},
 
 		/**
 		 * Updates the game
@@ -87,15 +94,15 @@ Version:
 			DemoApp.DemoServerGame.superclass.tick.call(this);
 		},
 
-		shouldUpdatePlayer: function( clientid, data ) {
+		shouldAddPlayer: function( aClientid, anEntityid, data ) {
+			this.createCircleEntity( 10, anEntityid, aClientid);
+		},
+
+		shouldUpdatePlayer: function( aClientid, data ) {
 			console.log("DEMO::UPDATEPLAYER");
 		},
 
-		shouldAddPlayer: function( entityID, clientid, data ) {
-			console.log("DEMO::ADDPLAYER");
-		},
-
-		shouldRemovePlayer: function( clientid ) {
+		shouldRemovePlayer: function( aClientid ) {
 			console.log("DEMO::REMOVEPLAYER");
 		}
 	}

@@ -65,7 +65,6 @@ Version:
 			var allEntities = worldDescription.entities,
 				len = allEntities.length;
 
-			console.log()
 			var resultDescStr = '';
 			while(len--) {
 				var anEntityDescStr = allEntities[len],

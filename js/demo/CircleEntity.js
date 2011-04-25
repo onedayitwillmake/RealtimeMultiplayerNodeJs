@@ -14,7 +14,7 @@ Version:
 */
 (function(){
 
-	DemoApp.CircleEntity = function( aClientid, anEntityid) {
+	DemoApp.CircleEntity = function( anEntityid, aClientid) {
 		DemoApp.CircleEntity.superclass.constructor.call(this, aClientid, anEntityid);
 		return this;
 	};

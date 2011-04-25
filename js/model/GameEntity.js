@@ -22,6 +22,7 @@ Version:
 		this.clientid = aClientid;
 		this.entityid = anEntityid;
 		this.traits = new SortedLookupTable();
+		this.position = new RealtimeMultiplayerGame.model.Point(0,0);
 		return this;
 	};
 
@@ -33,6 +34,7 @@ Version:
 		position	: RealtimeMultiplayerGame.model.Point.prototype.ZERO,  		// Current position of this entity
 		rotation	: 0,
 		traits		: null,														// A sortedlookuptable of our traits
+		view		: null,
 
 	/**
 		 * Update, use delta to create frame independent motion
@@ -40,11 +42,12 @@ Version:
 		 * @param gameClock		The current gameclock
 		 */
 		tick: function(speedFactor, gameClock) {
-			if(this.view) {
-				this.view.update();
-			} else {
-				this.updatePosition(speedFactor);
-			}
+			this.updatePosition(speedFactor);
+			this.updateView();
+		},
+
+		updateView: function() {
+			// OVERRIDE
 		},
 
 		/**
@@ -132,6 +135,10 @@ Version:
 		dealloc: function() {
 			this.position = null;
 			this.traits.dealloc();
-		}
+		},
+
+		////// ACCESSORS
+		setView: function( aView ) { this.view = aView; },
+		getView: function() { return this.view; }
 	}
 })();

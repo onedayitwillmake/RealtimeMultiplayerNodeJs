@@ -94,8 +94,7 @@
 					continue;
 				}
 
-				aCircle.position.set(aCircle.delegate.x + aCircle.offset.x,
-						aCircle.delegate.y + aCircle.offset.y);
+				aCircle.position.set(aCircle.delegate.x + aCircle.offset.x, aCircle.delegate.y + aCircle.offset.y);
 			}
 		},
 
@@ -327,6 +326,8 @@
 		{
 			this.collisionCallback = {'block': block, 'scope': scope};
 		},
+
+		getAllCircles: function() { return this.allCircles },
 
 /**
  * Helpers

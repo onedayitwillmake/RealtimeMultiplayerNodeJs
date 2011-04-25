@@ -103,7 +103,7 @@ Version:
 	// Socket.IO callbacks
 		/**
 		 * Callback from socket.io when a client has connected
-		 * @param client
+		 * @param clientConnection
 		 */
 		onSocketConnection: function( clientConnection ) {
 
@@ -162,9 +162,7 @@ Version:
 		 * @param data
 		 */
 		onPlayerJoined: function( client, data ) {
-			// Create an entity ID for this new player
-			var entityID = this.delegate.getNextEntityID();
-			this.delegate.shouldAddPlayer( client.getId(), data);
+			this.delegate.shouldAddPlayer( client.getClientid(), data);
 			client.getConnection().send( data );
 		},
 
@@ -186,7 +184,7 @@ Version:
 			// Checks passed
 			this.delegate = aDelegate;
 		}
-	}
+	};
 
 	/**
 	 * Required methods for the ServerNetChannel delegate

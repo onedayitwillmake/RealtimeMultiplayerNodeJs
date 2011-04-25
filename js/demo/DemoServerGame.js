@@ -69,8 +69,6 @@ Version:
 			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
 				collisionCircle.setRadius( aRadius );
 
-
-
 			// Create the GameEntity
 			var circleEntity = new DemoApp.CircleEntity( aClientid, anEntityid );
 			circleEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT );
@@ -89,6 +87,23 @@ Version:
 		 */
 		tick: function() {
 		   	this.collisionManager.handleCollisions();
+
+			var allCircles = this.collisionManager.getAllCircles();
+			var len = allCircles.length;
+
+			// push toward target position
+			for(var n = 0; n < len; n++)
+			{
+				var aCircle = allCircles[n];
+				//// Move the circle 1 pixel randomly up/down/left/right
+				aCircle.position.x += 1;
+
+				if(aCircle.position.x > DemoApp.Constants.GAME_WIDTH)
+					aCircle.position.x = 0;
+
+//				aCircle.position.y += Math.random() * 2 - 1;
+				aCircle.delegate.position = aCircle.position.clone();
+			}
 
 			// Note we call superclass's implementation after we're done
 			DemoApp.DemoServerGame.superclass.tick.call(this);

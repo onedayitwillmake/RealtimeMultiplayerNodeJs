@@ -46,18 +46,8 @@ Version:
 			this.caatDirector.loop(60);
 		},
 
-		addEntity: function( anEntity ) {
-			console.log("RealtimeMultiplayerGame.View.FieldView::addEntity")
-
-			// Make one single circle, and set some properties
-//			var circle = new CAAT.ShapeActor(); // The ShapeActor constructor function does nothing interesting, simply returns 'this'
-//			circle.create();	// The 'create' must be called after, in order to make the object
-//			circle.setSize(60,60); // Set the width and hight of the circle
-//			circle.setFillStyle('#ff00ff');
-//			circle.setLocation(director.width*0.5, director.height*0.5); // Place in the center of the screen, use the director's width/height
-
-			// Add it to the scene, if this is not done the circle will not be drawn
-//			this.caatScene.addChild(circle);
+		addEntity: function( anEntityView ) {
+			this.caatScene.addChild( anEntityView );
 		},
 
 		/**
@@ -71,9 +61,10 @@ Version:
 		// Memory
 		dealloc: function() {
 			this.director.destroy();
-		}
+		},
 
 		// Accessors
+		getCaatScene: function() { return this.caatScene; }
 	};
 })()
 

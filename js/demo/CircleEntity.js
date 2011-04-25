@@ -23,6 +23,11 @@ Version:
 		radius					:	DemoApp.Constants.ENTITY_DEFAULT_RADIUS,
 		collisionCircle			:	null,										// An instance of RealtimeMultiplayerGame.modules.circlecollision.PackedCircle
 
+		updateView: function() {
+			if(!this.view) return;
+			this.view.x = this.position.x;
+			this.view.y = this.position.y;
+		},
 
 		/**
 		 * Deallocate memory

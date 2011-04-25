@@ -171,7 +171,7 @@ Version:
 				}
 
 				// Update the entity with the new information, and insert it into the activeEntities array
-//				this.fieldController.updateEntity( objectID, newPosition, newRotation, entityDesc );
+				this.fieldController.updateEntity( entityid, newPosition, newRotation );
 //				activeEntities[objectID] = true;
 
 			}, this);

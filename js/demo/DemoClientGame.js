@@ -35,32 +35,19 @@ Version:
 		},
 
 		createEntityFromDesc: function(entityDesc) {
-			//var connectionID = entityDesc.clientid,
-			////						isCharacter  = entityDesc.entityType == this.config.ENTITY_MODEL.ENTITY_MAP.CHARACTER,
-			//isOwnedByMe = connectionID == this.netChannel.clientid;
-			//
-			//// Take care of the special things we have to do when adding a character
-			//if(isCharacter)
-			//{
-			//// This character actually belongs to us
-			////						var aCharacter = this.shouldAddPlayer( objectID, connectionID, entityDesc, this.fieldController );
-			//
-			//// If this character is owned by the us, allow it to be controlled by the keyboard
-			//if(isOwnedByMe)
-			//{
-			////							var clientControlledTrait = TraitFactory.createTraitWithName('ClientControlledTrait');
-			////							aCharacter.addTraitAndExecute( new clientControlledTrait() );
-			////							this.config.CAAT.CLIENT_CHARACTER = this.clientCharacter = aCharacter;
-			//}
-			//}
-			//else // Every other kind of entity - is just a glorified view as far as the client game is concerned
-			//{
-			////						 this.fieldController.createAndAddEntityFromDescription(entityDesc);
-			//}
-			//
-			//// Place it where it will be
-			////					newPosition.set(entityDesc.x, entityDesc.y);
-			////					newRotation = entityDesc.rotation || 0;
+
+			// Create a view via CAAT
+			var aCircleView = new CAAT.ShapeActor();
+			aCircleView.create();
+			aCircleView.setSize(60,60);
+			aCircleView.setFillStyle( "#" + (Math.floor(Math.random() * 0xFFFFFF)).toString(16) ); // Random color
+			aCircleView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
+
+			var circleEntity = new DemoApp.CircleEntity( entityDesc.clientid, entityDesc.entityid );
+			circleEntity.position.set( entityDesc.x, entityDesc.y );
+			circleEntity.setView( aCircleView );
+
+			this.fieldController.addEntity( circleEntity );
 		},
 
 		/**

@@ -29,8 +29,6 @@
 			this.entities.forEach( function(key, entity){
 				entity.tick(speedFactor, gameClock, gameTick);
 			}, this );
-
-			this.rankPlayers();
 		},
 
 		/**
@@ -46,27 +44,6 @@
 				this.view.addEntity( anEntity.getView() );
 			}
 
-		},
-
-		/**
-		 * Allow to arbitrarily rank players.
-		 * Left in as example, however it is not implemented in framework for you
-		 */
-		rankPlayers: function() {
-			return;
-
-			// Rank players
-			this.playersArray.sort(function(a, b) {
-				var comparisonResult = 0;
-				if(a.score < b.score) comparisonResult = 1;
-				else if(a.score > b.score) comparisonResult = -1;
-				return comparisonResult;
-			});
-
-			// Set the players rank to the their index in the sorted array
-			var len = this.playersArray.length;
-			for(var i = 0; i < len; i++)
-				this.playersArray[i].rank = i+1;
 		},
 
 		/**

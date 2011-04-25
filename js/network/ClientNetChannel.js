@@ -109,6 +109,7 @@ Version:
 		 * @param aNetChannelMessage
 		 */
 		onSocketMessage: function( aNetChannelMessage ) {
+			console.log( aNetChannelMessage );
 			this.lastReceivedTime = this.delegate.getGameClock();
 			this.adjustRate(aNetChannelMessage);
 
@@ -127,7 +128,7 @@ Version:
 				}
 
 				// Remove from memory
-				delete this.messageBuffer[messageIndex];
+				this.messageBuffer[messageIndex] = null;
 				delete message;
 
 				return;
@@ -163,6 +164,7 @@ Version:
 			for (var i = 0; i < len; i++)
 			{
 				var message = this.messageBuffer[i];
+				if(!message) continue;	// Slot is empty
 				if(message.isReliable) // We have more important things to tend to sir.
 				{
 					hasReliableMessages = true;
@@ -281,7 +283,7 @@ Version:
 			// Add to array the queue using bitmask to wrap values
 			this.messageBuffer[ this.outgoingSequenceNumber & BUFFER_MASK ] = message;
 
-			if(isReliable) {
+			if(!isReliable) {
 				this.nextUnreliable = message;
 			}
 

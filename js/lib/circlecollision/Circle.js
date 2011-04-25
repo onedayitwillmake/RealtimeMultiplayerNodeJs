@@ -38,6 +38,8 @@
 		delegate:		null,
 		position:		new RealtimeMultiplayerGame.model.Point(0,0),
 		offset:			new RealtimeMultiplayerGame.model.Point(0,0),	// Offset from delegates position by this much
+	   	radius:			0,
+		radiusSquared:	0,
 
 		targetPosition:	null,	// Where it wants to go
 		targetChaseSpeed: 0.02,

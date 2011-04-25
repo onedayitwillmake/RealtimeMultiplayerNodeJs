@@ -30,6 +30,7 @@ require("./model/WorldEntityDescription.js");
 
 require("./demo/DemoApp.js");
 require("./demo/DemoAppConstants.js");
+require("./demo/CircleEntity.js");
 require("./demo/DemoServerGame.js");
 
 

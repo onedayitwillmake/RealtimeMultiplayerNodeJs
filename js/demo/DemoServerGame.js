@@ -19,8 +19,10 @@ Version:
 
 	DemoApp.DemoServerGame = function() {
 		DemoApp.DemoServerGame.superclass.constructor.call(this);
-		this.setupCollisionManager();
+
 		this.setGameDuration( DemoApp.Constants.GAME_DURATION );
+		this.setupCollisionManager();
+		this.setupRandomField();
 		return this;
 	};
 
@@ -39,43 +41,40 @@ Version:
 		setupCollisionManager: function() {
 			// Collision simulation
 			this.collisionManager = new RealtimeMultiplayerGame.modules.circlecollision.CircleManager();
-			this.collisionManager.setBounds(0, 0, 700, 600);
+			this.collisionManager.setBounds(0, 0, DemoApp.Constants.GAME_WIDTH, DemoApp.Constants.GAME_HEIGHT);
 			this.collisionManager.setNumberOfCollisionPasses(1);
 			this.collisionManager.setNumberOfTargetingPasses(0);
-
-			// Create a bunch of circles!
-			var total = 25;
-
-//			// temp place groups into array to pull from randomly
-			for(var i = 0; i < total; i++)
-			{
-				console.log( RealtimeMultiplayerGame.model.noise(10, 10, i/total) );
-			}
-//				// Size
-//				var aRadius = 18;
-//
-//				// Create the circle, that holds our 'CAAT' actor, and 'PackedCircle'
-//				var circle = this.circlePool.getObject()
-//					.setRadius(aRadius)
-//					.setColor( GRAVEDANGER.UTILS.randomFromArray( allColors ) )
-//					.create()
-//					.setLocation(this.director.width*0.5, -100)
-//					.setDefaultScale(GRAVEDANGER.Config.DEFAULT_SCALE + GRAVEDANGER.UTILS.randomFloat(-0.1, 0.1) );
-////					.setVisible(false)
-//
-//				// Add to the collision simulation
-//				this.packedCircleManager.addCircle( circle.getPackedCircle() );
-//
-//				// Add actor to the scene
-//				GRAVEDANGER.CAATHelper.currentSceneLayers[1].addChild( circle.getCAATActor() );
-//				tempArray.push(circle);
-//			}
-
-			// Listen for circle complete -
-			//GRAVEDANGER.SimpleDispatcher.addListener(GRAVEDANGER.Circle.prototype.EVENTS.ON_CIRCLE_COMPLETE, this.onCircleComplete, this)
-			// Listen for circle complete -
-			//GRAVEDANGER.SimpleDispatcher.addListener(GRAVEDANGER.Circle.prototype.EVENTS.ON_CIRCLE_INTOABYSS, this.onCircleIntoAbyss, this);
 		},
+
+		/**
+		 * Randomly places some CircleEntities into game
+		 */
+		setupRandomField: function() {
+			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
+			var total = 25;
+			for(var i = 0; i < total; i++) {
+
+				var radius = Math.floor( Math.random() * 10 + 5 );
+
+				// Create a randomly sized circle, that will represent this entity in the collision manager
+				var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
+					collisionCircle.setRadius( radius );
+
+
+				// Create the GameEntity
+				var circleEntity = new DemoApp.CircleEntity( this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
+				circleEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT );
+				circleEntity.setCollisionCircle( collisionCircle );
+
+				// Place the circle and collision circle into corresponding containers
+				this.collisionManager.addCircle( circleEntity.getCollisionCircle() );
+				this.fieldController.addEntity( circleEntity );
+			}
+		},
+
+//		createCircleEntity: function( aRadius, position ) {
+//
+//		},
 
 		/**
 		 * Updates the game
@@ -88,15 +87,15 @@ Version:
 			DemoApp.DemoServerGame.superclass.tick.call(this);
 		},
 
-		shouldUpdatePlayer: function( clientID, data ) {
+		shouldUpdatePlayer: function( clientid, data ) {
 			console.log("DEMO::UPDATEPLAYER");
 		},
 
-		shouldAddPlayer: function( entityID, clientID, data ) {
+		shouldAddPlayer: function( entityID, clientid, data ) {
 			console.log("DEMO::ADDPLAYER");
 		},
 
-		shouldRemovePlayer: function( clientID ) {
+		shouldRemovePlayer: function( clientid ) {
 			console.log("DEMO::REMOVEPLAYER");
 		}
 	}

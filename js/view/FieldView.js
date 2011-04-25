@@ -44,6 +44,10 @@ Version:
 
 			// Start the render loop, with at 60FPS
 			this.caatDirector.loop(60);
+		},
+
+		addEntity: function( anEntity ) {
+			console.log("RealtimeMultiplayerGame.View.FieldView::addEntity")
 
 			// Make one single circle, and set some properties
 //			var circle = new CAAT.ShapeActor(); // The ShapeActor constructor function does nothing interesting, simply returns 'this'
@@ -54,16 +58,6 @@ Version:
 
 			// Add it to the scene, if this is not done the circle will not be drawn
 //			this.caatScene.addChild(circle);
-
-
-			// Every tick, the scene will call this function
-//			var that = this; // Store a reference to a the 'CAATHelloWorld' instnace
-//			scene.endAnimate = function(director,time)
-//			{
-////				// Move the circle 1 pixel randomly up/down/left/right
-////				circle.x += Math.random() * 2 - 1;
-////				circle.y += Math.random() * 2 - 1;
-//			}
 		},
 
 		/**

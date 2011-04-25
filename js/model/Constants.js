@@ -16,8 +16,6 @@ Version:
 */
 (function(){
 	RealtimeMultiplayerGame.Constants = {
-		ENTITY_DEFAULT_RADIUS: 10,
-
 		DEBUG_SETTING:
 		{
 			SERVER_NETCHANNEL_DEBUG : true,
@@ -26,6 +24,7 @@ Version:
 
 		SERVER_SETTING:
 		{
+			CLIENT_ID	: 0,						// If an object has a client id of zero, that means it is owned by the server
 			SOCKET_PORT	: 8080
 		},
 

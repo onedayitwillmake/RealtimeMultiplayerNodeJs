@@ -35,7 +35,7 @@ Version:
 		 * If it is set, it will call that CMD on its delegate
 		 */
 		setupCmdMap: function() {
-			DemoApp.DemoServerGame.superclass.setupCommandMap();
+			DemoApp.DemoServerGame.superclass.setupCmdMap();
 		},
 
 		setupCollisionManager: function() {
@@ -51,7 +51,7 @@ Version:
 		 */
 		setupRandomField: function() {
 			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
-			var total = 2;
+			var total = 25;
 			for(var i = 0; i < total; i++) {
 				var radius = Math.floor( Math.random() * 10 + 5 );
 				this.createCircleEntity( radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );

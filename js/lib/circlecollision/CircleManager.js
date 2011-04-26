@@ -226,7 +226,7 @@
 
 			// Wrap X
 			if(boundsRule & wrapXMask && xpos-diameter > this.bounds.width) {
-				aCircle.position.x = this.bounds.x + radius;
+				aCircle.position.x = this.bounds.x - radius;
 			} else if(boundsRule & wrapXMask && xpos+diameter < this.bounds.x) {
 				aCircle.position.x = this.bounds.width - radius;
 			}

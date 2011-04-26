@@ -40,7 +40,7 @@ Version:
 			var aCircleView = new CAAT.ShapeActor();
 			aCircleView.create();
 			aCircleView.setSize(60,60);
-			aCircleView.setFillStyle( CAAT.Color.prototype.hsvToRgb( Math.random() * 360, 40, 99).toHex() ); // Random color
+			aCircleView.setFillStyle( CAAT.Color.prototype.hsvToRgb( (entityDesc.entityid * 15) % 360, 40, 99).toHex() ); // Random color
 			aCircleView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
 
 			var circleEntity = new DemoApp.CircleEntity( entityDesc.entityid, entityDesc.clientid );

@@ -95,22 +95,13 @@ Version:
 			for(var n = 0; n < len; n++)
 			{
 				var aCircle = allCircles[n];
-				aCircle.position.x += 1;
+				aCircle.position.x += 1.5 + (n/len);
 
 				this.collisionManager.handleBoundaryForCircle( aCircle );
 //				aCircle.position.y += Math.random() * 2 - 1;
 				aCircle.delegate.position = aCircle.position.clone();
 			}
 
-			/*
-			//// Move the circle 1 pixel randomly up/down/left/right
-				var noise = RealtimeMultiplayerGame.model.noise(aCircle.position.x*0.1, aCircle.position.y*0.1, this.getGameTick()*0.0001);
-				var angle = noise * Math.PI*4;
-				var speed = 2;
-
-				aCircle.position.x += Math.cos( angle ) * speed;
-				aCircle.position.y += Math.sin( angle ) * speed;
-			 */
 			// Note we call superclass's implementation after we're done
 			DemoApp.DemoServerGame.superclass.tick.call(this);
 		},

@@ -16,10 +16,10 @@ Version:
 */
 (function(){
 	DemoApp.Constants = {
-		ENTITY_DEFAULT_RADIUS	: 10,
+		ENTITY_DEFAULT_RADIUS	: 30,
 		GAME_WIDTH				: 700,
 		GAME_HEIGHT				: 450,
-		MAX_CIRCLES				: 20,
+		MAX_CIRCLES				: 25,
 		GAME_DURATION			: 1000*300
 	}
 })();

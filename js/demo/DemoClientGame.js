@@ -35,6 +35,7 @@ Version:
 		},
 
 		createEntityFromDesc: function(entityDesc) {
+
 			// Create a view via CAAT
 			var aCircleView = new CAAT.ShapeActor();
 			aCircleView.create();
@@ -42,7 +43,7 @@ Version:
 			aCircleView.setFillStyle( "#" + (Math.floor(Math.random() * 0xFFFFFF)).toString(16) ); // Random color
 			aCircleView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
 
-			var circleEntity = new DemoApp.CircleEntity( entityDesc.clientid, entityDesc.entityid );
+			var circleEntity = new DemoApp.CircleEntity( entityDesc.entityid, entityDesc.clientid );
 			circleEntity.position.set( entityDesc.x, entityDesc.y );
 			circleEntity.setView( aCircleView );
 

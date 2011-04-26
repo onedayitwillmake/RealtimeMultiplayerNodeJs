@@ -3,7 +3,9 @@
 	/**
 	 * A helper class to detect the current state of the controls of the game.
 	 */
-	RealtimeMultiplayerGame.Input.Keyboard = function() { };
+	RealtimeMultiplayerGame.Input.Keyboard = function() {
+		this.attachEvents();
+	};
 
 	RealtimeMultiplayerGame.Input.Keyboard.prototype = (function() {
 		var keys = {'tab': false, 'shift': false, 'space': false, 'up': false, 'down': false, 'left': false, "right": false },
@@ -12,6 +14,7 @@
 		
 		function keyDown( e )
 		{
+			console.log('key down');
 			if( e.keyCode in keyCodes ) {
 				// if we're already pressing down on the same key, then we don't want to increment
 				// our key pressed count
@@ -26,6 +29,7 @@
 
 		function keyUp( e )
 		{
+			console.log('key up');
 			if( e.keyCode in keyCodes ) {
 				handler( e.keyCode, false );
 				keyPressed--;

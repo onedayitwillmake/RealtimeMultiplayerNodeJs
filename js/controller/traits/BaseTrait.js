@@ -43,12 +43,12 @@ Basic Usage:
 (function(){
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.controller.traits");
 
-	RealtimeMultiplayerGame.controller.BaseTrait = function() {
+	RealtimeMultiplayerGame.controller.traits.BaseTrait = function() {
 		this.interceptedProperties = new SortedLookupTable();
 		return this;
 	};
 
-	RealtimeMultiplayerGame.controller.BaseTrait.prototype = {
+	RealtimeMultiplayerGame.controller.traits.BaseTrait.prototype = {
 		interceptedProperties	: null,  					// SortedLookupTable of traits we've intercepted so they can be applied back
 		attachedEntity			: null,						// Trait host
 		detachTimeout			: 0,						// Store detach setTimeout

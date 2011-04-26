@@ -50,10 +50,9 @@ Version:
 			// Continuously store information about our input
 			if( this.clientCharacter != null ) {
 				var characterStatus = this.clientCharacter.constructEntityDescription();
-				var newMessage = this.netChannel.composeCommand( this.config.CMDS.PLAYER_MOVE, characterStatus );
-
-				// create a message with our characters updated information and send it off
-				this.netChannel.addMessageToQueue( false, newMessage );
+				// this.netChannel.canSendMessage()
+				this.netChannel.addMessageToQueue( false, RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE, { characterStatus: characterStatus } );
+				console.log("sending message!!!");
 			}
 
 

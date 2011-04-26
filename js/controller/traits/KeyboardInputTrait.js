@@ -43,24 +43,23 @@ Basic Usage:
 (function(){
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.controller.traits");
 
-	RealtimeMultiplayerGame.controller.KeyboardInputTrait = function() {
-		RealtimeMultiplayerGame.controller.KeyboardInputTrait.superclass.constructor.call(this);
+	RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait = function() {
+		RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait.superclass.constructor.call(this);
 		return this;
 	};
 
-	RealtimeMultiplayerGame.controller.KeyboardInputTrait.prototype = {
+	RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait.prototype = {
 		displayName				: "KeyboardInputTrait",					// Unique string name for this Trait
 		/**
 		 * Attach the trait to the host object
 		 * @param anEntity
 		 */
 		attach: function(anEntity) {
-			RealtimeMultiplayerGame.controller.KeyboardInputTrait.superclass.attach.call(this, anEntity);
+			RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait.superclass.attach.call(this, anEntity);
 
 			// Intercept those two properties from the attached enitity with our own
 			this.intercept(['constructEntityDescription', 'handleInput']);
-			this.attachedEntity.setInput( new Joystick( this.config ) );
-			this.attachedEntity.input.attachEvents();
+			this.attachedEntity.setInput( new RealtimeMultiplayerGame.Input.Keyboard() );
 		},
 
 		/**
@@ -77,5 +76,7 @@ Basic Usage:
 
 		// Do nothing
 		handleInput: function(gameClock){}
-	}
+	};
+
+	RealtimeMultiplayerGame.extend( RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait, RealtimeMultiplayerGame.controller.traits.BaseTrait );
 })();

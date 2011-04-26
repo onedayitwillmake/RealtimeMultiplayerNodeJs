@@ -31,9 +31,8 @@ require("./model/WorldEntityDescription.js");
 require("./demo/DemoApp.js");
 require("./demo/DemoAppConstants.js");
 require("./demo/CircleEntity.js");
+require("./demo/PlayerEntity.js");
 require("./demo/DemoServerGame.js");
-
-
 
 var game = new DemoApp.DemoServerGame();
 game.startGameClock();

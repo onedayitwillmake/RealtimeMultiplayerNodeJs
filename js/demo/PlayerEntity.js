@@ -14,20 +14,25 @@ Version:
 */
 (function(){
 
-	DemoApp.CircleEntity = function( anEntityid, aClientid) {
-		DemoApp.CircleEntity.superclass.constructor.call(this, anEntityid, aClientid );
+	DemoApp.PlayerEntity = function( anEntityid, aClientid) {
+		DemoApp.PlayerEntity.superclass.constructor.call(this, anEntityid, aClientid );
 		return this;
 	};
 
-	DemoApp.CircleEntity.prototype = {
-		radius					:	DemoApp.Constants.ENTITY_DEFAULT_RADIUS,
-		collisionCircle			:	null,										// An instance of RealtimeMultiplayerGame.modules.circlecollision.PackedCircle
-		entityType: DemoApp.Constants.ENTITY_TYPES.GENERIC_CIRCLE,
-	
+	DemoApp.PlayerEntity.prototype = {
+		radius					:	100,
+		collisionCircle			:	null, // An instance of RealtimeMultiplayerGame.modules.circlecollision.PackedCircle
+		entityType: DemoApp.Constants.ENTITY_TYPES.PLAYER_ENTITY,
+		input: null,
+
 		updateView: function() {
 			if(!this.view) return;
 			this.view.x = this.position.x;
 			this.view.y = this.position.y;
+		},
+
+		setInput: function( input ) {
+			this.input = input;
 		},
 
 		/**
@@ -53,5 +58,5 @@ Version:
 	};
 
 	// extend RealtimeMultiplayerGame.model.GameEntity
-	RealtimeMultiplayerGame.extend(DemoApp.CircleEntity, RealtimeMultiplayerGame.model.GameEntity, null);
+	RealtimeMultiplayerGame.extend(DemoApp.PlayerEntity, RealtimeMultiplayerGame.model.GameEntity, null);
 })();

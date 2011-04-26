@@ -51,7 +51,7 @@ Version:
 		 */
 		setupRandomField: function() {
 			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
-			var total = 25;
+			var total = 1;
 			for(var i = 0; i < total; i++) {
 				var radius = Math.floor( Math.random() * 10 + 5 );
 				this.createCircleEntity( radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
@@ -70,7 +70,7 @@ Version:
 				collisionCircle.setRadius( aRadius );
 
 			// Create the GameEntity
-			var circleEntity = new DemoApp.CircleEntity( anEntityid, aClientid);
+			var circleEntity = new DemoApp.CircleEntity( anEntityid, aClientid );
 			circleEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT );
 			circleEntity.setCollisionCircle( collisionCircle );
 
@@ -78,7 +78,26 @@ Version:
 			this.collisionManager.addCircle( circleEntity.getCollisionCircle() );
 			this.fieldController.addEntity( circleEntity );
 
+			circleEntity.entityType = DemoApp.Constants.ENTITY_TYPES.GENERIC_CIRCLE;
+			console.log( "creating circle entity:");
+			console.log( circleEntity );
 			return circleEntity;
+		},
+
+		createPlayerEntity: function( aRadius, anEntityid, aClientid) {
+			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
+				collisionCircle.setRadius( aRadius );
+
+			// Create the GameEntity
+			var playerEntity = new DemoApp.PlayerEntity( anEntityid, aClientid );
+			playerEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT );
+			playerEntity.setCollisionCircle( collisionCircle );
+			
+			// place player on field
+			this.collisionManager.addCircle( playerEntity.getCollisionCircle() );
+			this.fieldController.addEntity( playerEntity );
+
+			return playerEntity;
 		},
 
 		/**
@@ -95,7 +114,7 @@ Version:
 			for(var n = 0; n < len; n++)
 			{
 				var aCircle = allCircles[n];
-				aCircle.position.x += 1.5 + (n/len);
+				// aCircle.position.x += 1.5 + (n/len);
 
 				this.collisionManager.handleBoundaryForCircle( aCircle );
 //				aCircle.position.y += Math.random() * 2 - 1;
@@ -107,7 +126,7 @@ Version:
 		},
 
 		shouldAddPlayer: function( aClientid, data ) {
-			this.createCircleEntity( 10, this.getNextEntityID(), aClientid);
+			this.createPlayerEntity( 100, this.getNextEntityID(), aClientid);
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {

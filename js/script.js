@@ -11,9 +11,6 @@
 
 		var clientGame = new DemoApp.DemoClientGame();
 		console.log('ClientGame', clientGame);
-
-		var joystickTest = new RealtimeMultiplayerGame.Input.Keyboard();
-		joystickTest.attachEvents();
 	}
 
 	var message = function(obj){

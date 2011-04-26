@@ -36,7 +36,7 @@ Version:
 		traits		: null,														// A sortedlookuptable of our traits
 		view		: null,
 
-	/**
+		/**
 		 * Update, use delta to create frame independent motion
 		 * @param speedFactor	A normalized value our ACTUAL framerate vs our desired framerate. 1.0 means exactly correct, 0.5 means we're running at half speed
 		 * @param gameClock		The current gameclock

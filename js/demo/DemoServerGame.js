@@ -51,7 +51,7 @@ Version:
 		 */
 		setupRandomField: function() {
 			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
-			var total = 25;
+			var total = 1;
 			for(var i = 0; i < total; i++) {
 				var radius = Math.floor( Math.random() * 10 + 5 );
 				this.createCircleEntity( radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
@@ -70,7 +70,7 @@ Version:
 				collisionCircle.setRadius( aRadius );
 
 			// Create the GameEntity
-			var circleEntity = new DemoApp.CircleEntity( aClientid, anEntityid );
+			var circleEntity = new DemoApp.CircleEntity( anEntityid, aClientid);
 			circleEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT );
 			circleEntity.setCollisionCircle( collisionCircle );
 
@@ -92,7 +92,7 @@ Version:
 			var len = allCircles.length;
 
 			// push toward target position
-			for(var n = 0; n < len; n++)
+			for(var n = 0; n < len-1; n++)
 			{
 				var aCircle = allCircles[n];
 				//// Move the circle 1 pixel randomly up/down/left/right
@@ -109,8 +109,8 @@ Version:
 			DemoApp.DemoServerGame.superclass.tick.call(this);
 		},
 
-		shouldAddPlayer: function( aClientid, anEntityid, data ) {
-//			this.createCircleEntity( 10, anEntityid, aClientid);
+		shouldAddPlayer: function( aClientid, data ) {
+			this.createCircleEntity( 10, this.getNextEntityID(), aClientid);
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {

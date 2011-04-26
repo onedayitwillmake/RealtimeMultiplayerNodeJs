@@ -192,7 +192,7 @@ Version:
 	RealtimeMultiplayerGame.network.ServerNetChannelDelegateProtocol = {
 		setupCmdMap: function() {},
 		shouldUpdatePlayer: function( clientID, data ) {},
-		shouldAddPlayer: function( entityID, clientID, data ) {},
+		shouldAddPlayer: function( clientID, data ) {},
 		shouldRemovePlayer: function( clientID ) {},
 		getNextEntityID: function() {},
 		getGameClock: function() {}

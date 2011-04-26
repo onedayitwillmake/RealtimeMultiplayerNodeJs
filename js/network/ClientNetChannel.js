@@ -276,7 +276,6 @@ Version:
 		 * @param anUnencodedMessage
 		 */
 		addMessageToQueue: function( isReliable, aCommandConstant, payload ) {
-			debugger;
 			// Create a NetChannelMessage
 			var message = new RealtimeMultiplayerGame.model.NetChannelMessage( this.outgoingSequenceNumber, this.clientid, isReliable, aCommandConstant, payload );
 

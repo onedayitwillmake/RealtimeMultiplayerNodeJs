@@ -35,7 +35,6 @@ Version:
 		},
 
 		createEntityFromDesc: function(entityDesc) {
-
 			// Create a view via CAAT
 			var aCircleView = new CAAT.ShapeActor();
 			aCircleView.create();

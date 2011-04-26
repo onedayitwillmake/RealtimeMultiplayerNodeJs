@@ -51,7 +51,7 @@ Version:
 		 */
 		setupRandomField: function() {
 			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
-			var total = 1;
+			var total = 25;
 			for(var i = 0; i < total; i++) {
 				var radius = Math.floor( Math.random() * 10 + 5 );
 				this.createCircleEntity( radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
@@ -92,19 +92,25 @@ Version:
 			var len = allCircles.length;
 
 			// push toward target position
-			for(var n = 0; n < len-1; n++)
+			for(var n = 0; n < len; n++)
 			{
 				var aCircle = allCircles[n];
-				//// Move the circle 1 pixel randomly up/down/left/right
 				aCircle.position.x += 1;
 
-				if(aCircle.position.x > DemoApp.Constants.GAME_WIDTH)
-					aCircle.position.x = 0;
-
+				this.collisionManager.handleBoundaryForCircle( aCircle );
 //				aCircle.position.y += Math.random() * 2 - 1;
 				aCircle.delegate.position = aCircle.position.clone();
 			}
 
+			/*
+			//// Move the circle 1 pixel randomly up/down/left/right
+				var noise = RealtimeMultiplayerGame.model.noise(aCircle.position.x*0.1, aCircle.position.y*0.1, this.getGameTick()*0.0001);
+				var angle = noise * Math.PI*4;
+				var speed = 2;
+
+				aCircle.position.x += Math.cos( angle ) * speed;
+				aCircle.position.y += Math.sin( angle ) * speed;
+			 */
 			// Note we call superclass's implementation after we're done
 			DemoApp.DemoServerGame.superclass.tick.call(this);
 		},

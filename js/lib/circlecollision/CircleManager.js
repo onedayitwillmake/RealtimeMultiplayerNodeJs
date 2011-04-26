@@ -219,36 +219,36 @@
 
 			// TODO: Promote to member variable
 			// Convert to bitmask - Uncomment the one you want, or concact your own :)
-	//		boundsRule = wrapY; // Wrap only Y axis
-	//		boundsRule = wrapX; // Wrap only X axis
-	//		boundsRule = wrapXMask | wrapYMask; // Wrap both X and Y axis
-			boundsRule = wrapYMask | constrainXMask;  // Wrap Y axis, but constrain horizontally
+//			boundsRule = wrapY; // Wrap only Y axis
+//			boundsRule = wrapX; // Wrap only X axis
+			boundsRule = wrapXMask | wrapYMask; // Wrap both X and Y axis
+//			boundsRule = wrapYMask | constrainXMask;  // Wrap Y axis, but constrain horizontally
 
 			// Wrap X
-			if(boundsRule & wrapXMask && xpos-diameter > this.bounds.right) {
-				aCircle.position.x = this.bounds.left + radius;
-			} else if(boundsRule & wrapXMask && xpos+diameter < this.bounds.left) {
-				aCircle.position.x = this.bounds.right - radius;
+			if(boundsRule & wrapXMask && xpos-diameter > this.bounds.width) {
+				aCircle.position.x = this.bounds.x + radius;
+			} else if(boundsRule & wrapXMask && xpos+diameter < this.bounds.x) {
+				aCircle.position.x = this.bounds.width - radius;
 			}
 			// Wrap Y
-			if(boundsRule & wrapYMask && ypos-diameter > this.bounds.bottom) {
-				aCircle.position.y = this.bounds.top - radius;
-			} else if(boundsRule & wrapYMask && ypos+diameter < this.bounds.top) {
-				aCircle.position.y = this.bounds.bottom + radius;
+			if(boundsRule & wrapYMask && ypos-diameter > this.bounds.height) {
+				aCircle.position.y = this.bounds.y - radius;
+			} else if(boundsRule & wrapYMask && ypos+diameter < this.bounds.y) {
+				aCircle.position.y = this.bounds.height + radius;
 			}
 
 			// Constrain X
-			if(boundsRule & constrainXMask && xpos+radius >= this.bounds.right) {
-				aCircle.position.x = aCircle.position.x = this.bounds.right-radius;
-			} else if(boundsRule & constrainXMask && xpos-radius < this.bounds.left) {
-				aCircle.position.x = this.bounds.left + radius;
+			if(boundsRule & constrainXMask && xpos+radius >= this.bounds.width) {
+				aCircle.position.x = aCircle.position.x = this.bounds.width-radius;
+			} else if(boundsRule & constrainXMask && xpos-radius < this.bounds.x) {
+				aCircle.position.x = this.bounds.x + radius;
 			}
 
 			// Constrain Y
-			if(boundsRule & constrainYMask && ypos+radius > this.bounds.bottom) {
-				aCircle.position.y = this.bounds.bottom - radius;
-			} else if(boundsRule & constrainYMask && ypos-radius < this.bounds.top) {
-				aCircle.position.y = this.bounds.top + radius;
+			if(boundsRule & constrainYMask && ypos+radius > this.bounds.height) {
+				aCircle.position.y = this.bounds.height - radius;
+			} else if(boundsRule & constrainYMask && ypos-radius < this.bounds.y) {
+				aCircle.position.y = this.bounds.y + radius;
 			}
 		},
 

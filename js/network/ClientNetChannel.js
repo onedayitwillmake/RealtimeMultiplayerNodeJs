@@ -115,7 +115,7 @@ Version:
 			if(aNetChannelMessage.id == this.clientid) // We sent this, clear our reliable buffer que
 			{
 				if(aNetChannelMessage.cmd == RealtimeMultiplayerGame.Constants.CMDS.SERVER_FULL_UPDATE) {
-					debugger; //  IF CALLED THIS IS A BUG
+//					debugger; //  IF CALLED THIS IS A BUG
 				}
 
 				var messageIndex =  aNetChannelMessage.seq & BUFFER_MASK;
@@ -174,7 +174,7 @@ Version:
 
 			// No reliable messages waiting, enough time has passed to send an update
 			if(!hasReliableMessages && this.canSendMessage() && this.nextUnreliable != null) {
-				this.sendMessage( this.nextUnreliable )
+				this.sendMessage( this.nextUnreliable );
 			}
 		},
 
@@ -281,7 +281,7 @@ Version:
 			// Add to array the queue using bitmask to wrap values
 			this.messageBuffer[ this.outgoingSequenceNumber & BUFFER_MASK ] = message;
 
-			if(!isReliable) {
+			if(isReliable) {
 				this.nextUnreliable = message;
 			}
 
@@ -345,8 +345,7 @@ Version:
 		* Determines if it's ok for the client to send a unreliable new message yet
 		*/
 		canSendMessage: function () {
-			var isReady = (this.gameClock > this.lastSentTime + this.cl_updateRate) ;
-			return isReady;
+			var isReady = (this.gameClock > this.lastSentTime + this.cl_updateRate + 10000) ;
 		},
 		getClientid: function(){ return this.clientid },
 		getIncomingWorldUpdateBuffer: function() { return this.incomingWorldUpdateBuffer }

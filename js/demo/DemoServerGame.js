@@ -36,6 +36,7 @@ Version:
 		 */
 		setupCmdMap: function() {
 			DemoApp.DemoServerGame.superclass.setupCmdMap();
+			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE] = this.shouldUpdatePlayer;
 		},
 
 		setupCollisionManager: function() {
@@ -70,7 +71,7 @@ Version:
 				collisionCircle.setRadius( aRadius );
 
 			// Create the GameEntity
-			var circleEntity = new DemoApp.CircleEntity( anEntityid, aClientid);
+			var circleEntity = new DemoApp.CircleEntity( anEntityid, aClientid );
 			circleEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT );
 			circleEntity.setCollisionCircle( collisionCircle );
 
@@ -78,7 +79,26 @@ Version:
 			this.collisionManager.addCircle( circleEntity.getCollisionCircle() );
 			this.fieldController.addEntity( circleEntity );
 
+			circleEntity.entityType = DemoApp.Constants.ENTITY_TYPES.GENERIC_CIRCLE;
+			console.log( "creating circle entity:");
+			console.log( circleEntity );
 			return circleEntity;
+		},
+
+		createPlayerEntity: function( aRadius, anEntityid, aClientid) {
+			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
+				collisionCircle.setRadius( aRadius );
+
+			// Create the GameEntity
+			var playerEntity = new DemoApp.PlayerEntity( anEntityid, aClientid );
+			playerEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT );
+			playerEntity.setCollisionCircle( collisionCircle );
+			
+			// place player on field
+			this.collisionManager.addCircle( playerEntity.getCollisionCircle() );
+			this.fieldController.addEntity( playerEntity );
+
+			return playerEntity;
 		},
 
 		/**
@@ -119,11 +139,12 @@ Version:
 		},
 
 		shouldAddPlayer: function( aClientid, data ) {
-			this.createCircleEntity( DemoApp.Constants.ENTITY_DEFAULT_RADIUS, this.getNextEntityID(), aClientid);
+			this.createPlayerEntity( 100, this.getNextEntityID(), aClientid);
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {
-			console.log("DEMO::UPDATEPLAYER");
+			console.log( data );
+			console.log("DEMO::UPDATEPLAYER" + data);
 		},
 
 		shouldRemovePlayer: function( aClientid ) {

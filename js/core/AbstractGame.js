@@ -23,6 +23,7 @@ Version:
 (function(){
 	RealtimeMultiplayerGame.AbstractGame = function() {
 		this.setupNetChannel();
+		this.setupCmdMap();
 		this.fieldController = new RealtimeMultiplayerGame.Controller.FieldController();
 		return this;
 	};
@@ -45,6 +46,13 @@ Version:
 		 * Setup the ClientNetChannel or ServerNetChannel
 		 */
 		setupNetChannel: function(){},
+
+		/**
+		 * setup the command mapping for the events recevied from netchannel
+		 */
+		setupCmdMap: function() {
+			this.cmdMap = {};
+		},
 
 		// Methods
 		tick: function() {

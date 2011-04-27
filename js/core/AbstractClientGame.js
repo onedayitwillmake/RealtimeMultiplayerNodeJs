@@ -47,16 +47,19 @@ Version:
 			this.netChannel = new RealtimeMultiplayerGame.ClientNetChannel( this );
 		},
 
+		setupCmdMap: function() {
+			RealtimeMultiplayerGame.AbstractClientGame.superclass.setupCmdMap.call( this );
+		},
+
 		tick: function() {
 			RealtimeMultiplayerGame.AbstractClientGame.superclass.tick.call(this);
 
 			// Continuously store information about our input
 			if( this.clientCharacter != null ) {
-				var characterStatus = this.clientCharacter.constructEntityDescription();
-				var newMessage = this.netChannel.composeCommand( this.config.CMDS.PLAYER_MOVE, characterStatus );
-
-				// create a message with our characters updated information and send it off
-				this.netChannel.addMessageToQueue( false, newMessage );
+				var input = this.clientCharacter.constructEntityDescription();
+				// this.netChannel.canSendMessage()
+				console.log("trying to send");
+				this.netChannel.addMessageToQueue( false, RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE, input );
 			}
 
 

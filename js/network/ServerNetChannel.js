@@ -133,8 +133,6 @@ Version:
 		 */
 		onSocketMessage: function( data, connection )
 		{
-//			console.log("onSocketMessage", data );
-
 			var client = this.clients.objectForKey(connection.sessionId);
 			//that.CMD_TO_FUNCTION[decodedMessage.cmds.cmd].apply(that, [connection, decodedMessage]);
 

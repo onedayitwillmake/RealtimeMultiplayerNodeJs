@@ -23,10 +23,7 @@ Version:
 (function(){
 	RealtimeMultiplayerGame.AbstractClientGame = function() {
 		RealtimeMultiplayerGame.AbstractClientGame.superclass.constructor.call(this);
-
-		this.view = new RealtimeMultiplayerGame.View.GameView();
-		this.fieldController.setupView();
-
+		this.setupView();
 		return this;
 	};
 
@@ -37,6 +34,12 @@ Version:
 
 
 		// Methods
+		setupView: function() {
+			if( this.view === null ) {
+				throw new Error("RealtimeMultiplayerGame.AbstractClientGame.setupView - Override this method, then call MyClientGame.superclass.setupView()");
+			}
+			this.fieldController.setView( this.view );
+		},
 
 		setupNetChannel: function() {
 			console.log("RealtimeMultiplayerGame.AbstractClientGame.superclass", RealtimeMultiplayerGame.AbstractClientGame.superclass)

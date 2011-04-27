@@ -199,6 +199,10 @@
 			}
 		},
 
+		BOUNDARY_WRAP_X : 1 << 0,
+		BOUNDARY_WRAP_Y : 1 << 1,
+		BOUNDARY_CONSTRAIN_X : 1 << 2,
+		BOUNDARY_CONSTRAIN_Y : 1 << 3,
 		handleBoundaryForCircle: function(aCircle, boundsRule)
 		{
 //			if(aCircle.boundsRule === true) return; // Ignore if being dragged
@@ -215,14 +219,9 @@
 			var wrapYMask = 1 << 2;
 			var constrainXMask = 1 << 3;
 			var constrainYMask = 1 << 4;
-			var emitEvent = 1 << 5;
 
-			// TODO: Promote to member variable
 			// Convert to bitmask - Uncomment the one you want, or concact your own :)
-//			boundsRule = wrapY; // Wrap only Y axis
-//			boundsRule = wrapX; // Wrap only X axis
-			boundsRule = wrapXMask | wrapYMask; // Wrap both X and Y axis
-//			boundsRule = wrapYMask | constrainXMask;  // Wrap Y axis, but constrain horizontally
+			boundsRule = wrapYMask | constrainXMask;  // Wrap Y axis, but constrain horizontally
 
 			// Wrap X
 			if(boundsRule & wrapXMask && xpos-diameter > this.bounds.width) {
@@ -287,6 +286,7 @@
 
 		circlesCanCollide: function(circleA, circleB)
 		{
+			return true;
 			if(!circleA || !circleB || circleA === circleB) return false; 					// one is null (will be deleted next loop), or both point to same obj.
 			if(circleA.delegate == null || circleB.delegate == null) return false;					// This circle will be removed next loop, it's entity is already removed
 

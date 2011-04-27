@@ -42,7 +42,7 @@ Version:
 			// Collision simulation
 			this.collisionManager = new RealtimeMultiplayerGame.modules.circlecollision.CircleManager();
 			this.collisionManager.setBounds(0, 0, DemoApp.Constants.GAME_WIDTH, DemoApp.Constants.GAME_HEIGHT);
-			this.collisionManager.setNumberOfCollisionPasses(1);
+			this.collisionManager.setNumberOfCollisionPasses(3);
 			this.collisionManager.setNumberOfTargetingPasses(0);
 		},
 
@@ -53,7 +53,7 @@ Version:
 			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
 			var total = 25;
 			for(var i = 0; i < total; i++) {
-				var radius = Math.floor( Math.random() * 10 + 5 );
+				var radius = DemoApp.Constants.ENTITY_DEFAULT_RADIUS + 5;
 				this.createCircleEntity( radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
 			}
 		},
@@ -86,7 +86,6 @@ Version:
 		 * Creates a WorldEntityDescription which it sends to NetChannel
 		 */
 		tick: function() {
-		   	this.collisionManager.handleCollisions();
 
 			var allCircles = this.collisionManager.getAllCircles();
 			var len = allCircles.length;
@@ -94,20 +93,33 @@ Version:
 			// push toward target position
 			for(var n = 0; n < len; n++)
 			{
-				var aCircle = allCircles[n];
-				aCircle.position.x += 1.5 + (n/len);
+				var aCollisionCircle = allCircles[n];
+				var circleEntity = aCollisionCircle.delegate;
 
-				this.collisionManager.handleBoundaryForCircle( aCircle );
-//				aCircle.position.y += Math.random() * 2 - 1;
-				aCircle.delegate.position = aCircle.position.clone();
+
+				// Modify velocity using perlin noise
+				var noise = RealtimeMultiplayerGame.model.noise(aCollisionCircle.position.x*0.002, aCollisionCircle.position.y*0.002, this.getGameTick()*0.01);
+				var angle = noise * 15;
+				var speed = 0.5;
+
+				circleEntity.acceleration.x += Math.cos( angle ) * speed;
+				circleEntity.acceleration.y += Math.sin( angle ) * speed;
+				circleEntity.velocity.translatePoint( circleEntity.acceleration );
+				circleEntity.velocity.limit( 5 );
+				aCollisionCircle.position.translatePoint( circleEntity.velocity );
+				// Wrap the circle
+				this.collisionManager.handleBoundaryForCircle( aCollisionCircle );
+				aCollisionCircle.delegate.position = aCollisionCircle.position.clone();
+				circleEntity.acceleration.set(0,0);
 			}
 
+			this.collisionManager.handleCollisions();
 			// Note we call superclass's implementation after we're done
 			DemoApp.DemoServerGame.superclass.tick.call(this);
 		},
 
 		shouldAddPlayer: function( aClientid, data ) {
-			this.createCircleEntity( 10, this.getNextEntityID(), aClientid);
+			this.createCircleEntity( DemoApp.Constants.ENTITY_DEFAULT_RADIUS, this.getNextEntityID(), aClientid);
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {

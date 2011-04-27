@@ -74,9 +74,6 @@ aside{
 	background-color: #333333;
 	border-bottom:20px solid #333333;
 	margin-bottom:50px;
-	-webkit-box-shadow:0 0px 40px -10px #000000;
-	   -moz-box-shadow:0 0px 40px -10px #000000;
-	        box-shadow:0 0px 40px -10px #000000;
 }
 
 #main p{

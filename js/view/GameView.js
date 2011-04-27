@@ -1,5 +1,5 @@
-RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.View.GameView");
+RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.View");
 
-RealtimeMultiplayerGame.View.GameView = function() {
+RealtimeMultiplayerGame.View.AbstractGameView = function() {
 	
 };

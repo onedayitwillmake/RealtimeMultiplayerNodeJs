@@ -19,13 +19,16 @@ Version:
 	DemoApp.DemoClientGame = function() {
 		DemoApp.DemoClientGame.superclass.constructor.call(this);
 
-		this.fieldController.getView().insertIntoHTMLElementWithId( "gamecontainer" );
-
 		this.startGameClock();
 		return this;
 	};
 
 	DemoApp.DemoClientGame.prototype = {
+		setupView: function() {
+			this.view = new DemoApp.DemoView();
+			this.view.insertIntoHTMLElementWithId( "gamecontainer" );
+			DemoApp.DemoClientGame.superclass.setupView.call( this );
+		},
 
 		/**
 		 * @inheritDoc
@@ -37,10 +40,11 @@ Version:
 
 		createEntityFromDesc: function(entityDesc) {
 
+			var diameter = DemoApp.Constants.ENTITY_DEFAULT_RADIUS * 2;
 			// Create a view via CAAT
 			var aCircleView = new CAAT.ShapeActor();
 			aCircleView.create();
-			aCircleView.setSize(60,60);
+			aCircleView.setSize( diameter, diameter );
 			aCircleView.setFillStyle( CAAT.Color.prototype.hsvToRgb( (entityDesc.entityid * 15) % 360, 40, 99).toHex() ); // Random color
 			aCircleView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
 

@@ -22,12 +22,11 @@ Version:
 	1.0
 */
 (function(){
-	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.View");
-	RealtimeMultiplayerGame.View.FieldView = function() {
+	DemoApp.DemoView = function() {
 		this.setupCAAT();
 	};
 
-	RealtimeMultiplayerGame.View.FieldView.prototype = {
+	DemoApp.DemoView.prototype = {
 		// Properties
 		caatDirector		: null,				// CAAT Director instance
 		caatScene			: null,				// CAAT Scene instance
@@ -38,8 +37,7 @@ Version:
 			this.caatScene.create();	// Notice we call create when creating this, and ShapeActor below. Both are Actors
 			this.caatScene.setFillStyle('#000000');
 
-
-			this.caatDirector = new CAAT.Director().initialize(700, 600); // Create the director instance
+			this.caatDirector = new CAAT.Director().initialize( DemoApp.Constants.GAME_WIDTH, DemoApp.Constants.GAME_HEIGHT ); // Create the director instance
 			this.caatDirector.addScene( this.caatScene ); // Immediately add the scene once it's created
 
 			// Start the render loop, with at 60FPS
@@ -61,11 +59,8 @@ Version:
 		// Memory
 		dealloc: function() {
 			this.director.destroy();
-		},
-
-		// Accessors
-		getCaatScene: function() { return this.caatScene; }
+		}
 	};
-})()
+})();
 
 

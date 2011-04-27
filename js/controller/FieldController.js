@@ -7,15 +7,8 @@
 	};
 
 	RealtimeMultiplayerGame.Controller.FieldController.prototype = {
-		view									: null,					// FieldView
 		entities								: null,					// A SortedLookupTable for all entities
 		players									: null,					// A SortedLookupTable for players only, stored using client.getSessionId()
-
-
-		// Will be called on client side
-		setupView: function() {
-			this.view = new RealtimeMultiplayerGame.View.FieldView();
-		},
 
 		/**
 		 * Update all entities
@@ -154,7 +147,7 @@
 			this.entities.dealloc();
 			this.players.dealloc();
 
-			if(this.view) this.view.dealloc();
+			this.view = null;
 
 			delete this.view;
 			delete this.players;
@@ -162,8 +155,29 @@
 		},
 
 ///// Accessors
+		// Will be called on client side
+		setView: function( aView ) {
+			var theInterface = RealtimeMultiplayerGame.Controller.FieldControllerViewProtocol;
+			for (var member in theInterface) {
+				if ( (typeof aView[member] != typeof theInterface[member]) ) {
+					console.log("object failed to implement interface member " + member);
+					return false;
+				}
+			}
+
+			// Checks passed
+			this.view = aView;
+		},
 		getView: function (){ return this.view },
 		getEntities: function() { return this.entities },
 		getEntityWithid: function( anEntityid ) { return this.entities.objectForKey(anEntityid); }
 	};
+
+	/**
+	 * Required methods for the FieldControllerView delegate
+	 */
+	RealtimeMultiplayerGame.Controller.FieldControllerViewProtocol = {
+		addEntity: function( anEntityView ) {},
+		dealloc: function() {}
+	}
 })();

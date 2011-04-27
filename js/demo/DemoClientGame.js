@@ -32,6 +32,7 @@ Version:
 		 */
 		tick: function() {
 			DemoApp.DemoClientGame.superclass.tick.call(this);
+			this.netChannel.addMessageToQueue( false, RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE, { clientid: this.netChannel.getClientid(), input: 256 } );
 		},
 
 		createEntityFromDesc: function(entityDesc) {

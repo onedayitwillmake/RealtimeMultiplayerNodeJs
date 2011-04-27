@@ -41,7 +41,7 @@ Version:
 	RealtimeMultiplayerGame.model.NetChannelMessage = function(aSequenceNumber, aClientid, isReliable, aCommandType, aPayload)
 	{
 		// Info
-		this.sequenceNumber = aSequenceNumber;
+		this.seq = aSequenceNumber;
 		this.id = aClientid; 					// Server gives us one when we first  connect to it
 		this.cmd = aCommandType;
 
@@ -59,7 +59,7 @@ Version:
 		isReliable			: false,
 		cmd					: 0,
 		aPayload			: null,
-		sequenceNumber		: -1,
+		seq					: -1,
 		id					: -1,
 		messageTime			: -1,
 

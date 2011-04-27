@@ -19,7 +19,7 @@ Version:
 		ENTITY_DEFAULT_RADIUS	: 15,
 		GAME_WIDTH				: 700,
 		GAME_HEIGHT				: 450,
-		MAX_CIRCLES				: 25,
+		MAX_CIRCLES				: 125,
 		GAME_DURATION			: 1000*300
 	}
 })();

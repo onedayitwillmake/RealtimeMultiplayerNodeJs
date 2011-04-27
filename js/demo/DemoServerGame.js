@@ -51,9 +51,9 @@ Version:
 		 */
 		setupRandomField: function() {
 			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
-			var total = 25;
+			var total = DemoApp.Constants.MAX_CIRCLES;
 			for(var i = 0; i < total; i++) {
-				var radius = DemoApp.Constants.ENTITY_DEFAULT_RADIUS + 5;
+				var radius = DemoApp.Constants.ENTITY_DEFAULT_RADIUS + 2;
 				this.createCircleEntity( radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
 			}
 		},
@@ -100,7 +100,7 @@ Version:
 				// Modify velocity using perlin noise
 				var noise = RealtimeMultiplayerGame.model.noise(aCollisionCircle.position.x*0.002, aCollisionCircle.position.y*0.002, this.getGameTick()*0.01);
 				var angle = noise * 15;
-				var speed = 0.5;
+				var speed = 0.45;
 
 				circleEntity.acceleration.x += Math.cos( angle ) * speed;
 				circleEntity.acceleration.y += Math.sin( angle ) * speed;

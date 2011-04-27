@@ -35,7 +35,7 @@ Version:
 		 * If it is set, it will call that CMD on its delegate
 		 */
 		setupCmdMap: function() {
-			DemoApp.DemoServerGame.superclass.setupCmdMap();
+			DemoApp.DemoServerGame.superclass.setupCmdMap.call(this);
 			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE] = this.shouldUpdatePlayer;
 		},
 
@@ -80,8 +80,6 @@ Version:
 			this.fieldController.addEntity( circleEntity );
 
 			circleEntity.entityType = DemoApp.Constants.ENTITY_TYPES.GENERIC_CIRCLE;
-			console.log( "creating circle entity:");
-			console.log( circleEntity );
 			return circleEntity;
 		},
 
@@ -143,8 +141,7 @@ Version:
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {
-			console.log( data );
-			console.log("DEMO::UPDATEPLAYER" + data);
+			console.log("DEMO::UPDATEPLAYER:: input = " + data.payload.input );
 		},
 
 		shouldRemovePlayer: function( aClientid ) {

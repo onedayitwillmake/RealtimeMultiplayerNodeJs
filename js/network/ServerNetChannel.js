@@ -143,12 +143,12 @@ Version:
 				console.log("(NetChannel)::onSocketMessage - no such client!");
 				return;
 			}
-
+			
 			//// Call the mapped function, always pass the connection. Also pass data if available
 			if( this.cmdMap[data.cmd] ) {
 				this.cmdMap[data.cmd].call(this, client, data);
-			} else if (this.delegate[data.cmd]) { // See if delegate has function mapped
-				this.delegate[data.cmd].call(this.delegate, client, data);
+			} else if (this.delegate.cmdMap[data.cmd]) { // See if delegate has function mapped
+				this.delegate.cmdMap[data.cmd].call(this.delegate, client, data);
 			} else { // Display error
 				console.log("(NetChannel)::onSocketMessage could not map '" + data.cmd + "' to function!");
 			}

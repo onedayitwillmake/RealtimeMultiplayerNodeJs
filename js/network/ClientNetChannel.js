@@ -281,10 +281,11 @@ Version:
 			// Add to array the queue using bitmask to wrap values
 			this.messageBuffer[ this.outgoingSequenceNumber & BUFFER_MASK ] = message;
 
-			if(isReliable) {
+			if(!isReliable) {
 				this.nextUnreliable = message;
 			}
 
+			console.log("added to queue");
 			++this.outgoingSequenceNumber;
 			if( RealtimeMultiplayerGame.Constants.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Adding Message to queue', this.messageBuffer[this.outgoingSequenceNumber & BUFFER_MASK], " ReliableBuffer currently contains: ", this.reliableBuffer);
 		},
@@ -345,7 +346,8 @@ Version:
 		* Determines if it's ok for the client to send a unreliable new message yet
 		*/
 		canSendMessage: function () {
-			var isReady = (this.gameClock > this.lastSentTime + this.cl_updateRate + 10000) ;
+			var isReady = (this.gameClock > this.lastSentTime + this.cl_updateRate) ;
+			return isReady;
 		},
 		getClientid: function(){ return this.clientid },
 		getIncomingWorldUpdateBuffer: function() { return this.incomingWorldUpdateBuffer }

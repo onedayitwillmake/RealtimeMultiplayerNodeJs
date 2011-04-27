@@ -40,7 +40,7 @@ Version:
 
 		netChannel				: null,											// ServerNetChannel / ClientNetChannel determined by subclass
 		fieldController			: null,							// FieldController
-
+		cmdMap: {},
 
 		/**
 		 * Setup the ClientNetChannel or ServerNetChannel
@@ -50,9 +50,7 @@ Version:
 		/**
 		 * setup the command mapping for the events recevied from netchannel
 		 */
-		setupCmdMap: function() {
-			this.cmdMap = {};
-		},
+		setupCmdMap: function() { },
 
 		// Methods
 		tick: function() {

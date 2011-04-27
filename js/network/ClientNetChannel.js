@@ -285,7 +285,6 @@ Version:
 				this.nextUnreliable = message;
 			}
 
-			console.log("added to queue");
 			++this.outgoingSequenceNumber;
 			if( RealtimeMultiplayerGame.Constants.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Adding Message to queue', this.messageBuffer[this.outgoingSequenceNumber & BUFFER_MASK], " ReliableBuffer currently contains: ", this.reliableBuffer);
 		},

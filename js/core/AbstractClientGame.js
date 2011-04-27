@@ -58,7 +58,6 @@ Version:
 			if( this.clientCharacter != null ) {
 				var input = this.clientCharacter.constructEntityDescription();
 				// this.netChannel.canSendMessage()
-				console.log("trying to send");
 				this.netChannel.addMessageToQueue( false, RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE, input );
 			}
 

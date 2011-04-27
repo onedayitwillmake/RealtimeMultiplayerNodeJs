@@ -20,16 +20,8 @@ Version:
 	};
 
 	DemoApp.PlayerEntity.prototype = {
-		radius					:	100,
-		collisionCircle			:	null, // An instance of RealtimeMultiplayerGame.modules.circlecollision.PackedCircle
 		entityType: DemoApp.Constants.ENTITY_TYPES.PLAYER_ENTITY,
 		input: null,
-
-		updateView: function() {
-			if(!this.view) return;
-			this.view.x = this.position.x;
-			this.view.y = this.position.y;
-		},
 
 		setInput: function( input ) {
 			this.input = input;
@@ -39,24 +31,12 @@ Version:
 		 * Deallocate memory
 		 */
 		dealloc: function() {
-			this.collisionCircle.dealloc();
-			this.collisionCircle = null;
+			this.input.dealloc();
+			delete this.input;
 			DemoApp.CircleEntity.superclass.dealloc.call(this);
-		},
-
-		///// ACCESSORS
-		/**
-		 * Set the CollisionCircle for this game entity.
-		 * @param aCollisionCircle
-		 */
-		setCollisionCircle: function( aCollisionCircle ) {
-			this.collisionCircle = aCollisionCircle;
-			this.collisionCircle.setDelegate( this );
-			this.collisionCircle.setPosition( this.position.clone() );
-		},
-		getCollisionCircle: function() { return this.collisionCircle }
+		}
 	};
 
 	// extend RealtimeMultiplayerGame.model.GameEntity
-	RealtimeMultiplayerGame.extend(DemoApp.PlayerEntity, RealtimeMultiplayerGame.model.GameEntity, null);
+	RealtimeMultiplayerGame.extend(DemoApp.PlayerEntity, DemoApp.CircleEntity, null);
 })();

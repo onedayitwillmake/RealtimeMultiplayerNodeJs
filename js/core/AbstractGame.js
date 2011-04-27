@@ -33,6 +33,7 @@ Version:
 		gameClockReal  			: 0,											// Actual time via "new Date().getTime();"
 		gameClock				: 0,											// Seconds since start
 		gameTick				: 0,											// Ticks since start
+		speedFactor				: 1,											// Used to create Framerate Independent Motion (FRIM) - 1.0 means running at exactly the correct speed, 0.5 means half-framerate. (otherwise faster machines which can update themselves more accurately will have an advantage)
 		intervalGameTick		: null,											// Setinterval for gametick
 		intervalFramerate		: 60,											// Try to call our tick function this often, intervalFramerate, is used to determin how often to call settimeout - we can set to lower numbers for slower computers
 		intervalTargetDelta		: NaN,	// this.targetDelta, milliseconds between frames. Normally it is 16ms or 60FPS. The framerate the game is designed against - used to create framerate independent motion
@@ -65,10 +66,10 @@ Version:
 
 			// Framerate Independent Motion -
 			// 1.0 means running at exactly the correct speed, 0.5 means half-framerate. (otherwise faster machines which can update themselves more accurately will have an advantage)
-			var speedFactor = delta / ( this.intervalTargetDelta );
-			if (speedFactor <= 0) speedFactor = 1;
+			this.speedFactor = delta / ( this.intervalTargetDelta );
+			if (this.speedFactor <= 0) this.speedFactor = 1;
 
-			this.fieldController.tick(speedFactor, this.clockActualTime, this.gameTick);
+			this.fieldController.tick(this.speedFactor, this.gameClockReal, this.gameTick);
 		},
 
 

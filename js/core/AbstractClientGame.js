@@ -54,14 +54,18 @@ Version:
 		tick: function() {
 			RealtimeMultiplayerGame.AbstractClientGame.superclass.tick.call(this);
 
-			// Continuously store information about our input
+			// Allow all entities to update their position
+			this.fieldController.getEntities().forEach( function(key, entity){
+				entity.updateView();
+			}, this );
+
+			// Continuously queue information about our input - which will be sent to the server by netchannel
 			if( this.clientCharacter != null ) {
 				var input = this.clientCharacter.constructEntityDescription();
-				// this.netChannel.canSendMessage()
 				this.netChannel.addMessageToQueue( false, RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE, input );
 			}
 
-
+			// Draw the gameworld
 			this.renderAtTime(this.gameClock - RealtimeMultiplayerGame.Constants.CLIENT_SETTING.INTERP - RealtimeMultiplayerGame.Constants.CLIENT_SETTING.FAKE_LAG );
 			this.netChannel.tick();
 		},

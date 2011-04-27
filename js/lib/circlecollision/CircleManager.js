@@ -24,6 +24,7 @@
      */
 	RealtimeMultiplayerGame.modules.circlecollision.CircleManager = function()
 	{
+		this.allCircles = [];
 		return this;
 	};
 
@@ -221,7 +222,8 @@
 			var constrainYMask = 1 << 4;
 
 			// Convert to bitmask - Uncomment the one you want, or concact your own :)
-			boundsRule = wrapYMask | constrainXMask;  // Wrap Y axis, but constrain horizontally
+			boundsRule = wrapXMask | wrapYMask;  // Wrap Y axis, but constrain horizontally
+
 
 			// Wrap X
 			if(boundsRule & wrapXMask && xpos-diameter > this.bounds.width) {
@@ -249,6 +251,13 @@
 			} else if(boundsRule & constrainYMask && ypos-radius < this.bounds.y) {
 				aCircle.position.y = this.bounds.y + radius;
 			}
+		},
+
+		handleBoundaryForAllCircles: function( boundsRule )
+		{
+			var len = this.allCircles.length;
+			for(var i = 0; i < len; i++)
+				this.handleBoundaryForCircle( this.allCircles[i], boundsRule)
 		},
 
 		/**

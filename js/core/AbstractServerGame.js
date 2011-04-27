@@ -57,6 +57,11 @@ Version:
 		tick: function() {
 			RealtimeMultiplayerGame.AbstractServerGame.superclass.tick.call(this);
 
+			// Allow all entities to update their position
+			this.fieldController.getEntities().forEach( function(key, entity){
+				entity.updatePosition(this.speedFactor, this.gameClock, this.gameTick );
+			}, this );
+
 			// Create a new world-entity-description,
 			var worldEntityDescription = new RealtimeMultiplayerGame.model.WorldEntityDescription( this, this.fieldController.getEntities() );
 			this.netChannel.tick( this.gameClock, worldEntityDescription );
@@ -76,6 +81,10 @@ Version:
 
 		shouldRemovePlayer: function( client, data ) {
 			console.log("(AbstractServerGame)::onPlayerDisconnect");
+		},
+
+		shouldEndGame: function() {
+			console.log("(AbstractServerGame)::shouldEndGame");
 		},
 
 

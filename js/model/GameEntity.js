@@ -42,8 +42,8 @@ Version:
 		 * @param gameClock		The current gameclock
 		 */
 		tick: function(speedFactor, gameClock) {
-			this.updatePosition(speedFactor);
-			this.updateView();
+//			this.updatePosition(speedFactor);
+//			this.updateView();
 		},
 
 		updateView: function() {
@@ -52,9 +52,12 @@ Version:
 
 		/**
 		 * Updates the position of this GameEntity based on it's movement properties (velocity, acceleration, damping)
-		 * @param speedFactor Float for considering framerate speedFactor, 1.0 means perfectly accurate.
+		 * @param {Number} speedFactor	A number signifying how much faster or slower we are moving than the target framerate
+		 * @param {Number} gameClock	Current game time in seconds (zero based)
+		 * @param {Number} gameTick		Current game tick (incrimented each frame)
 		 */
-		updatePosition: function(speedFactor) {
+		updatePosition: function( speedFactor, gameClock, gameTick ) {
+			// OVERRIDE
 		},
 
 		////// TRAIT SUPPORT

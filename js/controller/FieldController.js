@@ -18,10 +18,7 @@
 		 */
 		tick: function(speedFactor, gameClock, gameTick)
 		{
-			// Update entities
-			this.entities.forEach( function(key, entity){
-				entity.tick(speedFactor, gameClock, gameTick);
-			}, this );
+			// DO SOME STUFF
 		},
 
 		/**

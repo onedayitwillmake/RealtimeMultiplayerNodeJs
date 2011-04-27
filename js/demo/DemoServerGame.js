@@ -43,7 +43,7 @@ Version:
 			// Collision simulation
 			this.collisionManager = new RealtimeMultiplayerGame.modules.circlecollision.CircleManager();
 			this.collisionManager.setBounds(0, 0, DemoApp.Constants.GAME_WIDTH, DemoApp.Constants.GAME_HEIGHT);
-			this.collisionManager.setNumberOfCollisionPasses(3);
+			this.collisionManager.setNumberOfCollisionPasses(2);
 			this.collisionManager.setNumberOfTargetingPasses(0);
 		},
 
@@ -72,7 +72,7 @@ Version:
 
 			// Create the GameEntity
 			var circleEntity = new DemoApp.CircleEntity( anEntityid, aClientid );
-			circleEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT );
+			circleEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT);
 			circleEntity.setCollisionCircle( collisionCircle );
 
 			// Place the circle and collision circle into corresponding containers
@@ -105,33 +105,9 @@ Version:
 		 */
 		tick: function() {
 
-			var allCircles = this.collisionManager.getAllCircles();
-			var len = allCircles.length;
-
-			// push toward target position
-			for(var n = 0; n < len; n++)
-			{
-				var aCollisionCircle = allCircles[n];
-				var circleEntity = aCollisionCircle.delegate;
-
-
-				// Modify velocity using perlin noise
-				var noise = RealtimeMultiplayerGame.model.noise(aCollisionCircle.position.x*0.002, aCollisionCircle.position.y*0.002, this.getGameTick()*0.01);
-				var angle = noise * 15;
-				var speed = 0.45;
-
-				circleEntity.acceleration.x += Math.cos( angle ) * speed;
-				circleEntity.acceleration.y += Math.sin( angle ) * speed;
-				circleEntity.velocity.translatePoint( circleEntity.acceleration );
-				circleEntity.velocity.limit( 5 );
-				aCollisionCircle.position.translatePoint( circleEntity.velocity );
-				// Wrap the circle
-				this.collisionManager.handleBoundaryForCircle( aCollisionCircle );
-				aCollisionCircle.delegate.position = aCollisionCircle.position.clone();
-				circleEntity.acceleration.set(0,0);
-			}
-
+			this.collisionManager.handleBoundaryForAllCircles();
 			this.collisionManager.handleCollisions();
+
 			// Note we call superclass's implementation after we're done
 			DemoApp.DemoServerGame.superclass.tick.call(this);
 		},

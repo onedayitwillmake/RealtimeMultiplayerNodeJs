@@ -54,6 +54,7 @@ Version:
 
 		onMessage: function( messageData )
 		{
+
 			var messageIndex = this.incomingSequenceNumber & RealtimeMultiplayerGame.Constants.CLIENT_SETTING.UPDATE_RATE;
 			this.incomingMessageBuffer[messageIndex] = messageData;
 			this.incomingSequenceNumber++;

@@ -83,19 +83,23 @@ Version:
 			return circleEntity;
 		},
 
-		createPlayerEntity: function( aRadius, anEntityid, aClientid) {
-			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
-				collisionCircle.setRadius( aRadius );
-
+		createPlayerEntity: function( anEntityid, aClientid) {
 			// Create the GameEntity
 			var playerEntity = new DemoApp.PlayerEntity( anEntityid, aClientid );
-			playerEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT );
+				playerEntity.position.set( 100, 100 );
+
+			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
+				collisionCircle.setRadius( playerEntity.radius );
+
+			console.log( collisionCircle );
+
+			playerEntity.setInput( new RealtimeMultiplayerGame.Input.Keyboard() );
 			playerEntity.setCollisionCircle( collisionCircle );
 			
 			// place player on field
-			this.collisionManager.addCircle( playerEntity.getCollisionCircle() );
+			// this.collisionManager.addCircle( playerEntity.getCollisionCircle() );
 			this.fieldController.addEntity( playerEntity );
-
+			
 			return playerEntity;
 		},
 
@@ -113,11 +117,13 @@ Version:
 		},
 
 		shouldAddPlayer: function( aClientid, data ) {
-			this.createPlayerEntity( 100, this.getNextEntityID(), aClientid);
+			this.createPlayerEntity( this.getNextEntityID(), aClientid);
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {
-			console.log("DEMO::UPDATEPLAYER:: input = " + data.payload.input );
+			var entity = this.fieldController.getEntityWithid( data.payload.entityid );
+			entity.input.deconstructInputBitmask( data.payload.input );
+			// this.fieldController.shouldUpdatePlayer( aClientid, data );
 		},
 
 		shouldRemovePlayer: function( aClientid ) {

@@ -74,6 +74,11 @@ Version:
 			DemoApp.CircleEntity.superclass.dealloc.call(this);
 		},
 
+		constructEntityDescription: function() {
+			return DemoApp.CircleEntity.superclass.constructEntityDescription.call(this) +
+					',' + this.radius;
+		},
+
 		///// ACCESSORS
 		/**
 		 * Set the CollisionCircle for this game entity.

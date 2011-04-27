@@ -45,6 +45,7 @@ Version:
 		},
 
 		addEntity: function( anEntityView ) {
+			console.log( "Adding Entity To CAAT", anEntityView );
 			this.caatScene.addChild( anEntityView );
 		},
 

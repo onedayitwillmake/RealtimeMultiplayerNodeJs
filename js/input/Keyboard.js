@@ -4,7 +4,7 @@
 	 * A helper class to detect the current state of the controls of the game.
 	 */
 	RealtimeMultiplayerGame.Input.Keyboard = function() {
-		this.attachEvents();
+
 	};
 
 	RealtimeMultiplayerGame.Input.Keyboard.prototype = (function() {

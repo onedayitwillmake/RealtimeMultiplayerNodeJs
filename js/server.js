@@ -26,6 +26,7 @@ require("./network/ServerNetChannel.js");
 require("./core/AbstractServerGame.js");
 require("./model/GameEntity.js");
 require("./model/WorldEntityDescription.js");
+require("./input/Keyboard.js");
 
 
 require("./demo/DemoApp.js");

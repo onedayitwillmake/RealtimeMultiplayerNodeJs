@@ -39,7 +39,8 @@ Version:
 
 		createEntityFromDesc: function(entityDesc) {
 
-			var diameter = DemoApp.Constants.ENTITY_DEFAULT_RADIUS * 2;
+			var diameter = entityDesc.radius * 2;
+			console.log(entityDesc.radius);
 			// Create a view via CAAT
 			var aCircleView = new CAAT.ShapeActor();
 			aCircleView.create();

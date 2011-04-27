@@ -232,6 +232,8 @@ Version:
 				entityDescription.x = +entityDescAsArray[3];
 				entityDescription.y = +entityDescAsArray[4];
 				entityDescription.rotation = +entityDescAsArray[5];
+				entityDescription.radius = +entityDescAsArray[6];
+
 
 				// Store the final result using the entityid
 				worldDescription.setObjectForKey(entityDescription, entityDescription.entityid);

@@ -14,6 +14,7 @@ Version:
 */
 (function(){
 
+	var nOffset = Math.random() * 2000;
 	DemoApp.CircleEntity = function( anEntityid, aClientid) {
 		DemoApp.CircleEntity.superclass.constructor.call(this, anEntityid, aClientid );
 
@@ -28,11 +29,40 @@ Version:
 		acceleration			:	RealtimeMultiplayerGame.model.Point.prototype.ZERO,
 		collisionCircle			:	null,										// An instance of RealtimeMultiplayerGame.modules.circlecollision.PackedCircle
 		entityType: DemoApp.Constants.ENTITY_TYPES.GENERIC_CIRCLE,
-	
+
+		/**
+		 * Update the entity's view - this is only called on the clientside
+		 */
 		updateView: function() {
 			if(!this.view) return;
 			this.view.x = this.position.x - this.radius;
 			this.view.y = this.position.y - this.radius;
+		},
+
+		/**
+		 * Update position of this entity - this is only called on the serverside
+		 * @param {Number} speedFactor	A number signifying how much faster or slower we are moving than the target framerate
+		 * @param {Number} gameClock	Current game time in seconds (zero based)
+		 * @param {Number} gameTick		Current game tick (incrimented each frame)
+		 */
+		updatePosition: function( speedFactor, gameClock, gameTick ) {
+
+			// Modify velocity using perlin noise
+			var theta = 0.0001;
+
+			var noise = RealtimeMultiplayerGame.model.noise(nOffset+this.position.x*theta, nOffset+this.position.y*theta, gameTick*0.0015);
+			var angle = noise*15;
+			var speed = 0.15;
+			this.acceleration.x += Math.cos( angle ) * speed;
+			this.acceleration.y += Math.sin( angle ) * speed;
+			this.velocity.translatePoint( this.acceleration );
+			this.velocity.limit(5);
+			this.velocity.multiply(0.55);
+
+
+			this.collisionCircle.position.translatePoint( this.velocity );
+
+			this.position = this.collisionCircle.position.clone();
 		},
 
 		/**

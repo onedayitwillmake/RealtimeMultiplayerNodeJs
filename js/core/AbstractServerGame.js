@@ -43,10 +43,10 @@ Version:
 		 * If it is set, it will call that CMD on its delegate
 		 */
 		setupCmdMap: function() {
-			this.cmdMap = {};
+			RealtimeMultiplayerGame.AbstractServerGame.superclass.setupCmdMap.call( this );
+//			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE] = this.shouldUpdatePlayer;
 			// These are left in as an example
 //			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_JOINED] = this.onPlayerJoined;
-//			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE] = this.onPlayerUpdate;
 //			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_DISCONNECT] = this.onPlayerDisconnect;
 		},
 

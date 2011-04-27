@@ -50,7 +50,6 @@ Version:
 		clients					: null,					// SortedLookupTable
 		delegate				: null,					// Should conform to ServerNetChannel delegate
 		outgoingSequenceNumber	: 0,					// A unique ID for each message
-		cmdMap					: {},					// Map the CMD constants to functions
 	// Methods
 		/**
 		 * Initializes socket.io
@@ -81,6 +80,7 @@ Version:
 		/**
 		 * Checks all the clients to see if its ready for a new message.
 		 * If they are, have the client perform delta-compression on the worldDescription and send it off.
+			this.cmdMap = {};
 		 * @param gameClock		   The current (zero-based) game clock
 		 * @param worldDescription A description of all the entities currently in the world
 		 */
@@ -133,8 +133,6 @@ Version:
 		 */
 		onSocketMessage: function( data, connection )
 		{
-			console.log("onSocketMessage", data );
-
 			var client = this.clients.objectForKey(connection.sessionId);
 			//that.CMD_TO_FUNCTION[decodedMessage.cmds.cmd].apply(that, [connection, decodedMessage]);
 
@@ -147,11 +145,12 @@ Version:
 			}
 
 			//// Call the mapped function, always pass the connection. Also pass data if available
-			if( this.cmdMap[data.cmd] )
+			if( this.cmdMap[ data.cmd ] ) {
 				this.cmdMap[data.cmd].call(this, client, data);
-			else {
-				console.log("(NetChannel)::onSocketMessage could not map '" + data.cmd + "' to function!");
-				console.log( data );
+			} else if( this.delegate.cmdMap[data.cmd] ) {
+				this.delegate.cmdMap[data.cmd].call(this.delegate, client, data);
+			} else {
+				console.log("(NetChannel)::onSocketMessage could not map '" + data.cmd + "' to function! ");
 			}
 		},
 

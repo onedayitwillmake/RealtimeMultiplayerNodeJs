@@ -69,7 +69,6 @@ Basic Usage:
 		{
 			return {
 				entityid: this.entityid,
-				clientid: this.clientid,
 				input: this.input.constructInputBitmask()
 			}
 		},

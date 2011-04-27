@@ -44,6 +44,10 @@ Version:
 			this.netChannel = new RealtimeMultiplayerGame.ClientNetChannel( this );
 		},
 
+		setupCmdMap: function() {
+			RealtimeMultiplayerGame.AbstractClientGame.superclass.setupCmdMap.call( this );
+		},
+
 		tick: function() {
 			RealtimeMultiplayerGame.AbstractClientGame.superclass.tick.call(this);
 
@@ -52,7 +56,7 @@ Version:
 				var input = this.clientCharacter.constructEntityDescription();
 				// this.netChannel.canSendMessage()
 				console.log("trying to send");
-				this.netChannel.addMessageToQueue( false, RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE, { input: input } );
+				this.netChannel.addMessageToQueue( false, RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE, input );
 			}
 
 

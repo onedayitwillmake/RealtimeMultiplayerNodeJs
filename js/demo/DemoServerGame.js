@@ -36,6 +36,8 @@ Version:
 		 */
 		setupCmdMap: function() {
 			DemoApp.DemoServerGame.superclass.setupCmdMap();
+			console.log("SETTING COMMAND MAP");
+			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE] = this.shouldUpdatePlayer;
 		},
 
 		setupCollisionManager: function() {
@@ -130,7 +132,8 @@ Version:
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {
-			console.log("DEMO::UPDATEPLAYER");
+			console.log( data );
+			console.log("DEMO::UPDATEPLAYER" + data);
 		},
 
 		shouldRemovePlayer: function( aClientid ) {

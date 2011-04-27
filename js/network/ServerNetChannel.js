@@ -149,8 +149,10 @@ Version:
 			//// Call the mapped function, always pass the connection. Also pass data if available
 			if( this.cmdMap[data.cmd] )
 				this.cmdMap[data.cmd].call(this, client, data);
-			else
+			else {
 				console.log("(NetChannel)::onSocketMessage could not map '" + data.cmd + "' to function!");
+				console.log( data );
+			}
 		},
 
 	////// Game callbacks

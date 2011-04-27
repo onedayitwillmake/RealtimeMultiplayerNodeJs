@@ -49,10 +49,10 @@ Version:
 
 			// Continuously store information about our input
 			if( this.clientCharacter != null ) {
-				var characterStatus = this.clientCharacter.constructEntityDescription();
+				var input = this.clientCharacter.constructEntityDescription();
 				// this.netChannel.canSendMessage()
-				this.netChannel.addMessageToQueue( false, RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE, { characterStatus: characterStatus } );
-				console.log("sending message!!!");
+				console.log("trying to send");
+				this.netChannel.addMessageToQueue( false, RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE, { input: input } );
 			}
 
 

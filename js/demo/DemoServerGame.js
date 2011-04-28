@@ -97,7 +97,7 @@ Version:
 
 			// place player on field
 			this.collisionManager.addCircle( playerEntity.getCollisionCircle() );
-			this.fieldController.addEntity( playerEntity );
+			this.fieldController.addPlayer( playerEntity );
 
 			return playerEntity;
 		},
@@ -107,7 +107,6 @@ Version:
 		 * Creates a WorldEntityDescription which it sends to NetChannel
 		 */
 		tick: function() {
-
 			this.collisionManager.handleBoundaryForAllCircles();
 			this.collisionManager.handleCollisions();
 
@@ -120,15 +119,16 @@ Version:
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {
-//			                                         console.log("data.payload.entityid", data.payload.entityid)
+//			console.log("data.payload.entityid", data.payload.entityid)
 			var entity = this.fieldController.getEntityWithid( data.payload.entityid );
 			entity.input.deconstructInputBitmask( data.payload.input );
 		},
 
 		shouldRemovePlayer: function( aClientid ) {
+			DemoApp.DemoServerGame.superclass.shouldRemovePlayer.call( this, aClientid );
 			console.log("DEMO::REMOVEPLAYER");
 		}
-	}
+	};
 
 	// extend RealtimeMultiplayerGame.AbstractServerGame
 	RealtimeMultiplayerGame.extend(DemoApp.DemoServerGame, RealtimeMultiplayerGame.AbstractServerGame, null);

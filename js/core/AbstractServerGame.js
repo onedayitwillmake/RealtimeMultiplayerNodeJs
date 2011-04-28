@@ -71,16 +71,12 @@ Version:
 			}
 		},
 
-		shouldAddPlayer: function( client, data ) {
-			console.log("(AbstractServerGame)::onPlayerJoined");
-		},
-
 		shouldUpdatePlayer: function( client, data ) {
 			console.log("(AbstractServerGame)::onPlayerUpdate");
 		},
 
-		shouldRemovePlayer: function( client, data ) {
-			console.log("(AbstractServerGame)::onPlayerDisconnect");
+		shouldRemovePlayer: function( clientid ) {
+			this.fieldController.removePlayer( clientid );
 		},
 
 		shouldEndGame: function() {

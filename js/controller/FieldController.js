@@ -55,22 +55,28 @@
 		},
 
 ///// Memory
+
+		addPlayer: function( aPlayerEntity ) {
+			this.addEntity( aPlayerEntity );
+			this.players.setObjectForKey( aPlayerEntity, aPlayerEntity.clientid );
+		},
+		
 		/**
 		 * Remove a player.
 		 * Does player stuff, then calls removeEntity.
 		 * @param sessionId	ConnectionID of the player who jumped out of the game
 		 */
-		removePlayer: function( sessionId )
+		removePlayer: function( clientid )
 		{
-			var player = this.players.objectForKey(sessionId);
-
+			var player = this.players.objectForKey(clientid);
+			console.log('removing player from field: ', player );
 			if(!player) {
-				console.log("(FieldController), No 'Character' with connectionID " + connectionID + " ignoring...");
+				console.log("(FieldController), No 'Character' with clientid " + clientid + " ignoring...");
 				return;
 			}
 
 			this.removeEntity( player.entityid );
-			this.players.remove(player.sessionId);
+			this.players.remove(player.clientid);
 		},
 
 

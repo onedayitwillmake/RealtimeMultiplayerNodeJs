@@ -35,7 +35,7 @@ Version:
 
 		updatePosition: function() {
 			var moveSpeed = 1.5;
-			// Horizontal acceleration
+			// Horizontal accelertheation
 			if( this.input.isLeft() ) this.acceleration.x -= moveSpeed;
 			if( this.input.isRight() ) this.acceleration.x += moveSpeed;
 

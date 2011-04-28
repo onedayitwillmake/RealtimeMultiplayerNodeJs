@@ -122,8 +122,9 @@ Version:
 		 * Callback from socket.io when a client has disconnected
 		 * @param client
 		 */
-		onSocketClosed: function(client) {
-			//console.log("onSocketClosed");
+		onSocketClosed: function( clientConnection ) {
+			var client = this.clients.objectForKey( clientConnection.sessionId );
+			this.delegate.shouldRemovePlayer( client.getClientid() );
 		},
 
 		/**
@@ -163,6 +164,7 @@ Version:
 		 * @param data
 		 */
 		onPlayerJoined: function( client, data ) {
+			console.log( client.getClientid() + " joined the game!");
 			this.delegate.shouldAddPlayer( client.getClientid(), data);
 			client.getConnection().send( data );
 		},

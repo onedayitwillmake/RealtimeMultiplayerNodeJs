@@ -63,6 +63,11 @@ Version:
 			this.caatScene.addChild( anEntityView );
 		},
 
+		removeEntity: function( anEntityView ) {
+			console.log( "Removing Entity From CAAT", anEntityView );
+			this.caatScene.removeChild( anEntityView );
+		},
+
 		/**
 		 * Insert the CAATDirector canvas into an HTMLElement
 		 * @param {String} id An HTMLElement id

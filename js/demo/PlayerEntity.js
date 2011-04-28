@@ -23,7 +23,7 @@ Version:
 	DemoApp.PlayerEntity.prototype = {
 		entityType: DemoApp.Constants.ENTITY_TYPES.PLAYER_ENTITY,
 		input: null,
-		radius: 50,
+		radius: 40,
 		
 		updateView: function() {
 			DemoApp.PlayerEntity.superclass.updateView.call( this );
@@ -34,23 +34,26 @@ Version:
 		},
 
 		updatePosition: function() {
-			if( this.input.isUp() ) {
-				this.position.y--;
-			}
+			var moveSpeed = 1.5;
+			// Horizontal acceleration
+			if( this.input.isLeft() ) this.acceleration.x -= moveSpeed;
+			if( this.input.isRight() ) this.acceleration.x += moveSpeed;
 
-			if( this.input.isDown() ) {
-				this.position.y++;
-			}
+			// Vertical movement
+			if( this.input.isUp() ) this.acceleration.y -= moveSpeed;
+			if( this.input.isDown() ) this.acceleration.y += moveSpeed;
 
-			if( this.input.isLeft() ) {
-				this.position.x--;
-			}
+			this.velocity.translatePoint( this.acceleration );
+			this.velocity.limit(5);
+			this.velocity.multiply(0.85);
+			this.acceleration.set(0,0);
+			this.collisionCircle.position.translatePoint( this.velocity );
+			this.position = this.collisionCircle.position.clone();
+		},
 
-			if( this.input.isRight() ) {
-				this.position.x++;
-			}
-
-			// console.log( this.input.isUp() );
+		setCollisionCircle: function( aCollisionCircle ) {
+			DemoApp.PlayerEntity.superclass.setCollisionCircle.call( this, aCollisionCircle );
+		//	this.collisionCircle.setIsFixed( true );
 		},
 
 		/**

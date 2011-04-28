@@ -35,6 +35,7 @@ Version:
 		 */
 		tick: function() {
 			DemoApp.DemoClientGame.superclass.tick.call(this);
+			this.view.stats.update();
 		},
 
 		createEntityFromDesc: function(entityDesc) {

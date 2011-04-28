@@ -24,12 +24,14 @@ Version:
 (function(){
 	DemoApp.DemoView = function() {
 		this.setupCAAT();
+		this.setupStats();
 	};
 
 	DemoApp.DemoView.prototype = {
 		// Properties
 		caatDirector		: null,				// CAAT Director instance
 		caatScene			: null,				// CAAT Scene instance
+		stats				: null,				// Stats.js instance
 
 		// Methods
 		setupCAAT: function() {
@@ -42,6 +44,18 @@ Version:
 
 			// Start the render loop, with at 60FPS
 			this.caatDirector.loop(60);
+		},
+
+		/**
+		 * Creates a Stats.js instance and adds it to the page
+		 */
+		setupStats: function() {
+			var container = document.createElement( 'div' );
+			this.stats = new Stats();
+			this.stats.domElement.style.position = 'absolute';
+			this.stats.domElement.style.top = '0px';
+			container.appendChild( this.stats.domElement );
+			document.body.appendChild( container );
 		},
 
 		addEntity: function( anEntityView ) {

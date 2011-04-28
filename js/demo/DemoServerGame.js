@@ -54,7 +54,7 @@ Version:
 			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
 			var total = DemoApp.Constants.MAX_CIRCLES;
 			for(var i = 0; i < total; i++) {
-				var radius = DemoApp.Constants.ENTITY_DEFAULT_RADIUS + 2;
+				var radius = DemoApp.Constants.ENTITY_DEFAULT_RADIUS + Math.random() * 5;
 				this.createCircleEntity( radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
 			}
 		},
@@ -72,6 +72,7 @@ Version:
 
 			// Create the GameEntity
 			var circleEntity = new DemoApp.CircleEntity( anEntityid, aClientid );
+			circleEntity.radius = aRadius;
 			circleEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT);
 			circleEntity.setCollisionCircle( collisionCircle );
 

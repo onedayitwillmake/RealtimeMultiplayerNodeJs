@@ -225,10 +225,10 @@ Version:
 
 				// GUARANTEED TO BE IN ORDER.
 				// SEE GameEntity.js::constructEntityDescription
-				// Using the unary operator to convert string to number as it is the fastest.
+				// Using the unary operator to convert string to number
 				entityDescription.entityid = +entityDescAsArray[0];
 				entityDescription.clientid = +entityDescAsArray[1];
-				entityDescription.entityType = +entityDescAsArray[2]; // convert to int
+				entityDescription.entityType = +entityDescAsArray[2];
 				entityDescription.x = +entityDescAsArray[3];
 				entityDescription.y = +entityDescAsArray[4];
 				entityDescription.rotation = +entityDescAsArray[5];

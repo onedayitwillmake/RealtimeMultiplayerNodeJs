@@ -48,20 +48,20 @@ Version:
 		updatePosition: function( speedFactor, gameClock, gameTick ) {
 
 			// Modify velocity using perlin noise
-			var theta = 0.0001;
+			var theta = 0.008;
 
-			var noise = RealtimeMultiplayerGame.model.noise(nOffset+this.position.x*theta, nOffset+this.position.y*theta, gameTick*0.0015);
-			var angle = noise*15;
-			var speed = 0.15;
-			this.acceleration.x += Math.cos( angle ) * speed;
-			this.acceleration.y += Math.sin( angle ) * speed;
+			var noise = RealtimeMultiplayerGame.model.noise(nOffset+this.position.x*theta, nOffset+this.position.y*theta, gameTick*0.001);
+			var angle = noise*12;
+			var speed = 0.2;
+			this.acceleration.x += Math.cos( angle ) * speed - 0.3;
+			this.acceleration.y -= Math.sin( angle ) * speed;
+
+
 			this.velocity.translatePoint( this.acceleration );
 			this.velocity.limit(5);
-			this.velocity.multiply(0.55);
-
-
+			this.velocity.multiply(0.9);
+			this.acceleration.set(0,0);
 			this.collisionCircle.position.translatePoint( this.velocity );
-
 			this.position = this.collisionCircle.position.clone();
 		},
 
@@ -75,8 +75,7 @@ Version:
 		},
 
 		constructEntityDescription: function() {
-			return DemoApp.CircleEntity.superclass.constructEntityDescription.call(this) +
-					',' + this.radius;
+			return DemoApp.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + this.radius;
 		},
 
 		///// ACCESSORS

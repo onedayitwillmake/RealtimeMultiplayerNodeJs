@@ -76,8 +76,43 @@ Version:
 		 */
 		netChannelDidConnect: function (messageData) {
 			DemoApp.DemoClientGame.superclass.netChannelDidConnect( messageData );
+			DemoApp.DemoClientGame.prototype.log({ message: ['DemoClientGame', 'Joining Game..'] })
 			this.joinGame("Player" + this.netChannel.getClientid() ); // Automatically join the game with some name
-		}
+		},
+
+		/**
+		 * @inheritDoc
+		 */
+		netChannelDidDisconnect: function (messageData) {
+			DemoApp.DemoClientGame.superclass.netChannelDidDisconnect( messageData );
+			// Display disconnect
+			DemoApp.DemoClientGame.prototype.log({ message: ['DemoClientGame', 'Connection Lost..'] })
+		},
+
+		/**
+		 * This function logs something to the right panel
+		 * @param {Object} An object in the form of: { message: ['Client', 'domReady'] }
+
+		 */
+		log: (function(){
+			var message = function(obj){
+				var el = document.createElement('p');
+				if ('announcement' in obj) el.innerHTML = '<em>' + esc(obj.announcement) + '</em>';
+				else if ('message' in obj) el.innerHTML = '<b>' + esc(obj.message[0]) + ':</b> ' + esc(obj.message[1]);
+
+				// Log if possible
+				if( obj.message && window.console && console.log ) console.log(obj.message[0], obj.message[1]);
+
+				document.getElementsByTagName('aside')[0].appendChild(el);
+				document.getElementsByTagName('aside')[0].scrollTop = 1000000;
+			};
+
+			var esc = function (msg){
+				return msg.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+			};
+
+			return message;
+		})()
 	}
 
 	// extend RealtimeMultiplayerGame.AbstractClientGame

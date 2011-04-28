@@ -11,27 +11,22 @@ body{
 	font-family:Helvetica, Helvetica Neue, Arial, sans-serif;
 }
 
+a, a:active, a:visited { color: #1c1c1c; }
+a:hover { color: #333333; }
+
 .wrapper{
 	margin:auto;
-	width:960px;
+	width:950px;
 }
 
 #header-container{
 	background-color: #333333;
 	height:130px;
-	border-bottom:20px solid #666666;
+	border-bottom:20px solid #9dfafa;
 	margin-bottom:50px;
 	-webkit-box-shadow:0 40px 40px -40px #AAA;
 	   -moz-box-shadow:0 40px 40px -40px #AAA;
 	        box-shadow:0 40px 40px -40px #AAA;
-}
-
-h2, h3{
-	margin:30px 0;
-}
-
-#title, h2, h3{
-	font-weight:normal;
 }
 
 #title{
@@ -51,6 +46,7 @@ h3{
 
 nav{
 	float:right;
+	margin-right: -52px;
 	margin-top:100px;
 }
 
@@ -62,28 +58,31 @@ nav a{
 	padding:20px;
 	color:white;
 	text-decoration:none;
-	background-color: #666666;
+	background-color: #9dfafa;
 }
 
 aside{
 	color:white;
-	padding:20px;
+	padding:10px;
 	float:right;
 	height:500px;
-	width:200px;
+	width:250px;
 	background-color: #333333;
 	border-bottom:20px solid #333333;
 	margin-bottom:50px;
+	margin-right:-50px;
+	overflow:hidden;
 }
 
 #main p{
-	font:16px/26px Helvetica, Helvetica Neue, Arial;
+	font-family:Helvetica, Helvetica Neue, Arial;
 	width:620px;
 	text-shadow:none;
 }
 
 aside p {
-	font: 10px;
+	font-size:11px;
+	font-family:monospace;
 }
 
 #main header h2{
@@ -104,7 +103,7 @@ article header{
 #footer-container{
 	background-color: #333333;
 	height:240px;
-	border-top:20px solid #666666;
+	border-top:20px solid #9dfafa;
 	margin-top:50px;
 	-webkit-box-shadow:0 -40px 40px -40px #AAA;
 	   -moz-box-shadow:0 -40px 40px -40px #AAA;
@@ -113,6 +112,8 @@ article header{
 
 #footer-container footer{
 	color:white;
+	margin-top: 10px;
+
 }
 
 .info{

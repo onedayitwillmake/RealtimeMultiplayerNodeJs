@@ -60,8 +60,10 @@ Version:
 		 * Deallocate memory
 		 */
 		dealloc: function() {
-			this.input.dealloc();
-			delete this.input;
+			if(this.input) {
+				this.input.dealloc();
+				delete this.input;
+			}
 			DemoApp.CircleEntity.superclass.dealloc.call(this);
 		}
 	};

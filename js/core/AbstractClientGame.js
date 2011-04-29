@@ -100,7 +100,6 @@ Version:
 			while(++i < len)
 			{
 				var currentWED = cmdBuffer[i];
-
 				// We fall between this "currentWorldEntityDescription", and the last one we just checked
 				if(currentWED.gameClock >= renderTime) {
 					previousWED = cmdBuffer[i-1];
@@ -239,6 +238,7 @@ Version:
 		},
 
 
+<<<<<<< HEAD
 		/**
 		 * Start/Restart the game tick
 		 */
@@ -276,6 +276,46 @@ Version:
 
 //			this.intervalGameTick = setInterval( function(){ that.tick() }, this.intervalTargetDelta);
 		},
+=======
+//		/**
+//		 * Start/Restart the game tick
+//		 */
+//		startGameClock: function()
+//		{
+//			/**
+//			 * Provides requestAnimationFrame in a cross browser way.
+//			 * http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+//			 */
+//
+//			var that = this;
+//			this.intervalTargetDelta = Math.floor( 1000/this.intervalFramerate );
+//			if ( !window.requestAnimationFrame ) {
+////				   debugger;
+//				window.requestAnimationFrame = ( function() {
+//
+//					return window.webkitRequestAnimationFrame ||
+//					window.mozRequestAnimationFrame ||
+//					window.oRequestAnimationFrame ||
+//					window.msRequestAnimationFrame ||
+//					function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
+//
+//						window.setTimeout( callback, 1000 / 60 );
+//
+//					};
+//
+//				} )();
+//
+//			}
+//
+//			(function animloop(){
+//				that.tick();
+////				window.setTimeout( animloop, 1000 / 20 );
+//			  requestAnimationFrame(animloop);
+//			})();
+//
+////			this.intervalGameTick = setInterval( function(){ that.tick() }, this.intervalTargetDelta);
+//		},
+>>>>>>> 8ffef883c9f47ca5718e4e8bea3f1da85c2d6f11
 
 		/**
 		 * Called by NetChannel when it receives a command if it decides not to intercept it.

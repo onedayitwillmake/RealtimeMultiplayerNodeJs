@@ -31,7 +31,7 @@ Version:
 		view										: null,							// View
 		nickname									: '',							// User 'nickname'
 		clientCharacter								: null,							// Reference to this users character
-
+		locateUpdateFailedCount						: 0,
 
 		// Methods
 		setupView: function() {
@@ -96,14 +96,30 @@ Version:
 			// Loop through the points, until we find the first one that has a timeValue which is greater than our renderTime
 			// Knowing that then we know that the combined with the one before it - that passed our just check - we know we want to render ourselves somehwere between these two points
 			var i = 0;
+			var forceUpdate = false;
 			while(++i < len)
 			{
 				var currentWED = cmdBuffer[i];
+
 				// We fall between this "currentWorldEntityDescription", and the last one we just checked
-				if(currentWED.gameClock >= renderTime || i === len -1) {
+				if(currentWED.gameClock >= renderTime) {
 					previousWED = cmdBuffer[i-1];
 					nextWED = currentWED;
+					this.locateUpdateFailedCount = 0;
 					break;
+				}
+
+				// Have no found a matching update for a while - the client is way behind the server, set our time to the time of the last udpate we received
+//				if(i === len -1) {
+//					if(++this.locateUpdateFailedCount === RealtimeMultiplayerGame.Constants.CLIENT_SETTING.MAX_UPDATE_FAILURE_COUNT) {
+//						this.gameClock = currentWED.gameClock;
+//						this.gameTick = currentWED.gameTick;
+//						previousWED = cmdBuffer[i-1];
+//						nextWED = currentWED;
+//					}
+//				}
+				if(i === len -1) {
+					this.log("RenderAtTime: ERROR");
 				}
 			}
 
@@ -255,8 +271,7 @@ Version:
 
 			(function animloop(){
 				that.tick();
-//				window.setTimeout( animloop, 1000 / 20 );
-			  requestAnimationFrame(animloop);
+				window.setTimeout( animloop, 1000 / 31 );
 			})();
 
 //			this.intervalGameTick = setInterval( function(){ that.tick() }, this.intervalTargetDelta);

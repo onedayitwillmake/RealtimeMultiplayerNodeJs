@@ -352,7 +352,7 @@ Version:
 		},
 		getClientid: function(){ return this.clientid },
 		getIncomingWorldUpdateBuffer: function() { return this.incomingWorldUpdateBuffer }
-	}
+	};
 
 	/**
 	 * Required methods for the ClientNetChannel delegate
@@ -361,6 +361,7 @@ Version:
 		netChannelDidConnect: function() {},
 		netChannelDidReceiveMessage: function( aMessage ) {},
 		netChannelDidDisconnect: function() {},
+		log: function() {},
 		getGameClock: function() {}
 	}
 })()

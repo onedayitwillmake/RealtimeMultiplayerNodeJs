@@ -198,6 +198,7 @@ Version:
 		shouldAddPlayer: function( clientID, data ) {},
 		shouldRemovePlayer: function( clientID ) {},
 		getNextEntityID: function() {},
-		getGameClock: function() {}
+		getGameClock: function() {},
+		log: function(){}
 	}
 })();

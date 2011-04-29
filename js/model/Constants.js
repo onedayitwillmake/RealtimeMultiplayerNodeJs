@@ -30,12 +30,13 @@ Version:
 
 		CLIENT_SETTING:
 		{
-			INTERP		: 75,						// How far back to interpolate the client-rendered world
+			INTERP		: 90,						// How far back to interpolate the client-rendered world
 			FAKE_LAG	: 0,						// Used to simulate latency
-			UPDATE_RATE	: 1000/25, 					// How often to request a world-update from the server
-			CMD_RATE	: 1000/30,                  // How often a client can send messages to server
+			UPDATE_RATE	: 1000/20, 					// How often to request a world-update from the server
+			CMD_RATE	: 1000/25,                  // How often a client can send messages to server
 			MAX_BUFFER	: 31,
-			EXPIRED_ENTITY_CHECK_RATE	: 30		// How often we clear out entities that the server says no longer exist. Lower looks better but decreases framerate
+			EXPIRED_ENTITY_CHECK_RATE	: 30,		// How often we clear out entities that the server says no longer exist. Lower looks better but decreases framerate
+			MAX_UPDATE_FAILURE_COUNT	: 3			// How many times we allow ourselves to fail when getting behind the server time
 		},
 
 		CMDS: {
@@ -48,7 +49,6 @@ Version:
 			PLAYER_UPDATE		: 1 << 7,			// Player is sending sampled input
 			SERVER_FULL_UPDATE	: 1 << 8			// Player is sending sampled input
 		},
-
 
 		// The client sends this bitmask to the server
 		// See (Keyboard.js)

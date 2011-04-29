@@ -102,6 +102,10 @@ Version:
 			clearInterval( this.intervalGameTick );
 		},
 
+		log: function() {
+			// OVERRIDE or USE CONSOLE.LOG
+		},
+
 		///// Accessors
 		getGameClock: function() { return this.gameClock; },
 		getGameTick: function() { return this.gameTick; }

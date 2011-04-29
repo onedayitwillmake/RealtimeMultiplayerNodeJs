@@ -43,7 +43,17 @@ Version:
 			this.caatDirector.addScene( this.caatScene ); // Immediately add the scene once it's created
 
 			// Start the render loop, with at 60FPS
-			this.caatDirector.loop(60);
+//			this.caatDirector.loop(60);
+		},
+
+		/**
+		 * Updates our current view, passing along the current actual time (via Date().getTime());
+		 * @param {Number} gameClockReal The current actual time, according to the game
+		 */
+		update: function( gameClockReal ) {
+			var delta = gameClockReal - this.caatDirector.timeline;
+			this.caatDirector.render( delta );
+			this.caatDirector.timeline = gameClockReal;
 		},
 
 		/**

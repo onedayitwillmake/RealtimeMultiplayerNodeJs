@@ -24,6 +24,7 @@ Version:
 (function(){
 
 	RealtimeMultiplayerGame.AbstractServerGame = function() {
+		this.intervalFramerate += 6;
 		RealtimeMultiplayerGame.AbstractServerGame.superclass.constructor.call(this);
 		return this;
 	};

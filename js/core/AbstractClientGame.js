@@ -181,14 +181,14 @@ Version:
 
 				// Update the entity with the new information, and insert it into the activeEntities array
 				this.fieldController.updateEntity( entityid, newPosition, newRotation );
-//				activeEntities[objectID] = true;
+				activeEntities[entityid] = true;
 
 			}, this);
 
 
-//			// Destroy removed entities
-//			if(this.gameTick % 10 === 0)
-//				this.fieldController.removeExpiredEntities( activeEntities );
+			// Destroy removed entities
+			if(this.gameTick % RealtimeMultiplayerGame.Constants.CLIENT_SETTING.EXPIRED_ENTITY_CHECK_RATE === 0)
+				this.fieldController.removeExpiredEntities( activeEntities );
 //
 //			this.director.render( this.clockActualTime - this.director.timeline );
 //			this.director.timeline = this.clockActualTime;

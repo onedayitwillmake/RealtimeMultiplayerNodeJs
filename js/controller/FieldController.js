@@ -8,7 +8,7 @@
 
 	RealtimeMultiplayerGame.Controller.FieldController.prototype = {
 		entities								: null,					// A SortedLookupTable for all entities
-		players									: null,					// A SortedLookupTable for players only, stored using client.getSessionId()
+		players									: null,					// A SortedLookupTable for players only, stored using client.getClientid()
 
 		/**
 		 * Update all entities
@@ -64,7 +64,7 @@
 		/**
 		 * Remove a player.
 		 * Does player stuff, then calls removeEntity.
-		 * @param sessionId	ConnectionID of the player who jumped out of the game
+		 * @param clientid	ConnectionID of the player who jumped out of the game
 		 */
 		removePlayer: function( clientid )
 		{
@@ -102,9 +102,9 @@
 		 */
 		removeExpiredEntities: function( activeEntities )
 		{
-			var entityKeysArray = this.entities._keys,
-			i = entityKeysArray.length,
-			key;
+			var entityKeysArray = this.entities._keys;
+			var i = entityKeysArray.length;
+			var key;
 			var totalRemoved = 0;
 
 			while (i--)
@@ -117,16 +117,14 @@
 
 				// This entity is not active, check if it belongs to the server
 				var entity = this.entities.objectForKey(key);
+				var isPlayer = this.players.objectForKey( entity.clientid ) != null;
 
-//				if(entity.clientid == 0)  {
-//					continue;
-//				}
 
-				if( GAMECONFIG.ENTITY_MODEL.ENTITY_MAP.CHARACTER == entity.entityType ) {
+				// Remove special way if player (which calls removeEntity on itself as well), or just remove it as an entity
+				if( isPlayer ) {
 					this.removePlayer( entity.clientid );
 				} else {
-					// Is not active, and does not belong to the server
-					this.removeEntity(key);
+					this.removeEntity( entity.entityid );
 				}
 
 				totalRemoved++;
@@ -139,7 +137,7 @@
 			this.isDeallocated = true;
 
 			this.players.forEach( function(key, entity){
-				this.removePlayer(entity.sessionId);
+				this.removePlayer(entity.clientid);
 			}, this );
 
 			this.entities.forEach( function(key, entity){

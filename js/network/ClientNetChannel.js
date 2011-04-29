@@ -67,7 +67,7 @@ Version:
 			var that = this;
 			this.socketio.on('connect', function(){ that.onSocketConnect() });
 			this.socketio.on('message', function( obj ){ that.onSocketDidAcceptConnection( obj ) });
-			this.socketio.on('disconnect', function( obj ){ that.onSocketDisconnect( obj ) });
+			this.socketio.on('disconnect', function(){ that.onSocketDisconnect() });
 		},
 
 		/**
@@ -140,7 +140,8 @@ Version:
 				console.log("(NetChannel)::onSocketMessage could not map '" + aNetChannelMessage.cmd + "' to function!");
 		},
 
-		onSocketDisconnect: function( obj ) {
+		onSocketDisconnect: function( ) {
+			this.delegate.netChannelDidDisconnect();
 			console.log("(ClientNetChannel)::onSocketDisconnect", arguments);
 		},
 

@@ -89,7 +89,8 @@ Version:
 		 */
 		stopGameClock: function()
 		{
-			clearInterval( this.intervalGameTick );
+			clearInterval( RealtimeMultiplayerGame.AbstractGame.prototype.intervalGameTick  );
+			clearTimeout( RealtimeMultiplayerGame.AbstractGame.prototype.intervalGameTick  );
 		},
 
 		setGameDuration: function() {},

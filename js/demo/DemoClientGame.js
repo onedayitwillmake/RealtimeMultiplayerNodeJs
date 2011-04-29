@@ -81,8 +81,8 @@ Version:
 		 * @inheritDoc
 		 */
 		netChannelDidConnect: function (messageData) {
-			DemoApp.DemoClientGame.superclass.netChannelDidConnect( messageData );
-			DemoApp.DemoClientGame.prototype.log("DemoClientGame: Joining Game")
+			DemoApp.DemoClientGame.superclass.netChannelDidConnect.call(this, messageData );
+			DemoApp.DemoClientGame.prototype.log("DemoClientGame: Joining Game");
 			this.joinGame("Player" + this.netChannel.getClientid() ); // Automatically join the game with some name
 		},
 
@@ -90,9 +90,8 @@ Version:
 		 * @inheritDoc
 		 */
 		netChannelDidDisconnect: function (messageData) {
-			DemoApp.DemoClientGame.superclass.netChannelDidDisconnect( messageData );
-			// Display disconnect
-			DemoApp.DemoClientGame.prototype.log("DemoClientGame: netChannelDidDisconnect")
+			DemoApp.DemoClientGame.superclass.netChannelDidDisconnect.call(this, messageData );
+			DemoApp.DemoClientGame.prototype.log("DemoClientGame: netChannelDidDisconnect"); // Display disconnect
 		},
 
 		/**

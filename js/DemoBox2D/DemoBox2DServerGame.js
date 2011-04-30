@@ -42,12 +42,15 @@ Version:
 		},
 
 		setupBox2d: function() {
+			DemoBox2D.Constants.GAME_WIDTH /= 32;
+			DemoBox2D.Constants.GAME_HEIGHT /= 32;
+				DemoBox2D.Constants.ENTITY_BOX_SIZE /= 32;
 			this.createBox2dWorld();
 			this._world.DestroyBody(this._wallBottom);
 
 			for(var i = 0; i < DemoBox2D.Constants.MAX_CIRCLES; i ++) {
-				var x = (DemoBox2D.Constants.GAME_WIDTH/2) + Math.sin(i/5) * 100;
-				var y = DemoBox2D.Constants.ENTITY_BOX_SIZE - (i * DemoBox2D.Constants.ENTITY_BOX_SIZE)
+				var x = (DemoBox2D.Constants.GAME_WIDTH/2) + Math.sin(i/5);
+				var y = i*-DemoBox2D.Constants.ENTITY_BOX_SIZE*4;//DemoBox2D.Constants.ENTITY_BOX_SIZE - (i/32 * DemoBox2D.Constants.ENTITY_BOX_SIZE)
 				this.spawn(x, y, 0);
 			}
 		},
@@ -62,22 +65,22 @@ Version:
 			var wallBd = new BOX2D.b2BodyDef();
 
 //			// Left
-			wallBd.position.Set(0, DemoBox2D.Constants.GAME_HEIGHT/2);
+			wallBd.position.Set(-1, DemoBox2D.Constants.GAME_HEIGHT/2);
 			wall.SetAsBox(1, DemoBox2D.Constants.GAME_HEIGHT/2);
 			this._wallLeft = m_world.CreateBody(wallBd);
 			this._wallLeft.CreateFixture2(wall);
 //			// Right
-			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH, DemoBox2D.Constants.GAME_HEIGHT/2);
+			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH + 1, DemoBox2D.Constants.GAME_HEIGHT/2);
 			wall.SetAsBox(1, DemoBox2D.Constants.GAME_HEIGHT/2);
 			this._wallRight = m_world.CreateBody(wallBd);
 			this._wallRight.CreateFixture2(wall);
 			// BOTTOM
-			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH/2 * DemoBox2D.Constants.PHYSICS_SCALE, DemoBox2D.Constants.GAME_HEIGHT);
+			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH/2 * DemoBox2D.Constants.PHYSICS_SCALE, DemoBox2D.Constants.GAME_HEIGHT+1);
 			wall.SetAsBox(DemoBox2D.Constants.GAME_WIDTH/2, 1);
 			this._wallTop = m_world.CreateBody(wallBd);
 			this._wallTop.CreateFixture2(wall);
 			// TOP
-			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH/2 * DemoBox2D.Constants.PHYSICS_SCALE, 0);
+			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH/2 * DemoBox2D.Constants.PHYSICS_SCALE - 1, 1);
 			wall.SetAsBox(DemoBox2D.Constants.GAME_WIDTH/2, 1);
 			this._wallBottom = m_world.CreateBody(wallBd);
 			this._wallBottom.CreateFixture2(wall);
@@ -113,9 +116,9 @@ Version:
 			body.h = DemoBox2D.Constants.ENTITY_BOX_SIZE;
 			var shape = new BOX2D.b2PolygonShape.AsBox(body.w, body.h);
 			var fixtureDef = new BOX2D.b2FixtureDef();
-			fixtureDef.restitution = 0.0;
-			fixtureDef.density = 0.1;//10.0;
-			fixtureDef.friction = 0.2;
+			fixtureDef.restitution = 0.1;
+			fixtureDef.density = 1.0;//10.0;
+			fixtureDef.friction = 0.5;
 			fixtureDef.shape = shape;
 			body.CreateFixture(fixtureDef);
 
@@ -137,7 +140,7 @@ Version:
 			var delta = 16 / 1000;
 			this.step( delta );
 
-			if(Math.random() < 0.1) {
+			if(this.gameTick % 10 === 0) {
 				this.resetRandomBody();
 			}
 			// Note we call superclass's implementation after we're done
@@ -148,14 +151,13 @@ Version:
 		 * Resets an entity and drops it from the sky
 		 */
 		resetRandomBody: function() {
-
 			// Retrieve a random key, and use it to retreive an entity
 			var allEntities = this.fieldController.getEntities();
 			var randomKeyIndex = Math.floor(Math.random() * allEntities._keys.length);
 			var entity = allEntities.objectForKey( allEntities._keys[randomKeyIndex] );
 
-			var x = (DemoBox2D.Constants.GAME_WIDTH/2) + Math.sin( Math.random() * Math.PI * 2) * 100;
-			var y = Math.random() * -500;
+			var x = Math.random() * DemoBox2D.Constants.GAME_WIDTH + DemoBox2D.Constants.ENTITY_BOX_SIZE;
+			var y = Math.random() * - 10;
 			entity.getBox2DBody().SetPosition( new BOX2D.b2Vec2( x, y ) );
 		},
 

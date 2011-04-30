@@ -45,8 +45,8 @@ Version:
 		 * @param {Number} gameTick		Current game tick (incrimented each frame)
 		 */
 		updatePosition: function( speedFactor, gameClock, gameTick ) {
-			this.position.x = this.b2Body.m_xf.position.x;
-			this.position.y = this.b2Body.m_xf.position.y;
+			this.position.x = this.b2Body.m_xf.position.x * 32;
+			this.position.y = this.b2Body.m_xf.position.y * 32;
 			this.rotation = this.b2Body.GetAngle();
 		},
 

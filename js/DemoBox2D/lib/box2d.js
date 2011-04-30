@@ -11280,8 +11280,6 @@ b2World.prototype.m_groundBody = null;
 b2World.prototype.m_destructionListener = null;
 b2World.prototype.m_debugDraw = null;
 b2World.prototype.m_inv_dt0 = null;if(typeof exports !== "undefined") {
-
-	console.log("U")
   exports.b2BoundValues = b2BoundValues;
   exports.b2Math = b2Math;
   exports.b2DistanceOutput = b2DistanceOutput;

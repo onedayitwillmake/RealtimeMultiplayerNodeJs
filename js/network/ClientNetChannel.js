@@ -95,6 +95,7 @@ Version:
 			if(aNetChannelMessage.cmd != RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT) { throw "(ClientNetChannel):onSocketDidAcceptConnection recieved but cmd != SERVER_CONNECT ";}
 
 			this.clientid = aNetChannelMessage.id;
+			this.delegate.log("(ClientNetChannel)::ClientID - " + this.clientid );
 			this.delegate.netChannelDidConnect( aNetChannelMessage );
 
 			// Set onMessage function back to normal - removing event listener didn't work, so for now changing the mapping

@@ -109,7 +109,7 @@ Version:
 		{
 			var messageContent = {
 				gameClock: gameClock,
-				id:1,
+				id: RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID,
 				seq: this.outgoingSequenceNumber,
 				cmd: RealtimeMultiplayerGame.Constants.CMDS.SERVER_FULL_UPDATE,
 				data:this.entityDescriptionBuffer

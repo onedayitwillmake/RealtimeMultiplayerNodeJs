@@ -136,8 +136,27 @@ Version:
 		tick: function() {
 			var delta = 16 / 1000;
 			this.step( delta );
+
+			if(Math.random() < 0.1) {
+				this.resetRandomBody();
+			}
 			// Note we call superclass's implementation after we're done
 			DemoBox2D.DemoServerGame.superclass.tick.call(this);
+		},
+
+		/**
+		 * Resets an entity and drops it from the sky
+		 */
+		resetRandomBody: function() {
+
+			// Retrieve a random key, and use it to retreive an entity
+			var allEntities = this.fieldController.getEntities();
+			var randomKeyIndex = Math.floor(Math.random() * allEntities._keys.length);
+			var entity = allEntities.objectForKey( allEntities._keys[randomKeyIndex] );
+
+			var x = (DemoBox2D.Constants.GAME_WIDTH/2) + Math.sin( Math.random() * Math.PI * 2) * 100;
+			var y = Math.random() * -500;
+			entity.getBox2DBody().SetPosition( new BOX2D.b2Vec2( x, y ) );
 		},
 
 		step: function( delta ) {

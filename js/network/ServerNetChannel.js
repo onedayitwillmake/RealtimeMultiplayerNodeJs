@@ -26,7 +26,7 @@ Version:
 	var io = require('../lib/Socket.IO-node');
 
 	// Local variables for private things in this class
-	var nextClientID = 0;
+	var nextClientID = RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID;
 
 	// Retrieve the namespace
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.network");
@@ -170,7 +170,7 @@ Version:
 		},
 
 	// Accessors
-		getNextClientID: function() { return nextClientID++ },
+		getNextClientID: function() { return ++nextClientID },
 		/**
 		 * Checks that an object contains the required methods and sets it as the delegate for this ServerNetChannel instance
 		 * @param {RealtimeMultiplayerGame.network.ServerNetChannelDelegateProtocol} aDelegate A delegate that conforms to RealtimeMultiplayerGame.network.ServerNetChannelDelegateProtocol

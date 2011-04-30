@@ -17,7 +17,6 @@ Version:
 */
 (function(){
 	var BOX2D = require("./lib/box2d.js");
-	var ps = DemoBox2D.Constants.PHYSICS_SCALE;
 	DemoBox2D.DemoServerGame = function() {
 		DemoBox2D.DemoServerGame.superclass.constructor.call(this);
 
@@ -44,7 +43,8 @@ Version:
 		setupBox2d: function() {
 			DemoBox2D.Constants.GAME_WIDTH /= 32;
 			DemoBox2D.Constants.GAME_HEIGHT /= 32;
-				DemoBox2D.Constants.ENTITY_BOX_SIZE /= 32;
+			DemoBox2D.Constants.ENTITY_BOX_SIZE /= 32;
+
 			this.createBox2dWorld();
 			this._world.DestroyBody(this._wallBottom);
 

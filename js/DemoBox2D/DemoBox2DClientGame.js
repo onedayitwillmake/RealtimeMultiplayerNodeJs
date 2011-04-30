@@ -44,10 +44,13 @@ Version:
 		 * @inheritDoc
 		 */
 		createEntityFromDesc: function(entityDesc) {
-
 			var diameter = entityDesc.radius * 2;
 			diameter = DemoBox2D.Constants.ENTITY_BOX_SIZE * DemoBox2D.Constants.PHYSICS_SCALE * 2;
-//			console.log(entityDesc.radius);
+
+			// Create the entity
+			var newEntity = new DemoBox2D.CircleEntity( entityDesc.entityid, entityDesc.clientid );
+			newEntity.position.set( entityDesc.x, entityDesc.y );
+
 			// Create a view via CAAT
 			var aCircleView = new CAAT.ShapeActor();
 			aCircleView.create();
@@ -56,26 +59,8 @@ Version:
 			aCircleView.setFillStyle( CAAT.Color.prototype.hsvToRgb( (entityDesc.entityid * 15) % 360, 40, 99).toHex() ); // Random color
 			aCircleView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
 
-			var newEntity = null;
 
-			var isOwnedByMe = entityDesc.clientid === this.netChannel.clientid;
-
-			// is this a player entity that is mine, if so i should attach the keyboard to it
-			if( entityDesc.entityType & DemoBox2D.Constants.ENTITY_TYPES.PLAYER_ENTITY ) {
-				newEntity = new DemoBox2D.PlayerEntity( entityDesc.entityid, entityDesc.clientid );
-				console.log('got my player, adding keyboard');
-				if( isOwnedByMe ) {
-					console.log("adding trait to this keyboard's user");
-					newEntity.addTraitAndExecute( new RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait() );
-					this.clientCharacter = newEntity;
-				} 
-			} else {
-				newEntity = new DemoBox2D.CircleEntity( entityDesc.entityid, entityDesc.clientid );
-			}
-
-			newEntity.position.set( entityDesc.x, entityDesc.y );
 			newEntity.setView( aCircleView );
-			
 			this.fieldController.addEntity( newEntity );
 		},
 

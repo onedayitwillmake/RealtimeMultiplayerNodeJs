@@ -28,7 +28,7 @@ Version:
 		entityType	: DemoBox2D.Constants.ENTITY_TYPES.CIRCLE,
 
 		/**
-		 * Update the entity's view - this is only called on the clientside
+		 * @inheritDoc
 		 */
 		updateView: function() {
 			if(!this.view) return;
@@ -39,10 +39,7 @@ Version:
 		},
 
 		/**
-		 * Update position of this entity - this is only called on the serverside
-		 * @param {Number} speedFactor	A number signifying how much faster or slower we are moving than the target framerate
-		 * @param {Number} gameClock	Current game time in seconds (zero based)
-		 * @param {Number} gameTick		Current game tick (incrimented each frame)
+		 * @inheritDoc
 		 */
 		updatePosition: function( speedFactor, gameClock, gameTick ) {
 			this.position.x = this.b2Body.m_xf.position.x * 32;
@@ -51,14 +48,20 @@ Version:
 		},
 
 		/**
-		 * Deallocate memory
+		 * @inheritDoc
 		 */
-		dealloc: function() {
-			DemoBox2D.CircleEntity.superclass.dealloc.call(this);
-		},
-
 		constructEntityDescription: function() {
 			return DemoBox2D.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + this.radius;
+		},
+
+		/**
+		 * @inheritDoc
+		 */
+		dealloc: function() {
+			if(this.b2Body) {
+				// Destroy box2d body -
+			}
+			DemoBox2D.CircleEntity.superclass.dealloc.call(this);
 		},
 
 		///// ACCESSORS

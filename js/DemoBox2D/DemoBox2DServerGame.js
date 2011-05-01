@@ -170,9 +170,21 @@ Version:
 //			this.createPlayerEntity( this.getNextEntityID(), aClientid);
 		},
 
+		/**
+		 * @inheritDoc
+		 */
 		shouldUpdatePlayer: function( aClientid, data ) {
-			console.log("ABC", data);
-			var entity = this.fieldController.getEntityWithid( data.payload.entityid );
+			var pos = new BOX2D.b2Vec2( data.payload.x/32, data.payload.y/32 );
+
+			// Loop through each entity, retrieve it's Box2D body, and apply an impulse towards the mouse position a user clicked
+			this.fieldController.getEntities().forEach( function(key, entity) {
+				var body = entity.getBox2DBody();
+				var bodyPosition = body.GetPosition();
+				var angle = Math.atan2( pos.y - bodyPosition.y, pos.x - bodyPosition.x );
+				var force = 10;
+				var impulse = new BOX2D.b2Vec2( Math.cos(angle) * force, Math.sin(angle) * force);
+				body.ApplyImpulse( impulse, bodyPosition );
+			}, this );
 		},
 
 		shouldRemovePlayer: function( aClientid ) {

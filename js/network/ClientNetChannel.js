@@ -60,8 +60,7 @@ Version:
 
 
 		setupSocketIO: function() {
-
-		    this.socketio = new io.Socket(null, {port: RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PORT, transports:["websocket", "flashsocket"], reconnect: false, rememberTransport: false});
+		    this.socketio = new io.Socket(null, {port: RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PORT, transports:['websocket', 'xhr-polling', 'jsonp-polling'], reconnect: false, rememberTransport: false});
 			this.socketio.connect();
 
 			var that = this;
@@ -177,6 +176,7 @@ Version:
 			// No reliable messages waiting, enough time has passed to send an update
 			if(!hasReliableMessages && this.canSendMessage() && this.nextUnreliable != null) {
 				this.sendMessage( this.nextUnreliable );
+				this.nextUnreliable = null;
 			}
 		},
 

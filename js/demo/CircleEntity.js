@@ -50,7 +50,7 @@ Version:
 			// Modify velocity using perlin noise
 			var theta = 0.008;
 
-			var noise = RealtimeMultiplayerGame.model.noise(nOffset+this.position.x*theta, nOffset+this.position.y*theta, gameTick*0.001);
+			var noise = RealtimeMultiplayerGame.model.noise(nOffset+this.position.x*theta, nOffset+this.position.y*theta, gameTick*0.003);
 			var angle = noise*12;
 			var speed = 0.2;
 			this.acceleration.x += Math.cos( angle ) * speed - 0.3;

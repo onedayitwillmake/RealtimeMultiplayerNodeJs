@@ -1,4 +1,5 @@
 (function() {
+	WEB_SOCKET_SWF_LOCATION = "js/lib/Socket.IO-node/support/socket.io-client/lib/vendor/web-socket-js/WebSocketMain.swf";
 
 	// Callback for when browse is ready
 	var onDocumentReady = function() {

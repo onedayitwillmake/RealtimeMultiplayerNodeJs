@@ -27,8 +27,8 @@ Version:
 
 	DemoBox2D.DemoServerGame.prototype = {
 		_world							: null,
-		_velocityIterationsPerSecond    : 300,
-		_positionIterationsPerSecond	: 200,
+		_velocityIterationsPerSecond    : 200,
+		_positionIterationsPerSecond	: 300,
 
 		/**
 		 * Map RealtimeMultiplayerGame.Constants.CMDS to functions
@@ -64,12 +64,12 @@ Version:
 			var wall = new BOX2D.b2PolygonShape();
 			var wallBd = new BOX2D.b2BodyDef();
 
-//			// Left
+			// Left
 			wallBd.position.Set(-1, DemoBox2D.Constants.GAME_HEIGHT/2);
 			wall.SetAsBox(1, DemoBox2D.Constants.GAME_HEIGHT/2);
 			this._wallLeft = m_world.CreateBody(wallBd);
 			this._wallLeft.CreateFixture2(wall);
-//			// Right
+			// Right
 			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH + 1, DemoBox2D.Constants.GAME_HEIGHT/2);
 			wall.SetAsBox(1, DemoBox2D.Constants.GAME_HEIGHT/2);
 			this._wallRight = m_world.CreateBody(wallBd);
@@ -116,9 +116,9 @@ Version:
 			body.h = DemoBox2D.Constants.ENTITY_BOX_SIZE;
 			var shape = new BOX2D.b2PolygonShape.AsBox(body.w, body.h);
 			var fixtureDef = new BOX2D.b2FixtureDef();
-			fixtureDef.restitution = 0.1;
+			fixtureDef.restitution = 0.0;
 			fixtureDef.density = 1.0;//10.0;
-			fixtureDef.friction = 0.5;
+			fixtureDef.friction = 1.0;
 			fixtureDef.shape = shape;
 			body.CreateFixture(fixtureDef);
 
@@ -140,7 +140,7 @@ Version:
 			var delta = 16 / 1000;
 			this.step( delta );
 
-			if(this.gameTick % 10 === 0) {
+			if(this.gameTick % 50 === 0) {
 				this.resetRandomBody();
 			}
 			// Note we call superclass's implementation after we're done
@@ -157,7 +157,7 @@ Version:
 			var entity = allEntities.objectForKey( allEntities._keys[randomKeyIndex] );
 
 			var x = Math.random() * DemoBox2D.Constants.GAME_WIDTH + DemoBox2D.Constants.ENTITY_BOX_SIZE;
-			var y = Math.random() * - 10;
+			var y = Math.random() * - 15;
 			entity.getBox2DBody().SetPosition( new BOX2D.b2Vec2( x, y ) );
 		},
 

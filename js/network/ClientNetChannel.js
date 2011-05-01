@@ -61,7 +61,7 @@ Version:
 
 		setupSocketIO: function() {
 
-		    this.socketio = new io.Socket(null, {port: RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PORT, transports:["websocket"], reconnect: false, rememberTransport: false});
+		    this.socketio = new io.Socket(null, {port: RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PORT, transports:["websocket", "flashsocket"], reconnect: false, rememberTransport: false});
 			this.socketio.connect();
 
 			var that = this;
@@ -95,7 +95,7 @@ Version:
 			if(aNetChannelMessage.cmd != RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT) { throw "(ClientNetChannel):onSocketDidAcceptConnection recieved but cmd != SERVER_CONNECT ";}
 
 			this.clientid = aNetChannelMessage.id;
-			this.delegate.log("(ClientNetChannel)::ClientID - " + this.clientid );
+			this.delegate.log("(ClientNetChannel)::ClientID - ")
 			this.delegate.netChannelDidConnect( aNetChannelMessage );
 
 			// Set onMessage function back to normal - removing event listener didn't work, so for now changing the mapping

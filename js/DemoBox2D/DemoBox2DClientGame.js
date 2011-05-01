@@ -23,10 +23,18 @@ Version:
 
 	DemoBox2D.DemoClientGame.prototype = {
 		setupView: function() {
-			this.view = new DemoBox2D.DemoView();
+			this.view = new DemoBox2D.DemoView( this );
 			this.view.insertIntoHTMLElementWithId( "gamecontainer" );
-
+			this.view.delegate = this;
 			DemoBox2D.DemoClientGame.superclass.setupView.call( this );
+		},
+
+		/**
+		 * When the user clicks down, we will create a message and pass that to
+		 * @param aMouseEvent
+		 */
+		onViewMouseDown: function( aMouseEvent ) {
+			this.netChannel.addMessageToQueue( false, RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE, { x: aMouseEvent.point.x, y: aMouseEvent.point.y } );
 		},
 
 		/**

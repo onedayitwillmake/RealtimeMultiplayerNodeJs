@@ -19,8 +19,10 @@ Version:
 	1.0
 */
 (function(){
-	DemoBox2D.DemoView = function() {
+	DemoBox2D.DemoView = function( aDelegate ) {
+		this.setDelegate( aDelegate );
 		this.setupCAAT();
+		this.setupMouseEvents();
 		this.setupStats();
 	};
 
@@ -29,7 +31,7 @@ Version:
 		caatDirector		: null,				// CAAT Director instance
 		caatScene			: null,				// CAAT Scene instance
 		stats				: null,				// Stats.js instance
-
+		delegate			: null,				// This is the object that will handle some MouseEvents we recieve from CAAT
 		// Methods
 		setupCAAT: function() {
 
@@ -41,6 +43,17 @@ Version:
 			// Create the director instance, and immediately add the scene once it's created
 			this.caatDirector = new CAAT.Director().initialize( DemoBox2D.Constants.GAME_WIDTH, DemoBox2D.Constants.GAME_HEIGHT );
 			this.caatDirector.addScene( this.caatScene ); //
+		},
+
+		/**
+		 * Setup MouseEvent which we will funnel to the delegate
+		 * @param delegate
+		 */
+		setupMouseEvents: function( delegate ) {
+			var that = this;
+			this.caatScene.mouseDown = function(mouseEvent) {
+               that.delegate.onViewMouseDown( mouseEvent );
+            };
 		},
 
 		/**
@@ -72,6 +85,7 @@ Version:
 		 */
 		addEntity: function( anEntityView ) {
 			this.caatScene.addChild( anEntityView );
+			anEntityView.mouseEnabled = false;
 		},
 
 		/**
@@ -93,7 +107,37 @@ Version:
 		// Memory
 		dealloc: function() {
 			this.director.destroy();
+		},
+
+		// Accessors
+		/**
+		 * Checks that an object contains the required methods and sets it as the delegate for this DemoBox2D.DemoView instance
+		 * @param {DemoBox2D.DemoViewDelegateProtocol} aDelegate A delegate that conforms to DemoBox2D.DemoViewDelegateProtocol
+		 */
+		setDelegate: function( aDelegate ) {
+			var theInterface = DemoBox2D.DemoViewDelegateProtocol;
+			for (var member in theInterface) {
+				if ( (typeof aDelegate[member] != typeof theInterface[member]) ) {
+					console.log("object failed to implement interface member " + member);
+					return false;
+				}
+			}
+
+			// Checks passed
+			this.delegate = aDelegate;
 		}
+	};
+
+	// Override
+	RealtimeMultiplayerGame.extend(DemoBox2D.DemoView, RealtimeMultiplayerGame.AbstractGameView, null);
+
+
+	/**
+	 * This is the object that will handle some MouseEvents we recieve from CAAT
+	 * This is strictly specific to our Box2D demo, and is pretty bare but seems symantically correct following the structure RealtimeMultiplayerNodeJS has in place
+	 */
+	DemoBox2D.DemoViewDelegateProtocol = {
+		onViewMouseDown: function(mouseEvent) {}
 	};
 })();
 

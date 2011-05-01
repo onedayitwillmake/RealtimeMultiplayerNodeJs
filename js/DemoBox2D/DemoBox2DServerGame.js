@@ -171,6 +171,7 @@ Version:
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {
+			console.log("ABC", data);
 			var entity = this.fieldController.getEntityWithid( data.payload.entityid );
 		},
 

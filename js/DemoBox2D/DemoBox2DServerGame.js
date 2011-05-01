@@ -1,6 +1,6 @@
 /**
 File:
-	DemoServerGame
+	DemoBox2DServerGame.js
 Created By:
 	Mario Gonzalez
 Project:
@@ -9,9 +9,8 @@ Abstract:
 	This is a demo of using Box2d.js with RealTimeMultiplayerNode.js
  	The box2d.js world creation and other things in this demo, are shamelessly lifted from the https://github.com/HBehrens/box2d.js examples
 Basic Usage:
- 	DemoServerGame = new DemoBox2D.DemoServerGame();
- 	DemoServerGame.start();
- 	DemoServerGame.explodeEveryone();
+ 	demoServerGame = new DemoBox2D.DemoServerGame();
+ 	demoServerGame.startGameClock();
 Version:
 	1.0
 */

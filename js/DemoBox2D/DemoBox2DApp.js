@@ -1,13 +1,13 @@
 /**
 File:
-	RealtimeMultiplayerGame.js
+	DemoBox2DApp.js
 Created By:
 	Mario Gonzalez
 Project:
 	RealtimeMultiplayerNodeJS
 Abstract:
-	This is the core module for RealtimeMultiplayerGame contains the namespace, and extend method
-
+	This is the core module for the DemoBox2DApp contains the namespace
+ 	This demo shows how to create a game that uses a Box2D javascript implementation (https://github.com/HBehrens/box2d.js)
 Basic Usage:
  	This class is not instantiated
 Version:

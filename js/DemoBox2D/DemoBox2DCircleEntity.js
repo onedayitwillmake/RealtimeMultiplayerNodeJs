@@ -12,10 +12,7 @@ Basic Usage:
 Version:
 	1.0
 */
-(function(){
-
-	var didShow = false;
-	var nOffset = Math.random() * 2000;
+(function() {
 	DemoBox2D.CircleEntity = function( anEntityid, aClientid) {
 		DemoBox2D.CircleEntity.superclass.constructor.call(this, anEntityid, aClientid );
 		this.radius = DemoBox2D.Constants.ENTITY_BOX_SIZE * DemoBox2D.Constants.PHYSICS_SCALE;

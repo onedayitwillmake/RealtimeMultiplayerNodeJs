@@ -1,16 +1,14 @@
 /**
 File:
-	DemoServerGame
+	DemoBox2DClientGame.js
 Created By:
 	Mario Gonzalez
 Project:
 	DemoBox2D
 Abstract:
-	This is a concrete server instance of our game
+	This is the client/browser side of the DemoBox2D app within RealtimeMultiplayerNodeJS
 Basic Usage:
- 	DemoServerGame = new DemoBox2D.DemoServerGame();
- 	DemoServerGame.start();
- 	DemoServerGame.explodeEveryone();
+ 	var clientGame = new DemoBox2D.DemoClientGame();
 Version:
 	1.0
 */
@@ -102,8 +100,8 @@ Version:
 
 			return message;
 		})()
-	}
+	};
 
 	// extend RealtimeMultiplayerGame.AbstractClientGame
 	RealtimeMultiplayerGame.extend(DemoBox2D.DemoClientGame, RealtimeMultiplayerGame.AbstractClientGame, null);
-})()
+})();

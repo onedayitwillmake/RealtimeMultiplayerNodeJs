@@ -1,23 +1,20 @@
 /**
 File:
-	AbstractServerGame.js
+	DemoBox2DView.js
 Created By:
 	Mario Gonzalez
-	Project:
+Project:
 	RealtimeMultiplayerNodeJS
 Abstract:
-	This class is the base Game controller in RealtimeMultiplayerGame on the server side.
- 	It provides things such as dropping players, and contains a ServerNetChannel
+	This class represents the view object in the Box2D Demo of RealtimeMultiplayerNodeJS
+ 	It uses the CAAT canvas library to draw the entities
 Basic Usage:
- 	[This class is not instantiated! - below is an example of using this class by extending it]
-
- 	(function(){
-		MyGameClass = function() {
-			return this;
- 		}
-
-		RealtimeMultiplayerGame.extend(MyGameClass, RealtimeMultiplayerGame.AbstractServerGame, null);
-	};
+ 	[Inside DemoBox2DClientGame]
+ 	setupView: function() {
+		this.view = new DemoBox2D.DemoView();
+		this.view.insertIntoHTMLElementWithId( "gamecontainer" );
+		DemoBox2D.DemoClientGame.superclass.setupView.call( this );
+	}
 Version:
 	1.0
 */
@@ -35,15 +32,15 @@ Version:
 
 		// Methods
 		setupCAAT: function() {
-			this.caatScene = new CAAT.Scene(); // Create a scene, all directors must have at least one scene - this is where all your stuff goes
-			this.caatScene.create();	// Notice we call create when creating this, and ShapeActor below. Both are Actors
+
+			// Create a scene, all directors must have at least one scene - this is where all your stuff goes
+			this.caatScene = new CAAT.Scene();
+			this.caatScene.create();
 			this.caatScene.setFillStyle('#000000');
 
-			this.caatDirector = new CAAT.Director().initialize( DemoBox2D.Constants.GAME_WIDTH, DemoBox2D.Constants.GAME_HEIGHT ); // Create the director instance
-			this.caatDirector.addScene( this.caatScene ); // Immediately add the scene once it's created
-
-			// Start the render loop, with at 60FPS
-//			this.caatDirector.loop(60);
+			// Create the director instance, and immediately add the scene once it's created
+			this.caatDirector = new CAAT.Director().initialize( DemoBox2D.Constants.GAME_WIDTH, DemoBox2D.Constants.GAME_HEIGHT );
+			this.caatDirector.addScene( this.caatScene ); //
 		},
 
 		/**
@@ -68,13 +65,20 @@ Version:
 			document.body.appendChild( container );
 		},
 
+		/**
+		 * Creats / Adds an entity into canvas via CAAT
+		 * // TODO: Currently the entity is already created - however technically this is the function that should make it!
+		 * @param anEntityView
+		 */
 		addEntity: function( anEntityView ) {
-//			console.log( "Adding Entity To CAAT", anEntityView );
 			this.caatScene.addChild( anEntityView );
 		},
 
+		/**
+		 * Removes an entity via CAAT
+		 * @param anEntityView
+		 */
 		removeEntity: function( anEntityView ) {
-//			console.log( "Removing Entity From CAAT", anEntityView );
 			this.caatScene.removeChild( anEntityView );
 		},
 

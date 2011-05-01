@@ -34,23 +34,36 @@ Version:
 		locateUpdateFailedCount						: 0,
 
 		// Methods
+		/**
+		 * Setup the view
+		 * RealtimeMultiplayerNodeJS is agnostic any rendering method
+		 */
 		setupView: function() {
-			if( this.view === null ) {
+			if( this.view === null ) {  // If this is called, then user has not overwritten this function
 				throw new Error("RealtimeMultiplayerGame.AbstractClientGame.setupView - Override this method, then call MyClientGame.superclass.setupView()");
 			}
 			this.fieldController.setView( this.view );
 		},
 
+		/**
+		 * @inheritDoc
+		 */
 		setupNetChannel: function() {
 			console.log("RealtimeMultiplayerGame.AbstractClientGame.superclass", RealtimeMultiplayerGame.AbstractClientGame.superclass)
 			RealtimeMultiplayerGame.AbstractClientGame.superclass.setupNetChannel.call(this);
 			this.netChannel = new RealtimeMultiplayerGame.ClientNetChannel( this );
 		},
 
+		/**
+		 * @inheritDoc
+		 */
 		setupCmdMap: function() {
 			RealtimeMultiplayerGame.AbstractClientGame.superclass.setupCmdMap.call( this );
 		},
 
+		/**
+		 * @inheritDoc
+		 */
 		tick: function() {
 			RealtimeMultiplayerGame.AbstractClientGame.superclass.tick.call(this);
 
@@ -198,20 +211,21 @@ Version:
 			}, this);
 
 
-			// Destroy removed entities
+			// Destroy removed entities, every N frames
 			if(this.gameTick % RealtimeMultiplayerGame.Constants.CLIENT_SETTING.EXPIRED_ENTITY_CHECK_RATE === 0)
 				this.fieldController.removeExpiredEntities( activeEntities );
-//
-//			this.director.render( this.clockActualTime - this.director.timeline );
-//			this.director.timeline = this.clockActualTime;
 		},
 
 
+		/**
+		 * Create an enitity using the information provided
+		 * @param {Object} entityDesc An object containing information such as 'entityid', 'clientid' and usually position information atleast
+		 */
 		createEntityFromDesc: function( entityDesc ) {
 			// OVERRIDE
 		},
 
-	//////	ClientNetChannelDelegate
+//////	ClientNetChannelDelegate
 		/**
 		 * ClientNetChannel has connected via socket.io to server for first time
 		 * Join the game
@@ -262,16 +276,12 @@ Version:
 			(function animloop(){
 				that.tick();
 				RealtimeMultiplayerGame.AbstractGame.prototype.intervalGameTick = window.setTimeout( animloop, 1000 / 31 );
-				// Hack for now - Could not get these to line up, i have a scoping issue somewhere - so when this gets cleared its ref is wrong
-//				RealtimeMultiplayerGame.AbstractGame.prototype.intervalGameTick = that.intervalGameTick;
 			})();
-
-//			this.intervalGameTick = setInterval( function(){ that.tick() }, this.intervalTargetDelta);
 		},
 
 		/**
 		 * Called by NetChannel when it receives a command if it decides not to intercept it.
-		 * (for example CMDS.FULL_UPDATE is always intercepted, so it never calls this function, but CMDS.SERVER_MATCH_START is not intercepted so this function triggered)
+		 * (For example CMDS.FULL_UPDATE is always intercepted, so it never calls this function, but CMDS.SERVER_MATCH_START is not intercepted so this function triggered)
 		 * @param messageData
 		 */
 		netChannelDidReceiveMessage: function (messageData)
@@ -279,7 +289,7 @@ Version:
 			// OVERRIDE
 		},
 
-		netChannelDidDisconnect: function (messageData)
+		netChannelDidDisconnect: function ()
 		{
 			this.stopGameClock();
 		},

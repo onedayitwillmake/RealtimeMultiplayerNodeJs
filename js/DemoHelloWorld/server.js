@@ -29,10 +29,10 @@ require("../model/WorldEntityDescription.js");
 require("../input/Keyboard.js");
 
 
-require("./DemoApp.js");
-require("./DemoAppConstants.js");
+require("./DemoHelloWorld.js");
+require("./DemoHelloWorldConstants.js");
 require("./CircleEntity.js");
 require("./DemoServerGame.js");
 
-var game = new DemoApp.DemoServerGame();
+var game = new DemoHelloWorld.DemoServerGame();
 game.startGameClock();

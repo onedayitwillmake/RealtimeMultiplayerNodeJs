@@ -22,12 +22,12 @@ Version:
 	1.0
 */
 (function(){
-	DemoApp.DemoView = function() {
+	DemoHelloWorld.DemoView = function() {
 		this.setupCAAT();
 		this.setupStats();
 	};
 
-	DemoApp.DemoView.prototype = {
+	DemoHelloWorld.DemoView.prototype = {
 		// Properties
 		caatDirector		: null,				// CAAT Director instance
 		caatScene			: null,				// CAAT Scene instance
@@ -39,7 +39,7 @@ Version:
 			this.caatScene.create();	// Notice we call create when creating this, and ShapeActor below. Both are Actors
 			this.caatScene.setFillStyle('#000000');
 
-			this.caatDirector = new CAAT.Director().initialize( DemoApp.Constants.GAME_WIDTH, DemoApp.Constants.GAME_HEIGHT ); // Create the director instance
+			this.caatDirector = new CAAT.Director().initialize( DemoHelloWorld.Constants.GAME_WIDTH, DemoHelloWorld.Constants.GAME_HEIGHT ); // Create the director instance
 			this.caatDirector.addScene( this.caatScene ); // Immediately add the scene once it's created
 		},
 

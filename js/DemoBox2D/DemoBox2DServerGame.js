@@ -181,7 +181,7 @@ Version:
 				var body = entity.getBox2DBody();
 				var bodyPosition = body.GetPosition();
 				var angle = Math.atan2( pos.y - bodyPosition.y, pos.x - bodyPosition.x );
-				var force = 10;
+				var force = 20;
 				var impulse = new BOX2D.b2Vec2( Math.cos(angle) * force, Math.sin(angle) * force);
 				body.ApplyImpulse( impulse, bodyPosition );
 			}, this );

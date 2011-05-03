@@ -1,29 +1,36 @@
 /**
 File:
-	DemoApp.CircleEntity
+	DemoHelloWorld.CircleEntity
 Created By:
 	Mario Gonzalez
 Project:
-	DemoApp
+	DemoHelloWorld
 Abstract:
-	This is the base entity for the demo game
+	This is the most basic entity i could come up with for a HelloWorldDemo of RealtimeMultiplayerNodeJS
 Basic Usage:
+    // Create the GameEntity
+	var circleEntity = new DemoHelloWorld.CircleEntity( anEntityid, aClientid );
+	circleEntity.entityType = DemoHelloWorld.Constants.ENTITY_TYPES.GENERIC_CIRCLE;
+	circleEntity.radius = aRadius;
+	circleEntity.position.set( Math.random() * DemoHelloWorld.Constants.GAME_WIDTH, Math.random() * DemoHelloWorld.Constants.GAME_HEIGHT);
 
+	// Place the circle and collision circle into corresponding containers
+	this.fieldController.addEntity( circleEntity );
 Version:
 	1.0
 */
 (function(){
-	DemoApp.CircleEntity = function( anEntityid, aClientid) {
-		DemoApp.CircleEntity.superclass.constructor.call(this, anEntityid, aClientid );
+	DemoHelloWorld.CircleEntity = function( anEntityid, aClientid) {
+		DemoHelloWorld.CircleEntity.superclass.constructor.call(this, anEntityid, aClientid );
 
 		this.velocity = new RealtimeMultiplayerGame.model.Point(0,0);
 		this.acceleration = new RealtimeMultiplayerGame.model.Point(0,0);
 		return this;
 	};
 
-	DemoApp.CircleEntity.prototype = {
-		radius					:	DemoApp.Constants.ENTITY_DEFAULT_RADIUS,
-		entityType				:	DemoApp.Constants.ENTITY_TYPES.CIRCLE,
+	DemoHelloWorld.CircleEntity.prototype = {
+		radius					:	DemoHelloWorld.Constants.ENTITY_DEFAULT_RADIUS,
+		entityType				:	DemoHelloWorld.Constants.ENTITY_TYPES.CIRCLE,
 
 		/**
 		 * Update the entity's view - this is only called on the clientside
@@ -35,33 +42,29 @@ Version:
 		},
 
 		/**
-		 * Update position of this entity - this is only called on the serverside
-		 * @param {Number} speedFactor	A number signifying how much faster or slower we are moving than the target framerate
-		 * @param {Number} gameClock	Current game time in seconds (zero based)
-		 * @param {Number} gameTick		Current game tick (incrimented each frame)
+		 * @inheritDoc
 		 */
 		updatePosition: function( speedFactor, gameClock, gameTick ) {
-//			this.x += 2;
-//			if(this.x < 0) {
-//				this.x = DemoApp.Constants.GAME_WIDTH;
-//			}
+			// This is where you would move your entity here
+			// Speedfactor is a number between 0.0 and 2.0, where 1.0 means its running at perfect framerate
+
 		},
 
 		/**
 		 * Deallocate memory
 		 */
 		dealloc: function() {
-			DemoApp.CircleEntity.superclass.dealloc.call(this);
+			DemoHelloWorld.CircleEntity.superclass.dealloc.call(this);
 		},
 
 		/**
 		 * Append radius to our entity description created by the super class
 		 */
 		constructEntityDescription: function() {
-			return DemoApp.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + this.radius;
+			return DemoHelloWorld.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + this.radius;
 		}
 	};
 
 	// extend RealtimeMultiplayerGame.model.GameEntity
-	RealtimeMultiplayerGame.extend(DemoApp.CircleEntity, RealtimeMultiplayerGame.model.GameEntity, null);
+	RealtimeMultiplayerGame.extend(DemoHelloWorld.CircleEntity, RealtimeMultiplayerGame.model.GameEntity, null);
 })();

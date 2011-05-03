@@ -4,11 +4,11 @@ File:
 Created By:
 	Mario Gonzalez
 Project:
-	DemoApp
+	DemoHelloWorld
 Abstract:
 	This is a concrete server instance of our game
 Basic Usage:
- 	DemoServerGame = new DemoApp.DemoServerGame();
+ 	DemoServerGame = new DemoHelloWorld.DemoServerGame();
  	DemoServerGame.start();
  	DemoServerGame.explodeEveryone();
 Version:
@@ -17,14 +17,14 @@ Version:
 (function(){
 	require("../model/ImprovedNoise.js");
 
-	DemoApp.DemoServerGame = function() {
-		DemoApp.DemoServerGame.superclass.constructor.call(this);
-		this.setGameDuration( DemoApp.Constants.GAME_DURATION );
+	DemoHelloWorld.DemoServerGame = function() {
+		DemoHelloWorld.DemoServerGame.superclass.constructor.call(this);
+		this.setGameDuration( DemoHelloWorld.Constants.GAME_DURATION );
 		this.setupRandomField();
 		return this;
 	};
 
-	DemoApp.DemoServerGame.prototype = {
+	DemoHelloWorld.DemoServerGame.prototype = {
 
 		/**
 		 * Map RealtimeMultiplayerGame.Constants.CMDS to functions
@@ -32,7 +32,7 @@ Version:
 		 * If it is set, it will call that CMD on its delegate
 		 */
 		setupCmdMap: function() {
-			DemoApp.DemoServerGame.superclass.setupCmdMap.call(this);
+			DemoHelloWorld.DemoServerGame.superclass.setupCmdMap.call(this);
 			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE] = this.shouldUpdatePlayer;
 		},
 
@@ -41,9 +41,9 @@ Version:
 		 */
 		setupRandomField: function() {
 			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
-			var total = DemoApp.Constants.MAX_CIRCLES;
+			var total = DemoHelloWorld.Constants.MAX_CIRCLES;
 			for(var i = 0; i < total; i++) {
-				var radius = DemoApp.Constants.ENTITY_DEFAULT_RADIUS + Math.random() * 5;
+				var radius = DemoHelloWorld.Constants.ENTITY_DEFAULT_RADIUS + Math.random() * 5;
 				this.createCircleEntity( radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
 			}
 		},
@@ -57,10 +57,10 @@ Version:
 		createCircleEntity: function( aRadius, anEntityid, aClientid ) {
 
 			// Create the GameEntity
-			var circleEntity = new DemoApp.CircleEntity( anEntityid, aClientid );
-			circleEntity.entityType = DemoApp.Constants.ENTITY_TYPES.GENERIC_CIRCLE;
+			var circleEntity = new DemoHelloWorld.CircleEntity( anEntityid, aClientid );
+			circleEntity.entityType = DemoHelloWorld.Constants.ENTITY_TYPES.GENERIC_CIRCLE;
 			circleEntity.radius = aRadius;
-			circleEntity.position.set( Math.random() * DemoApp.Constants.GAME_WIDTH, Math.random() * DemoApp.Constants.GAME_HEIGHT);
+			circleEntity.position.set( Math.random() * DemoHelloWorld.Constants.GAME_WIDTH, Math.random() * DemoHelloWorld.Constants.GAME_HEIGHT);
 
 			// Place the circle and collision circle into corresponding containers
 			this.fieldController.addEntity( circleEntity );
@@ -77,13 +77,13 @@ Version:
 			// Loop through each entity and move it to the left
 			this.fieldController.getEntities().forEach( function(key, entity) {
 				entity.position.x -= 1;
-				if(entity.position.x < 0) {
-					entity.position.x = DemoApp.Constants.GAME_WIDTH;
+				if(entity.position.x < 0) { // reset
+					entity.position.x = DemoHelloWorld.Constants.GAME_WIDTH;
 				}
 			}, this );
 
 			// Note we call superclass's implementation after we're done
-			DemoApp.DemoServerGame.superclass.tick.call(this);
+			DemoHelloWorld.DemoServerGame.superclass.tick.call(this);
 		},
 
 		/**
@@ -106,7 +106,7 @@ Version:
 		 * @inheritDoc
 		 */
 		shouldRemovePlayer: function( aClientid ) {
-			DemoApp.DemoServerGame.superclass.shouldRemovePlayer.call( this, aClientid );
+			DemoHelloWorld.DemoServerGame.superclass.shouldRemovePlayer.call( this, aClientid );
 			console.log("DEMO::REMOVEPLAYER");
 		},
 
@@ -114,10 +114,10 @@ Version:
 		 * @inheritDoc
 		 */
 		dealloc: function() {
-			DemoApp.DemoServerGame.superclass.dealloc.call(this);
+			DemoHelloWorld.DemoServerGame.superclass.dealloc.call(this);
 		}
 	};
 
 	// extend RealtimeMultiplayerGame.AbstractServerGame
-	RealtimeMultiplayerGame.extend(DemoApp.DemoServerGame, RealtimeMultiplayerGame.AbstractServerGame, null);
+	RealtimeMultiplayerGame.extend(DemoHelloWorld.DemoServerGame, RealtimeMultiplayerGame.AbstractServerGame, null);
 })()

@@ -13,20 +13,20 @@ Basic Usage:
 Version:
 	1.0
 */
-DemoApp = (typeof DemoApp === 'undefined') ? {} : DemoApp;
+DemoHelloWorld = (typeof DemoHelloWorld === 'undefined') ? {} : DemoHelloWorld;
 /**
  * Allows a package to create a namespace within RealtimeMultiplayerGame
  * From Javascript Patterns book
  * @param ns_string
  */
-DemoApp.namespace = function(ns_string)
+DemoHelloWorld.namespace = function(ns_string)
 {
 	var parts = ns_string.split('.'),
-		parent = DemoApp,
+		parent = DemoHelloWorld,
 		i = 0;
 
 	// strip redundant leading global
-	if (parts[0] === "DemoApp") {
+	if (parts[0] === "DemoHelloWorld") {
 		parts = parts.slice(1);
 	}
 

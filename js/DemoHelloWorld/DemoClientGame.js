@@ -4,11 +4,11 @@ File:
 Created By:
 	Mario Gonzalez
 Project:
-	DemoApp
+	DemoHelloWorld
 Abstract:
 	This is a concrete server instance of our game
 Basic Usage:
- 	DemoServerGame = new DemoApp.DemoServerGame();
+ 	DemoServerGame = new DemoHelloWorld.DemoServerGame();
  	DemoServerGame.start();
  	DemoServerGame.explodeEveryone();
 Version:
@@ -16,24 +16,24 @@ Version:
 */
 (function(){
 
-	DemoApp.DemoClientGame = function() {
-		DemoApp.DemoClientGame.superclass.constructor.call(this);
+	DemoHelloWorld.DemoClientGame = function() {
+		DemoHelloWorld.DemoClientGame.superclass.constructor.call(this);
 		this.startGameClock();
 		return this;
 	};
 
-	DemoApp.DemoClientGame.prototype = {
+	DemoHelloWorld.DemoClientGame.prototype = {
 		setupView: function() {
-			this.view = new DemoApp.DemoView();
+			this.view = new DemoHelloWorld.DemoView();
 			this.view.insertIntoHTMLElementWithId( "gamecontainer" );
-			DemoApp.DemoClientGame.superclass.setupView.call( this );
+			DemoHelloWorld.DemoClientGame.superclass.setupView.call( this );
 		},
 
 		/**
 		 * @inheritDoc
 		 */
 		tick: function() {
-			DemoApp.DemoClientGame.superclass.tick.call(this);
+			DemoHelloWorld.DemoClientGame.superclass.tick.call(this);
 			this.view.stats.update();
 			this.view.update( this.gameClockReal );
 		},
@@ -53,7 +53,7 @@ Version:
 			aCircleView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
 
 			// Create the entity and add it to the fieldcontroller
-			var newEntity = new DemoApp.CircleEntity( entityDesc.entityid, entityDesc.clientid );
+			var newEntity = new DemoHelloWorld.CircleEntity( entityDesc.entityid, entityDesc.clientid );
 			newEntity.position.set( entityDesc.x, entityDesc.y );
 			newEntity.setView( aCircleView );
 			
@@ -64,7 +64,7 @@ Version:
 		 * @inheritDoc
 		 */
 		netChannelDidConnect: function (messageData) {
-			DemoApp.DemoClientGame.superclass.netChannelDidConnect.call(this, messageData );
+			DemoHelloWorld.DemoClientGame.superclass.netChannelDidConnect.call(this, messageData );
 			this.joinGame("Player" + this.netChannel.getClientid() ); // Automatically join the game with some name
 		},
 
@@ -73,7 +73,7 @@ Version:
 		 */
 		netChannelDidReceiveMessage: function (messageData)
 		{
-			DemoApp.DemoClientGame.superclass.netChannelDidReceiveMessage.call(this, messageData );
+			DemoHelloWorld.DemoClientGame.superclass.netChannelDidReceiveMessage.call(this, messageData );
 			// Do some stuff here
 		},
 
@@ -81,7 +81,7 @@ Version:
 		 * @inheritDoc
 		 */
 		netChannelDidDisconnect: function (messageData) {
-			DemoApp.DemoClientGame.superclass.netChannelDidDisconnect.call(this, messageData );
+			DemoHelloWorld.DemoClientGame.superclass.netChannelDidDisconnect.call(this, messageData );
 			// Do some stuff here
 		},
 
@@ -122,10 +122,10 @@ Version:
 		 * Deallocate memory from your game, and let the superclass do the same
 		 */
 		dealloc: function() {
-			DemoApp.DemoClientGame.superclass.dealloc.call( this );
+			DemoHelloWorld.DemoClientGame.superclass.dealloc.call( this );
 		}
 	};
 
 	// extend RealtimeMultiplayerGame.AbstractClientGame
-	RealtimeMultiplayerGame.extend(DemoApp.DemoClientGame, RealtimeMultiplayerGame.AbstractClientGame, null);
+	RealtimeMultiplayerGame.extend(DemoHelloWorld.DemoClientGame, RealtimeMultiplayerGame.AbstractClientGame, null);
 })()

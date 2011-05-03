@@ -158,7 +158,7 @@ Version:
 			var activeEntities = {};
 
 			// T is where we fall between, as a function of these two points
-			var t = offsetTime / (nextWED.gameClock - previousWED.gameClock);;
+			var t = offsetTime / (nextWED.gameClock - previousWED.gameClock);
 			if(t > 1.0)  t = 1.0;
 			else if(t < 0) t = 0.0;
 
@@ -181,7 +181,8 @@ Version:
 					this.createEntityFromDesc( entityDesc );
 				}
 				else
-				{ // We already have this entity - update it
+				{
+					// We already have this entity - update it
 					var previousEntityDescription = previousWED.objectForKey(entityid);
 
 					// Could not find info for this entity in previous description

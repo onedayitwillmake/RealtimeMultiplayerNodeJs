@@ -119,7 +119,6 @@ Version:
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {
-//			console.log("data.payload.entityid", data.payload.entityid)
 			var entity = this.fieldController.getEntityWithid( data.payload.entityid );
 			entity.input.deconstructInputBitmask( data.payload.input );
 		},

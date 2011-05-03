@@ -30,9 +30,9 @@ a:hover { color: #333333; }
 }
 
 #title{
-	font-size: 80px;
+	font-size: 40px;
 	color:white;
-	padding-top:35px;
+	padding-top:80px;
 	float:left;
 }
 
@@ -56,7 +56,6 @@ nav ul, nav ul li{
 
 nav a{
 	padding:20px;
-	color:white;
 	text-decoration:none;
 	background-color: #9dfafa;
 }
@@ -116,12 +115,13 @@ article header{
 
 }
 
-.info{
+.info {
 	position:absolute;
+	right: 0px;
 	top:5px;
 	background-color:white;
 	padding:10px;
-	margin-top:50px;
+	margin-top:5px;
 }
 
 #jquery-test{

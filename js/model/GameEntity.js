@@ -35,6 +35,7 @@ Version:
 		rotation	: 0,
 		traits		: null,														// A sortedlookuptable of our traits
 		view		: null,
+		lastReceivedEntityDescription	:null,									// The last received entity description (set by renderAtTime)
 
 		/**
 		 * Update the view's position
@@ -123,7 +124,6 @@ Version:
 				returnString += ","+this.entityType;
 				returnString += ","+Math.round(this.position.x);
 				returnString += ","+Math.round(this.position.y);
-				returnString += ","+Math.round(this.rotation*57.2957795);
 
 			return returnString;
 		},

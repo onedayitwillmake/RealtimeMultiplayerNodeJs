@@ -56,7 +56,7 @@ Version:
 		{
 
 			var messageIndex = this.incomingSequenceNumber & RealtimeMultiplayerGame.Constants.CLIENT_SETTING.UPDATE_RATE;
-			this.incomingMessageBuffer[messageIndex] = messageData;
+//			this.incomingMessageBuffer[messageIndex] = messageData;
 			this.incomingSequenceNumber++;
 		},
 
@@ -132,8 +132,8 @@ Version:
 			this.lastSentMessageTime = gameClock;
 
 			// Store inside our outgoingMessageBuffer - which holds 'MESSAGE_BUFFER_MASK' lerped number of messages
-			var messageIndex = this.outgoingSequenceNumber & BUFFER_MASK;
-			this.outgoingMessageBuffer[messageIndex] = anEncodedMessage;
+//			var messageIndex = this.outgoingSequenceNumber & BUFFER_MASK;
+//			this.outgoingMessageBuffer[messageIndex] = anEncodedMessage;
 
 			// Send and increment our message count
 			this.connection.send( anEncodedMessage );

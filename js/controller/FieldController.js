@@ -41,14 +41,16 @@
 		 * @param {int}		entityid  	entityid we want to update
 		 * @param {RealtimeMultiplayerGame.model.Point}	newPosition	position
 		 * @param {Number}	newRotation	rotation
+		 * @param {Object}	newEntityDescription The full contents of the the snapshots newEntityDescription
 		 */
-		updateEntity: function( entityid, newPosition, newRotation ) {
+		updateEntity: function( entityid, newPosition, newRotation, newEntityDescription ) {
 			var entity = this.entities.objectForKey( entityid );
 
 			if( entity != null ) {
 				entity.position.x = newPosition.x;
 				entity.position.y = newPosition.y;
 				entity.rotation = newRotation;
+				entity.lastReceivedEntityDescription = newEntityDescription;
 			} else {
 				console.log("(FieldController)::updateEntity - Error: Cannot find entity with entityid", entityid);
 			}

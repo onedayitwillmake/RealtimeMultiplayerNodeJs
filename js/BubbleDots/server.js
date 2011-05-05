@@ -12,7 +12,6 @@ Basic Usage:
 Version:
 	1.0
 */
-
 require("../lib/SortedLookupTable.js");
 require("../core/RealtimeMutliplayerGame.js");
 require("../model/Point.js");
@@ -29,12 +28,13 @@ require("../model/GameEntity.js");
 require("../model/WorldEntityDescription.js");
 require("../input/Keyboard.js");
 
-//
-require("v8-profiler");
-require("./DemoBox2DApp.js");
-require("./DemoBox2DConstants.js");
-require("./DemoBox2DCircleEntity.js");
-require("./DemoBox2DServerGame.js");
 
-var game = new DemoBox2D.DemoServerGame();
+require("./BubbleDots.js");
+require("./BubbleDotsConstants.js");
+require("./entities/CircleEntity.js");
+require("./entities/CandyEntity.js");
+require("./entities/PlayerEntity.js");
+require("./BubbleDotsServerGame.js");
+
+var game = new BubbleDots.DemoServerGame();
 game.startGameClock();

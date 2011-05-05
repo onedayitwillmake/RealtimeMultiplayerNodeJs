@@ -32,7 +32,7 @@ Version:
 		{
 			INTERP		: 90,						// How far back to interpolate the client-rendered world
 			FAKE_LAG	: 0,						// Used to simulate latency
-			UPDATE_RATE	: 1000/20, 					// How often to request a world-update from the server
+			UPDATE_RATE	: 1000/6, 					// How often to request a world-update from the server
 			CMD_RATE	: 1000/25,                  // How often a client can send messages to server
 			MAX_BUFFER	: 31,
 			EXPIRED_ENTITY_CHECK_RATE	: 30,		// How often we clear out entities that the server says no longer exist. Lower looks better but decreases framerate

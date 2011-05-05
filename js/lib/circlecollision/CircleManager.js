@@ -297,10 +297,10 @@
 		{
 			return true;
 			if(!circleA || !circleB || circleA === circleB) return false; 					// one is null (will be deleted next loop), or both point to same obj.
-			if(circleA.delegate == null || circleB.delegate == null) return false;					// This circle will be removed next loop, it's entity is already removed
+			if(circleA.delegate == null || circleB.delegate == null) return false;			// This circle will be removed next loop, it's entity is already removed
 
 			if(circleA.isFixed & circleB.isFixed) return false;
-//			if(circleA.delegate .clientid === circleB.delegate.clientid) return false; 				// Don't let something collide with stuff it owns
+//			if(circleA.delegate .clientid === circleB.delegate.clientid) return false;		// Don't let something collide with stuff it owns
 
 			// They dont want to collide
 			if((circleA.collisionGroup & circleB.collisionMask) == 0) return false;

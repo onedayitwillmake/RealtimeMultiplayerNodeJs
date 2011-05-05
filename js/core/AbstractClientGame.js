@@ -94,7 +94,6 @@ Version:
 
 			// Need atleast 2 updates to render between
 			if( len < 2 ) return;
-
 			var newPosition = new RealtimeMultiplayerGame.model.Point(0,0),
 				newRotation = 0.0;
 
@@ -123,14 +122,14 @@ Version:
 				}
 
 				// Have no found a matching update for a while - the client is way behind the server, set our time to the time of the last udpate we received
-//				if(i === len -1) {
-//					if(++this.locateUpdateFailedCount === RealtimeMultiplayerGame.Constants.CLIENT_SETTING.MAX_UPDATE_FAILURE_COUNT) {
-//						this.gameClock = currentWED.gameClock;
-//						this.gameTick = currentWED.gameTick;
-//						previousWED = cmdBuffer[i-1];
-//						nextWED = currentWED;
-//					}
-//				}
+				if(i === len -1) {
+					if(++this.locateUpdateFailedCount === RealtimeMultiplayerGame.Constants.CLIENT_SETTING.MAX_UPDATE_FAILURE_COUNT) {
+						this.gameClock = currentWED.gameClock;
+						this.gameTick = currentWED.gameTick;
+						previousWED = cmdBuffer[i-1];
+						nextWED = currentWED;
+					}
+				}
 			}
 
 			// Could not find two points to render between
@@ -159,9 +158,10 @@ Version:
 
 			// T is where we fall between, as a function of these two points
 			var t = offsetTime / (nextWED.gameClock - previousWED.gameClock);
-			if(t > 1.0)  t = 1.0;
-			else if(t < 0) t = 0.0;
-
+//			if(t > 1.0)  t = 1.0;
+//			else if(t < 0) t = 0.0;
+//			this.log(t.toString(10));
+//			t = 0.0;
 			// Note: We want to render at time "B", so grab the position at time "A" (previous), and time "C"(next)
 			var entityPositionPast = new RealtimeMultiplayerGame.model.Point(0,0),
 				entityRotationPast = 0;
@@ -206,7 +206,7 @@ Version:
 				}
 
 				// Update the entity with the new information, and insert it into the activeEntities array
-				this.fieldController.updateEntity( entityid, newPosition, newRotation );
+				this.fieldController.updateEntity( entityid, newPosition, newRotation, entityDesc );
 				activeEntities[entityid] = true;
 
 			}, this);

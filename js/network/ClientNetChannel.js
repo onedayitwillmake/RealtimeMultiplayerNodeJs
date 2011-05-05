@@ -222,20 +222,8 @@ Version:
 			while(--allEntitiesLen)   // allEntities[0] is garbage, so by using prefix we avoid it
 			{
 				// Loop through the string representing the entities properties
-				var entityDescAsArray = allEntities[allEntitiesLen].split(','),
-					entityDescription = {};
-
-				// GUARANTEED TO BE IN ORDER.
-				// SEE GameEntity.js::constructEntityDescription
-				// Using the unary operator to convert string to number
-				entityDescription.entityid = +entityDescAsArray[0];
-				entityDescription.clientid = +entityDescAsArray[1];
-				entityDescription.entityType = +entityDescAsArray[2];
-				entityDescription.x = +entityDescAsArray[3];
-				entityDescription.y = +entityDescAsArray[4];
-				entityDescription.rotation = +entityDescAsArray[5];
-				entityDescription.radius = +entityDescAsArray[6];
-
+				var entityDescAsArray = allEntities[allEntitiesLen].split(',');
+				var entityDescription = this.delegate.parseEntityDescriptionArray( entityDescAsArray );
 
 				// Store the final result using the entityid
 				worldDescription.setObjectForKey(entityDescription, entityDescription.entityid);
@@ -363,6 +351,7 @@ Version:
 		netChannelDidConnect: function() {},
 		netChannelDidReceiveMessage: function( aMessage ) {},
 		netChannelDidDisconnect: function() {},
+		parseEntityDescriptionArray: function(){},
 		log: function() {},
 		getGameClock: function() {}
 	}

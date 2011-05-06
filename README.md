@@ -19,5 +19,5 @@ This demo __also shows one implementation__ of having a special kind of entity w
 
 ### DemoBox2D 
 This demo uses a [Box2D.js](https://github.com/HBehrens/box2d.js) implementation to create a world, and show's off the idea of synchronized physics, and taking advantage that all the simulation happens on the server.  
-It also shows __synchronized interaction__ between multiple users, and an example of sending a message to the server which it interprets back into the game
+It also shows __synchronized interaction__ between multiple users, and an example of sending a message to the server which it interprets back into the game  
 ![DemoBox2D](http://farm6.static.flickr.com/5027/5694599478_7c9339c99c_b.jpg)

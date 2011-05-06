@@ -13,6 +13,9 @@ Version:
 	1.0
 */
 (function() {
+	var DAG2RAD = 0.0174532925;
+	var RAD2DEG = 57.2957795;
+
 	DemoBox2D.CircleEntity = function( anEntityid, aClientid) {
 		DemoBox2D.CircleEntity.superclass.constructor.call(this, anEntityid, aClientid );
 		this.radius = DemoBox2D.Constants.ENTITY_BOX_SIZE * DemoBox2D.Constants.PHYSICS_SCALE;
@@ -32,7 +35,7 @@ Version:
 			this.view.x = this.position.x - this.radius;
 			this.view.y = this.position.y - this.radius;
 
-			this.view.setRotation( this.rotation * 0.017453292519943295 );
+			this.view.setRotation( this.rotation * DAG2RAD );
 		},
 
 		/**
@@ -48,7 +51,8 @@ Version:
 		 * @inheritDoc
 		 */
 		constructEntityDescription: function() {
-			return DemoBox2D.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + this.radius;
+			// Send the regular entity description, but also send 'radius' and a rounded version 'rotation'
+			return DemoBox2D.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + this.radius + "," + ~~(this.rotation * RAD2DEG);
 		},
 
 		/**

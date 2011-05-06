@@ -120,10 +120,10 @@ Version:
 		constructEntityDescription: function(gameTick, wantsFullUpdate)
 		{
 			var returnString = this.entityid;
-				returnString += ","+this.clientid;
-				returnString += ","+this.entityType;
-				returnString += ","+Math.round(this.position.x);
-				returnString += ","+Math.round(this.position.y);
+				returnString += "," + this.clientid;
+				returnString += "," + this.entityType;
+				returnString += "," + ~~(this.position.x);
+				returnString += "," + ~~(this.position.y);
 
 			return returnString;
 		},

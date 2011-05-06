@@ -71,6 +71,31 @@ Version:
 		},
 
 		/**
+		 * Called by the ClientNetChannel, it sends us an array containing tightly packed values and expects us to return a meaningful object
+		 * It is left up to each game to implement this function because only the game knows what it needs to send.
+		 * However the 4 example projects in RealtimeMultiplayerNodeJS offer should be used ans examples
+		 *
+		 * @param {Array} entityDescAsArray An array of tightly packed values
+		 * @return {Object} An object which will be returned to you later on tied to a specific entity
+		 */
+		parseEntityDescriptionArray: function(entityDescAsArray)
+		{
+			var entityDescription = {};
+
+			// It is left upto each game to implement this function because only the game knows what it needs to send.
+			// However the 4 example projects in RealtimeMultiplayerNodeJS offer this an example
+			entityDescription.entityid = +entityDescAsArray[0];
+			entityDescription.clientid = +entityDescAsArray[1];
+			entityDescription.entityType = +entityDescAsArray[2];
+			entityDescription.x = +entityDescAsArray[3];
+			entityDescription.y = +entityDescAsArray[4];
+			entityDescription.radius = +entityDescAsArray[5];
+			entityDescription.rotation = +entityDescAsArray[6];
+
+			return entityDescription;
+		},
+
+		/**
 		 * @inheritDoc
 		 */
 		netChannelDidConnect: function (messageData) {

@@ -44,36 +44,38 @@ Version:
 		 * @inheritDoc
 		 */
 		createEntityFromDesc: function(entityDesc) {
+			var diameter = entityDesc.radius*2;
 
-			var diameter = entityDesc.radius * 2;
-
-//			// Create a view via CAAT
+			// Create a view via CAAT
 			var aCircleView = new CAAT.ShapeActor();
 			aCircleView.create();
 			aCircleView.setShape( CAAT.ShapeActor.prototype.SHAPE_CIRCLE);
+			aCircleView.setAlpha( 0.25 );
 			aCircleView.setSize( diameter, diameter );
 			aCircleView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
-//
-//			var isOwnedByMe = entityDesc.clientid === this.netChannel.clientid;
-//
-//			// is this a player entity that is mine, if so i should attach the keyboard to it
-//			if( entityDesc.entityType & BubbleDots.Constants.ENTITY_TYPES.PLAYER_ENTITY ) {
-//				newEntity = new BubbleDots.PlayerEntity( entityDesc.entityid, entityDesc.clientid );
-//				console.log('got my player, adding keyboard');
-//				if( isOwnedByMe ) {
-//					console.log("adding trait to this keyboard's user");
-//					newEntity.addTraitAndExecute( new RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait() );
-//					this.clientCharacter = newEntity;
-//				}
-//			} else {
 
-//			}
 
+			// Create a new BubbleDots entity
 			var newEntity = new BubbleDots.CircleEntity( entityDesc.entityid, entityDesc.clientid );
 			newEntity.position.set( entityDesc.x, entityDesc.y );
 			newEntity.setView( aCircleView );
-			
+			newEntity.radius = entityDesc.radius;
+
 			this.fieldController.addEntity( newEntity );
+
+			// Our own character
+			if(entityDesc.clientid == this.netChannel.getClientid() && entityDesc.entityType & BubbleDots.Constants.ENTITY_TYPES.PLAYER_ENTITY) {
+				this.setupClientPlayer( newEntity );
+			}
+		},
+
+		/**
+		 * Called when the player that represents this user is created
+		 * @param anEntity
+		 */
+		setupClientPlayer: function( anEntity ) {
+			anEntity.addTraitAndExecute( new RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait() );
+			this.clientCharacter = anEntity;
 		},
 
 		/**

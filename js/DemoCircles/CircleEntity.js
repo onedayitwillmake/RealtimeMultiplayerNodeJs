@@ -87,6 +87,7 @@ Version:
 			this.collisionCircle = aCollisionCircle;
 			this.collisionCircle.setDelegate( this );
 			this.collisionCircle.setPosition( this.position.clone() );
+			this.collisionCircle.setRadius( this.radius );
 		},
 		getCollisionCircle: function() { return this.collisionCircle }
 	};

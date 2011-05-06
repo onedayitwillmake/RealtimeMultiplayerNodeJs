@@ -32,6 +32,7 @@ require("../input/Keyboard.js");
 require("./BubbleDotsApp.js");
 require("./BubbleDotsConstants.js");
 require("./entities/CircleEntity.js");
+require("./entities/PlayerEntity.js");
 require("./BubbleDotsServerGame.js");
 
 var game = new BubbleDots.DemoServerGame();

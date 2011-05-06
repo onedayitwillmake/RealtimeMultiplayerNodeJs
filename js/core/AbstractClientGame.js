@@ -29,8 +29,8 @@ Version:
 
 	RealtimeMultiplayerGame.AbstractClientGame.prototype = {
 		view										: null,							// View
-		nickname									: '',							// User 'nickname'
 		clientCharacter								: null,							// Reference to this users character
+		nickname									: '',							// User 'nickname'
 		locateUpdateFailedCount						: 0,
 
 		// Methods
@@ -122,18 +122,19 @@ Version:
 				}
 
 				// Have no found a matching update for a while - the client is way behind the server, set our time to the time of the last udpate we received
-				if(i === len -1) {
-					if(++this.locateUpdateFailedCount === RealtimeMultiplayerGame.Constants.CLIENT_SETTING.MAX_UPDATE_FAILURE_COUNT) {
-						this.gameClock = currentWED.gameClock;
-						this.gameTick = currentWED.gameTick;
-						previousWED = cmdBuffer[i-1];
-						nextWED = currentWED;
-					}
-				}
+//				if(i === len -1) {
+//					if(++this.locateUpdateFailedCount === RealtimeMultiplayerGame.Constants.CLIENT_SETTING.MAX_UPDATE_FAILURE_COUNT) {
+//						this.gameClock = currentWED.gameClock;
+//						this.gameTick = currentWED.gameTick;
+//						previousWED = cmdBuffer[i-1];
+//						nextWED = currentWED;
+//					}
+//				}
 			}
 
 			// Could not find two points to render between
 			if(nextWED == null || previousWED == null) {
+				console.log("GIVE UP")
 				return false;
 			}
 
@@ -158,10 +159,9 @@ Version:
 
 			// T is where we fall between, as a function of these two points
 			var t = offsetTime / (nextWED.gameClock - previousWED.gameClock);
-//			if(t > 1.0)  t = 1.0;
-//			else if(t < 0) t = 0.0;
-//			this.log(t.toString(10));
-//			t = 0.0;
+			if(t > 1.0)  t = 1.0;
+			else if(t < 0) t = 0.0;
+
 			// Note: We want to render at time "B", so grab the position at time "A" (previous), and time "C"(next)
 			var entityPositionPast = new RealtimeMultiplayerGame.model.Point(0,0),
 				entityRotationPast = 0;
@@ -256,28 +256,13 @@ Version:
 		 */
 		startGameClock: function()
 		{
-			/**
-			 * Provides requestAnimationFrame in a cross browser way.
-			 * http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-			 */
 			var that = this;
-			this.intervalTargetDelta = Math.floor( 1000/this.intervalFramerate );
-			if ( !window.requestAnimationFrame ) {
-				window.requestAnimationFrame = ( function() {
-					return window.webkitRequestAnimationFrame ||
-					window.mozRequestAnimationFrame ||
-					window.oRequestAnimationFrame ||
-					window.msRequestAnimationFrame ||
-					function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
-						window.setTimeout( callback, 1000 / 60 );
-					};
-				} )();
-			}
-
-			(function animloop(){
+			(function animationLoop() {
 				that.tick();
-				RealtimeMultiplayerGame.AbstractGame.prototype.intervalGameTick = window.setTimeout( animloop, 1000 / 31 );
-			})();
+
+				if(that.isRunning)
+					requestAnimationFrame(animationLoop);
+			})()
 		},
 
 		/**
@@ -292,6 +277,7 @@ Version:
 
 		netChannelDidDisconnect: function ()
 		{
+			this.isRunning = false;
 			this.stopGameClock();
 		},
 

@@ -46,7 +46,7 @@ Version:
 		createEntityFromDesc: function(entityDesc) {
 
 			var diameter = entityDesc.radius * 2;
-			console.log(entityDesc.radius);
+
 			// Create a view via CAAT
 			var aCircleView = new CAAT.ShapeActor();
 			aCircleView.create();
@@ -60,6 +60,7 @@ Version:
 
 			// is this a player entity that is mine, if so i should attach the keyboard to it
 			if( entityDesc.entityType & DemoApp.Constants.ENTITY_TYPES.PLAYER_ENTITY ) {
+				newEntity.addTraitAndExecute( new RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait() );
 				newEntity = new DemoApp.PlayerEntity( entityDesc.entityid, entityDesc.clientid );
 				console.log('got my player, adding keyboard');
 				if( isOwnedByMe ) {

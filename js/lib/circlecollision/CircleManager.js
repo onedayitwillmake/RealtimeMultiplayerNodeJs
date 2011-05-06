@@ -148,13 +148,16 @@
 					{
 						var cj = circleList[j];
 
-						if( !this.circlesCanCollide(ci, cj) ) continue;   // It's us!
+						// Circle collision should be ignored (ci == cj, or collisionGroups are incorrect
+						if( !this.circlesCanCollide(ci, cj) ) {
+							continue;   // It's us!
+						}
 
 						var dx = cj.position.x - ci.position.x,
 							dy = cj.position.y - ci.position.y;
 
 						// The distance between the two circles radii, but we're also gonna pad it a tiny bit
-						var r = (ci.radius + cj.radius) * 1.08,
+						var r = (ci.radius + cj.radius),
 							d = ci.position.getDistanceSquared(cj.position);
 
 						/**
@@ -173,7 +176,7 @@
 							if(!cj.isFixed)
 							{
 								if(ci.isFixed)
-									v.multiply(2.2);	// Double inverse force to make up for the fact that the other object is fixed
+									v.multiply(2.0);	// Double inverse force to make up for the fact that the other object is fixed
 
 								// ADD the velocity
 								cj.position.translatePoint(v);
@@ -183,14 +186,14 @@
 							if(!ci.isFixed)
 							{
 								if(cj.isFixed)
-									v.multiply(2.2);	// Double inverse force to make up for the fact that the other object is fixed
+									v.multiply(2.0);	// Double inverse force to make up for the fact that the other object is fixed
 
 								 // SUBTRACT the velocity
 								ci.position.subtract(v);
 							}
 
 							// Emit the collision event from each circle, with itself as the first parameter
-							if(this.collisionCallback && n == this.numberOfCollisionPasses-1)
+							if(this.collisionCallback && n === 0)
 							{
 								this.collisionCallback.block.call( this.collisionCallback.scope, ci, cj, v );
 							}
@@ -298,6 +301,7 @@
 			if(!circleA || !circleB || circleA === circleB) return false; 					// one is null (will be deleted next loop), or both point to same obj.
 			if(circleA.delegate == null || circleB.delegate == null) return false;			// This circle will be removed next loop, it's entity is already removed
 
+			// both
 			if(circleA.isFixed & circleB.isFixed) return false;
 
 			// They dont want to collide

@@ -37,7 +37,7 @@ Version:
 		setupCAAT: function() {
 			this.caatScene = new CAAT.Scene(); // Create a scene, all directors must have at least one scene - this is where all your stuff goes
 			this.caatScene.create();	// Notice we call create when creating this, and ShapeActor below. Both are Actors
-			this.caatScene.setFillStyle('#000000');
+			this.caatScene.setFillStyle('#FFFFFF');
 
 			this.caatDirector = new CAAT.Director().initialize( BubbleDots.Constants.GAME_WIDTH, BubbleDots.Constants.GAME_HEIGHT ); // Create the director instance
 			this.caatDirector.addScene( this.caatScene ); // Immediately add the scene once it's created

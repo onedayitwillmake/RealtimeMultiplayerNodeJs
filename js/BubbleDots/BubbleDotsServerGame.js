@@ -53,18 +53,7 @@ Version:
 		/**
 		 * Called when the collision manager detects a collision
 		 */
-		onCollisionManagerCollision: function(ci, cj, v )
-		{
-//			if(ci.delegate.entityType == BubbleDots.Constants.ENTITY_TYPES.PLAYER_ENTITY) {
-//				console.log("PLAYA-A");
-//			} else if(cj.delegate.entityType == BubbleDots.Constants.ENTITY_TYPES.PLAYER_ENTITY) {
-//				var newRadius = 10.0 + Math.random() * 10;
-//				cj.setRadius( newRadius );
-
-//			}
-
-//			console.log("THINGS ARE HAPPENING:",ci.delegate.radius);
-//			this.collisionCallback = {'block': block, 'scope': scope};
+		onCollisionManagerCollision: function(ci, cj, v ) {
 			ci.delegate.tempColor();
 			cj.delegate.tempColor();
 		},
@@ -76,8 +65,8 @@ Version:
 			//RealtimeMultiplayerGame.model.noise(10, 10, i/total)
 			var total = BubbleDots.Constants.MAX_CIRCLES;
 			for(var i = 0; i < total; i++) {
-				var radius = BubbleDots.Constants.ENTITY_DEFAULT_RADIUS + Math.random() * 5;
-				this.createCircleEntity( radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
+				var radius = BubbleDots.Constants.ENTITY_DEFAULT_RADIUS;
+				this.createEntity( BubbleDots.CircleEntity, radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
 			}
 		},
 
@@ -87,24 +76,16 @@ Version:
 		 * @param {Number} anEntityid
 		 * @param {Number} aClientid
 		 */
-		createCircleEntity: function( aRadius, anEntityid, aClientid ) {
-
+		createEntity: function( aBubbleDotEntityConstructor, aRadius, anEntityid, aClientid ) {
 			// Create the GameEntity
-			var circleEntity = new BubbleDots.CircleEntity( anEntityid, aClientid );
+			var circleEntity = new aBubbleDotEntityConstructor( anEntityid, aClientid );
 			circleEntity.radius = aRadius;
-			circleEntity.position.set( Math.random() * BubbleDots.Constants.GAME_WIDTH, Math.random() * BubbleDots.Constants.GAME_HEIGHT);
-			circleEntity.setColor( CAAT.Color.prototype.hsvToRgb( (anEntityid * 15) % 360, 40, 99).toHex() );
+			circleEntity.position.set( Math.random() * BubbleDots.Constants.GAME_WIDTH, BubbleDots.Constants.GAME_HEIGHT / 2 + Math.random() );
+			circleEntity.setColor( CAAT.Color.prototype.hsvToRgb( (anEntityid * 15) % 360, 80, 99).toHex() );
+
 			// Create a randomly sized circle, that will represent this entity in the collision manager
 			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
-			collisionCircle.setRadius( aRadius );
 			circleEntity.setCollisionCircle( collisionCircle );
-
-
-			circleEntity.getCollisionCircle().collisionMask = 1;
-			circleEntity.getCollisionCircle().collisionGroup = 2;
-
-
-			console.log(">" + circleEntity.getCollisionCircle().collisionMask + "|" + circleEntity.getCollisionCircle().collisionGroup);
 
 
 			// Place the circle and collision circle into corresponding containers
@@ -114,44 +95,30 @@ Version:
 			return circleEntity;
 		},
 
-		createPlayerEntity: function( anEntityid, aClientid) {
-			// Create the GameEntity
-			var playerEntity = new BubbleDots.PlayerEntity( anEntityid, aClientid );
-				playerEntity.position.set( Math.random() * BubbleDots.Constants.GAME_WIDTH, Math.random() * BubbleDots.Constants.GAME_HEIGHT);
-
-			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
-				collisionCircle.setRadius( playerEntity.radius );
-
-			playerEntity.setInput( new RealtimeMultiplayerGame.Input.Keyboard() );
-			playerEntity.setCollisionCircle( collisionCircle );
-
-			// place player on field
-			this.collisionManager.addCircle( playerEntity.getCollisionCircle() );
-			this.fieldController.addPlayer( playerEntity );
-
-			return playerEntity;
-		},
-
 		/**
 		 * Updates the game
 		 * Creates a WorldEntityDescription which it sends to NetChannel
 		 */
 		tick: function() {
-			this.collisionManager.handleBoundaryForAllCircles();
 			this.collisionManager.handleCollisions();
+			this.collisionManager.handleBoundaryForAllCircles();
 
-//			if( this.fieldController.players.objectForKey(1) )
-//				console.log( this.fieldController.players.objectForKey(1).entityType === BubbleDots.Constants.ENTITY_TYPES.PLAYER_ENTITY)
 			// Note we call superclass's implementation after we're done
 			BubbleDots.DemoServerGame.superclass.tick.call(this);
 		},
 
+		/**
+		 * @inheritDoc
+		 */
 		shouldAddPlayer: function( aClientid, data ) {
-			var aPlayer = this.createCircleEntity( 100, this.getNextEntityID(), aClientid );
-			aPlayer.getCollisionCircle().collisionMask = 2;
-			aPlayer.getCollisionCircle().collisionGroup = 1;
 
-//			this.createPlayerEntity( this.getNextEntityID(), aClientid);
+			var center = new RealtimeMultiplayerGame.model.Point( BubbleDots.Constants.GAME_WIDTH / 2,BubbleDots.Constants.GAME_HEIGHT / 2 );
+			var playerEntity = this.createEntity( BubbleDots.PlayerEntity, 50, this.getNextEntityID(), aClientid );
+			playerEntity.position = center.clone();
+			playerEntity.getCollisionCircle().setPosition( center.clone() );
+			playerEntity.setInput( new RealtimeMultiplayerGame.Input.Keyboard() );
+
+			this.fieldController.addPlayer( playerEntity );
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {
@@ -161,7 +128,6 @@ Version:
 
 		shouldRemovePlayer: function( aClientid ) {
 			BubbleDots.DemoServerGame.superclass.shouldRemovePlayer.call( this, aClientid );
-			console.log("DEMO::REMOVEPLAYER");
 		}
 	};
 

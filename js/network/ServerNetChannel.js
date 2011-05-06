@@ -113,7 +113,7 @@ Version:
 			var connectMessage = new RealtimeMultiplayerGame.model.NetChannelMessage( ++this.outgoingSequenceNumber, aClient.getClientid(), true, RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT, { gameClock: this.delegate.getGameClock() });
 			connectMessage.messageTime = this.delegate.getGameClock();
 			aClient.getConnection().send( connectMessage );
-
+			console.log( connectMessage )
 			// Add to our list of connected users
 			this.clients.setObjectForKey( aClient, aClient.getSessionId() );
 		},

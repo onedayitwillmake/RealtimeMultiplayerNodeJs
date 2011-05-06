@@ -13,8 +13,6 @@ Version:
 	1.0
 */
 (function(){
-
-	var nOffset = Math.random() * 2000;
 	BubbleDots.CircleEntity = function( anEntityid, aClientid) {
 		BubbleDots.CircleEntity.superclass.constructor.call(this, anEntityid, aClientid );
 
@@ -39,12 +37,13 @@ Version:
 		 */
 		updateView: function() {
 			if(!this.view) return;
-			this.view.x = this.position.x - this.radius;
-			this.view.y = this.position.y - this.radius;
 
-			var diameter = this.lastReceivedEntityDescription.radius;
+			var diameter = this.lastReceivedEntityDescription.radius * 2;
 			this.view.setSize( diameter, diameter );
 			this.view.setFillStyle( "#" + this.lastReceivedEntityDescription.color  ); // Random color
+
+			this.view.x = this.position.x - this.radius;
+			this.view.y = this.position.y - this.radius;
 		},
 
 		/**
@@ -54,23 +53,18 @@ Version:
 		 * @param {Number} gameTick		Current game tick (incrimented each frame)
 		 */
 		updatePosition: function( speedFactor, gameClock, gameTick ) {
+			this.handleAcceleration();
+		},
 
-			// Modify velocity using perlin noise
-			var theta = 0.008;
-
-			var noise = RealtimeMultiplayerGame.model.noise(nOffset+this.position.x*theta, nOffset+this.position.y*theta, gameTick*0.0005);
-			var angle = noise*12;
-			var speed = 0.2;
-			this.acceleration.x += Math.cos( angle ) * speed - 0.3;
-			this.acceleration.y -= Math.sin( angle ) * speed;
-
-
+		handleAcceleration: function() {
 			this.velocity.translatePoint( this.acceleration );
-			this.velocity.limit(5);
+			this.velocity.limit(7);
 			this.velocity.multiply(0.9);
-			this.acceleration.set(0,0);
+
 			this.collisionCircle.position.translatePoint( this.velocity );
 			this.position = this.collisionCircle.position.clone();
+
+			this.acceleration.set(0,0);
 		},
 
 		tempColor: function() {
@@ -80,7 +74,7 @@ Version:
 			this.color = "FF0000";
 			this.timeout = setTimeout(function(){
 				that.setColor( that.originalColor );
-			}, 100);
+			}, 50);
 		},
 
 		/**
@@ -107,8 +101,12 @@ Version:
 		 */
 		setCollisionCircle: function( aCollisionCircle ) {
 			this.collisionCircle = aCollisionCircle;
+			this.collisionCircle.collisionMask = 1;
+			this.collisionCircle.collisionGroup = 2;
 			this.collisionCircle.setDelegate( this );
 			this.collisionCircle.setPosition( this.position.clone() );
+ 			this.collisionCircle.setRadius( this.radius );
+
 		},
 		getCollisionCircle: function() { return this.collisionCircle },
 

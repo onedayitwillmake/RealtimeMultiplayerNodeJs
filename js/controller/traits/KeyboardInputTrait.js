@@ -59,7 +59,7 @@ Basic Usage:
 
 			// Intercept those two properties from the attached enitity with our own
 			this.intercept(['constructEntityDescription', 'handleInput']);
-			this.attachedEntity.setInput( new RealtimeMultiplayerGame.Input.Keyboard() );
+			this.attachedEntity.input = new RealtimeMultiplayerGame.Input.Keyboard();
 			this.attachedEntity.input.attachEvents();
 		},
 

@@ -33,6 +33,7 @@ Version:
 		gameClockReal  			: 0,											// Actual time via "new Date().getTime();"
 		gameClock				: 0,											// Seconds since start
 		gameTick				: 0,											// Ticks since start
+		isRunning				: true,
 		speedFactor				: 1,											// Used to create Framerate Independent Motion (FRIM) - 1.0 means running at exactly the correct speed, 0.5 means half-framerate. (otherwise faster machines which can update themselves more accurately will have an advantage)
 		intervalGameTick		: null,											// Setinterval for gametick
 		intervalFramerate		: 60,											// Try to call our tick function this often, intervalFramerate, is used to determin how often to call settimeout - we can set to lower numbers for slower computers
@@ -40,7 +41,7 @@ Version:
 		gameDuration			: Number.MAX_VALUE,								// Gameduration
 
 		netChannel				: null,											// ServerNetChannel / ClientNetChannel determined by subclass
-		fieldController			: null,							// FieldController
+		fieldController			: null,											// FieldController
 		cmdMap: {},
 
 		/**
@@ -79,7 +80,7 @@ Version:
 		startGameClock: function()
 		{
 			var that = this;
-
+			this.gameClockReal = new Date().getTime();
 			this.intervalTargetDelta = Math.floor( 1000/this.intervalFramerate );
 			this.intervalGameTick = setInterval( function(){ that.tick() }, this.intervalTargetDelta);
 		},

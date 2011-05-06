@@ -16,6 +16,7 @@ Version:
 */
 (function(){
 	require("../model/ImprovedNoise.js");
+	require("./lib/color.js");
 
 	BubbleDots.DemoServerGame = function() {
 		BubbleDots.DemoServerGame.superclass.constructor.call(this);
@@ -23,6 +24,7 @@ Version:
 		this.setGameDuration( BubbleDots.Constants.GAME_DURATION );
 		this.setupCollisionManager();
 		this.setupRandomField();
+
 		return this;
 	};
 
@@ -53,15 +55,18 @@ Version:
 		 */
 		onCollisionManagerCollision: function(ci, cj, v )
 		{
-			if(ci.delegate.entityType == BubbleDots.Constants.ENTITY_TYPES.PLAYER_ENTITY) {
+//			if(ci.delegate.entityType == BubbleDots.Constants.ENTITY_TYPES.PLAYER_ENTITY) {
 //				console.log("PLAYA-A");
-			} else if(cj.delegate.entityType == BubbleDots.Constants.ENTITY_TYPES.PLAYER_ENTITY) {
-				var newRadius = 10.0 + Math.random() * 10;
-				cj.setRadius( newRadius );
-				cj.delegate.radius = newRadius;
-			}
+//			} else if(cj.delegate.entityType == BubbleDots.Constants.ENTITY_TYPES.PLAYER_ENTITY) {
+//				var newRadius = 10.0 + Math.random() * 10;
+//				cj.setRadius( newRadius );
+
+//			}
+
 //			console.log("THINGS ARE HAPPENING:",ci.delegate.radius);
 //			this.collisionCallback = {'block': block, 'scope': scope};
+			ci.delegate.tempColor();
+			cj.delegate.tempColor();
 		},
 
 		/**
@@ -83,16 +88,24 @@ Version:
 		 * @param {Number} aClientid
 		 */
 		createCircleEntity: function( aRadius, anEntityid, aClientid ) {
-			// Create a randomly sized circle, that will represent this entity in the collision manager
-			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
-				collisionCircle.setRadius( aRadius );
-
 
 			// Create the GameEntity
-			var circleEntity = new BubbleDots.CandyEntity( anEntityid, aClientid );
+			var circleEntity = new BubbleDots.CircleEntity( anEntityid, aClientid );
 			circleEntity.radius = aRadius;
 			circleEntity.position.set( Math.random() * BubbleDots.Constants.GAME_WIDTH, Math.random() * BubbleDots.Constants.GAME_HEIGHT);
+			circleEntity.setColor( CAAT.Color.prototype.hsvToRgb( (anEntityid * 15) % 360, 40, 99).toHex() );
+			// Create a randomly sized circle, that will represent this entity in the collision manager
+			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
+			collisionCircle.setRadius( aRadius );
 			circleEntity.setCollisionCircle( collisionCircle );
+
+
+			circleEntity.getCollisionCircle().collisionMask = 1;
+			circleEntity.getCollisionCircle().collisionGroup = 2;
+
+
+			console.log(">" + circleEntity.getCollisionCircle().collisionMask + "|" + circleEntity.getCollisionCircle().collisionGroup);
+
 
 			// Place the circle and collision circle into corresponding containers
 			this.collisionManager.addCircle( circleEntity.getCollisionCircle() );
@@ -134,7 +147,11 @@ Version:
 		},
 
 		shouldAddPlayer: function( aClientid, data ) {
-			this.createPlayerEntity( this.getNextEntityID(), aClientid);
+			var aPlayer = this.createCircleEntity( 100, this.getNextEntityID(), aClientid );
+			aPlayer.getCollisionCircle().collisionMask = 2;
+			aPlayer.getCollisionCircle().collisionGroup = 1;
+
+//			this.createPlayerEntity( this.getNextEntityID(), aClientid);
 		},
 
 		shouldUpdatePlayer: function( aClientid, data ) {

@@ -29,11 +29,9 @@ require("../model/WorldEntityDescription.js");
 require("../input/Keyboard.js");
 
 
-require("./BubbleDots.js");
+require("./BubbleDotsApp.js");
 require("./BubbleDotsConstants.js");
 require("./entities/CircleEntity.js");
-require("./entities/CandyEntity.js");
-require("./entities/PlayerEntity.js");
 require("./BubbleDotsServerGame.js");
 
 var game = new BubbleDots.DemoServerGame();

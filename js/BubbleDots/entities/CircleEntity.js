@@ -18,6 +18,8 @@ Version:
 	BubbleDots.CircleEntity = function( anEntityid, aClientid) {
 		BubbleDots.CircleEntity.superclass.constructor.call(this, anEntityid, aClientid );
 
+		this.entityType = BubbleDots.Constants.ENTITY_TYPES.CANDY_ENTITY;
+		this.originalColor = null;
 		this.velocity = new RealtimeMultiplayerGame.model.Point(0,0);
 		this.acceleration = new RealtimeMultiplayerGame.model.Point(0,0);
 		return this;
@@ -29,6 +31,8 @@ Version:
 		acceleration			:	RealtimeMultiplayerGame.model.Point.prototype.ZERO,
 		collisionCircle			:	null,										// An instance of RealtimeMultiplayerGame.modules.circlecollision.PackedCircle
 		entityType				: 	null,
+		color					:	null,
+		originalColor			:	null,
 
 		/**
 		 * Update the entity's view - this is only called on the clientside
@@ -40,6 +44,7 @@ Version:
 
 			var diameter = this.lastReceivedEntityDescription.radius;
 			this.view.setSize( diameter, diameter );
+			this.view.setFillStyle( "#" + this.lastReceivedEntityDescription.color  ); // Random color
 		},
 
 		/**
@@ -68,6 +73,16 @@ Version:
 			this.position = this.collisionCircle.position.clone();
 		},
 
+		tempColor: function() {
+			var that = this;
+
+			clearTimeout( this.timeout );
+			this.color = "FF0000";
+			this.timeout = setTimeout(function(){
+				that.setColor( that.originalColor );
+			}, 100);
+		},
+
 		/**
 		 * Deallocate memory
 		 */
@@ -78,7 +93,11 @@ Version:
 		},
 
 		constructEntityDescription: function() {
-			return BubbleDots.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + Math.round(this.radius);
+			var entityDesc = BubbleDots.CircleEntity.superclass.constructEntityDescription.call(this);
+			entityDesc += ',' + Math.round(this.radius);
+			entityDesc += ',' + this.color;
+
+			return entityDesc;
 		},
 
 		///// ACCESSORS
@@ -91,7 +110,21 @@ Version:
 			this.collisionCircle.setDelegate( this );
 			this.collisionCircle.setPosition( this.position.clone() );
 		},
-		getCollisionCircle: function() { return this.collisionCircle }
+		getCollisionCircle: function() { return this.collisionCircle },
+
+		/**
+		 * Set the color of this entity, a property originalColor is also stored
+		 * @param aColor
+		 */
+		setColor: function(aColor) {
+			if(!this.originalColor) {
+				this.originalColor = aColor;
+			}
+
+			this.color = aColor;
+		},
+		getColor: function(){ return this.color },
+		getOriginalColor: function(){ return this.originalColor }
 	};
 
 	// extend RealtimeMultiplayerGame.model.GameEntity

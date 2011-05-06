@@ -50,12 +50,9 @@ Version:
 //			// Create a view via CAAT
 			var aCircleView = new CAAT.ShapeActor();
 			aCircleView.create();
-			aCircleView.setShape( CAAT.ShapeActor.prototype.SHAPE_RECTANGLE  );
+			aCircleView.setShape( CAAT.ShapeActor.prototype.SHAPE_CIRCLE);
 			aCircleView.setSize( diameter, diameter );
-			aCircleView.setFillStyle( "#" + CAAT.Color.prototype.hsvToRgb( (entityDesc.entityid * 15) % 360, 40, 99).toHex() ); // Random color
 			aCircleView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
-
-//			var newEntity = null;
 //
 //			var isOwnedByMe = entityDesc.clientid === this.netChannel.clientid;
 //
@@ -111,7 +108,7 @@ Version:
 			entityDescription.x = +entityDescAsArray[3];
 			entityDescription.y = +entityDescAsArray[4];
 			entityDescription.radius = entityDescAsArray[5];
-
+			entityDescription.color = entityDescAsArray[6];
 			return entityDescription;
 		},
 
@@ -137,7 +134,7 @@ Version:
 
 			return message;
 		})()
-	}
+	};
 
 	// extend RealtimeMultiplayerGame.AbstractClientGame
 	RealtimeMultiplayerGame.extend(BubbleDots.DemoClientGame, RealtimeMultiplayerGame.AbstractClientGame, null);

@@ -91,13 +91,13 @@ Version:
 
 			// It is left upto each game to implement this function because only the game knows what it needs to send.
 			// However the 4 example projects in RealtimeMultiplayerNodeJS offer this an example
-			entityDescription.entityid = +entityDescAsArray[0];
-			entityDescription.clientid = +entityDescAsArray[1];
+			entityDescription.entityid = entityDescAsArray[0];
+			entityDescription.clientid = entityDescAsArray[1];
 			entityDescription.entityType = +entityDescAsArray[2];
 			entityDescription.x = +entityDescAsArray[3];
 			entityDescription.y = +entityDescAsArray[4];
 			entityDescription.radius = +entityDescAsArray[5];
-
+			entityDescription.color = entityDescAsArray[6];
 			return entityDescription;
 		},
 

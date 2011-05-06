@@ -115,8 +115,8 @@ Version:
 			body.h = DemoBox2D.Constants.ENTITY_BOX_SIZE;
 			var shape = new BOX2D.b2PolygonShape.AsBox(body.w, body.h);
 			var fixtureDef = new BOX2D.b2FixtureDef();
-			fixtureDef.restitution = 0.0;
-			fixtureDef.density = 1.0;//10.0;
+			fixtureDef.restitution = 0.1;
+			fixtureDef.density = 1.0;
 			fixtureDef.friction = 1.0;
 			fixtureDef.shape = shape;
 			body.CreateFixture(fixtureDef);

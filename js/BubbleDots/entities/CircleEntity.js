@@ -38,12 +38,12 @@ Version:
 		updateView: function() {
 			if(!this.view) return;
 
+			this.view.x = this.position.x - this.radius;
+			this.view.y = this.position.y - this.radius;
+
 			var diameter = this.lastReceivedEntityDescription.radius * 2;
 			this.view.setSize( diameter, diameter );
 			this.view.setFillStyle( "#" + this.lastReceivedEntityDescription.color  ); // Random color
-
-			this.view.x = this.position.x - this.radius;
-			this.view.y = this.position.y - this.radius;
 		},
 
 		/**

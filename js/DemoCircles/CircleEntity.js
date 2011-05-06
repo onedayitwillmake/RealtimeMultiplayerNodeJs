@@ -18,6 +18,7 @@ Version:
 	DemoApp.CircleEntity = function( anEntityid, aClientid) {
 		DemoApp.CircleEntity.superclass.constructor.call(this, anEntityid, aClientid );
 
+		this.setColor("FFFFFF");
 		this.velocity = new RealtimeMultiplayerGame.model.Point(0,0);
 		this.acceleration = new RealtimeMultiplayerGame.model.Point(0,0);
 		return this;
@@ -37,6 +38,10 @@ Version:
 			if(!this.view) return;
 			this.view.x = this.position.x - this.radius;
 			this.view.y = this.position.y - this.radius;
+
+			var diameter = this.lastReceivedEntityDescription.radius * 2;
+			this.view.setSize( diameter, diameter );
+			this.view.setFillStyle( "#" + this.lastReceivedEntityDescription.color );
 		},
 
 		/**
@@ -65,6 +70,16 @@ Version:
 			this.position = this.collisionCircle.position.clone();
 		},
 
+		tempColor: function() {
+			var that = this;
+
+			clearTimeout( this.timeout );
+			this.color = "FF0000";
+			this.timeout = setTimeout(function(){
+				that.setColor( that.originalColor );
+			}, 50);
+		},
+
 		/**
 		 * Deallocate memory
 		 */
@@ -75,7 +90,7 @@ Version:
 		},
 
 		constructEntityDescription: function() {
-			return DemoApp.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + this.radius;
+			return DemoApp.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + this.radius + ',' + this.color;
 		},
 
 		///// ACCESSORS
@@ -91,7 +106,21 @@ Version:
 			this.collisionCircle.collisionMask = 1;
 			this.collisionCircle.collisionGroup = 1;
 		},
-		getCollisionCircle: function() { return this.collisionCircle }
+		getCollisionCircle: function() { return this.collisionCircle },
+
+		/**
+		 * Set the color of this entity, a property originalColor is also stored
+		 * @param aColor
+		 */
+		setColor: function(aColor) {
+			if(!this.originalColor) {
+				this.originalColor = aColor;
+			}
+
+			this.color = aColor;
+		},
+		getColor: function(){ return this.color },
+		getOriginalColor: function(){ return this.originalColor }
 	};
 
 	// extend RealtimeMultiplayerGame.model.GameEntity

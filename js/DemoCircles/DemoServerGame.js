@@ -45,6 +45,15 @@ Version:
 			this.collisionManager.setBounds(0, 0, DemoApp.Constants.GAME_WIDTH, DemoApp.Constants.GAME_HEIGHT);
 			this.collisionManager.setNumberOfCollisionPasses(2);
 			this.collisionManager.setNumberOfTargetingPasses(0);
+			this.collisionManager.setCallback(this.onCollisionManagerCollision, this);
+		},
+
+		/**
+		 * Called when the collision manager detects a collision
+		 */
+		onCollisionManagerCollision: function(ci, cj, v ) {
+			ci.delegate.tempColor();
+			cj.delegate.tempColor();
 		},
 
 		/**

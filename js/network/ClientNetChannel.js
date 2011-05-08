@@ -149,8 +149,6 @@ Version:
 		 * Send queued messages
 		 */
 		tick: function( ) {
-//			this.gameClock = this.delegate.getGameClock();
-
 			// Can't send new message, still waiting for last imporant message to be returned
 			if(this.reliableBuffer !== null) return;
 
@@ -249,7 +247,7 @@ Version:
 
 			aMessageInstance.messageTime = this.delegate.getGameClock(); // Store to determine latency
 
-			this.lastSentTime = this.gameClock;
+			this.lastSentTime = this.delegate.getGameClock();
 
 			if( aMessageInstance.isReliable ) {
 				this.reliableBuffer = aMessageInstance; // Block new connections

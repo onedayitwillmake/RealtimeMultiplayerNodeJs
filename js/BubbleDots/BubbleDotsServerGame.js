@@ -135,4 +135,4 @@ Version:
 
 	// extend RealtimeMultiplayerGame.AbstractServerGame
 	RealtimeMultiplayerGame.extend(BubbleDots.DemoServerGame, RealtimeMultiplayerGame.AbstractServerGame, null);
-})()
+})();

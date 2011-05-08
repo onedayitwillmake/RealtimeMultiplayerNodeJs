@@ -55,10 +55,8 @@ Version:
 		 * Called when the collision manager detects a collision
 		 */
 		onCollisionManagerCollision: function(ci, cj, v ) {
-//			ci.delegate.tempColor();
-//			cj.delegate.tempColor();
-			ci.delegate.onCollision( ci.delegate, cj.delegate, v );
-			cj.delegate.onCollision( ci.delegate, cj.delegate, v );
+			ci.delegate.onCollision( ci.delegate, cj.delegate, v.clone() );
+			cj.delegate.onCollision( ci.delegate, cj.delegate, v.clone() );
 		},
 
 		/**
@@ -69,7 +67,14 @@ Version:
 			var total = BubbleDots.Constants.MAX_CIRCLES;
 			for(var i = 0; i < total; i++) {
 				var radius = BubbleDots.Constants.ENTITY_DEFAULT_RADIUS;
-				this.createEntity( BubbleDots.CircleEntity, radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
+				var entity = this.createEntity( BubbleDots.CircleEntity, radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
+
+				// Randomly make the object 'food' or 'poison'
+				if(i%2 === 0) {
+					entity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
+				} else {
+					entity.addTraitAndExecute( new BubbleDots.traits.PoisonTrait() );
+				}
 			}
 		},
 
@@ -83,16 +88,12 @@ Version:
 			// Create the GameEntity
 			var circleEntity = new aBubbleDotEntityConstructor( anEntityid, aClientid );
 			circleEntity.radius = aRadius;
-			circleEntity.position.set( Math.random() * BubbleDots.Constants.GAME_WIDTH, BubbleDots.Constants.GAME_HEIGHT / 2 + Math.random() );
+			circleEntity.position.set( Math.random() * BubbleDots.Constants.GAME_WIDTH, Math.random() * BubbleDots.Constants.GAME_HEIGHT );
 			circleEntity.setColor( CAAT.Color.prototype.hsvToRgb( (anEntityid * 15) % 360, 80, 99).toHex() );
 
 			// Create a randomly sized circle, that will represent this entity in the collision manager
 			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
 			circleEntity.setCollisionCircle( collisionCircle );
-
-
-			// Attach food trait
-			circleEntity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
 
 			// Place the circle and collision circle into corresponding containers
 			this.collisionManager.addCircle( circleEntity.getCollisionCircle() );
@@ -102,8 +103,7 @@ Version:
 		},
 
 		/**
-		 * Updates the game
-		 * Creates a WorldEntityDescription which it sends to NetChannel
+		 * @inheritDoc
 		 */
 		tick: function() {
 			this.collisionManager.handleCollisions();
@@ -118,13 +118,12 @@ Version:
 		 * @inheritDoc
 		 */
 		shouldAddPlayer: function( aClientid, data ) {
-
 			var center = new RealtimeMultiplayerGame.model.Point( BubbleDots.Constants.GAME_WIDTH / 2,BubbleDots.Constants.GAME_HEIGHT / 2 );
-			var playerEntity = this.createEntity( BubbleDots.PlayerEntity, 50, this.getNextEntityID(), aClientid );
+			var playerEntity = this.createEntity( BubbleDots.PlayerEntity, 30, this.getNextEntityID(), aClientid );
 			playerEntity.position = center.clone();
 			playerEntity.getCollisionCircle().setPosition( center.clone() );
 			playerEntity.setInput( new RealtimeMultiplayerGame.Input.Keyboard() );
-			playerEntity.removeTraitWithName( BubbleDots.traits.FoodTrait.prototype.displayName );
+			playerEntity.removeAllTraits();
 
 			this.fieldController.addPlayer( playerEntity );
 		},

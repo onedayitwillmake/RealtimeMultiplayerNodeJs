@@ -21,7 +21,7 @@ Version:
 	RealtimeMultiplayerGame.model.GameEntity = function( anEntityid, aClientid ) {
 		this.clientid = aClientid;
 		this.entityid = anEntityid;
-		this.traits = new SortedLookupTable();
+		this.traits = [];
 		this.position = new RealtimeMultiplayerGame.model.Point(0,0);
 		return this;
 	};
@@ -33,7 +33,7 @@ Version:
 		entityType	: -1,														// A special interger representing the entityType sent via along with other network info
 		position	: RealtimeMultiplayerGame.model.Point.prototype.ZERO,  		// Current position of this entity
 		rotation	: 0,
-		traits		: null,														// A sortedlookuptable of our traits
+		traits		: null,														// An array of our traits, in reverse added order
 		view		: null,
 		lastReceivedEntityDescription	:null,									// The last received entity description (set by renderAtTime)
 
@@ -54,6 +54,21 @@ Version:
 			// OVERRIDE
 		},
 
+		/**
+		 * Construct an entity description for this object, it is essentually a CSV so you have to know how to read it on the receiving end
+		 * @param wantsFullUpdate	If true, certain things that are only sent when changed are always sent
+		 */
+		constructEntityDescription: function(gameTick, wantsFullUpdate)
+		{
+			var returnString = this.entityid;
+				returnString += "," + this.clientid;
+				returnString += "," + this.entityType;
+				returnString += "," + ~~(this.position.x);
+				returnString += "," + ~~(this.position.y);
+
+			return returnString;
+		},
+
 		////// TRAIT SUPPORT
 		/**
 		 * Adds and attaches a trait (already created), to this entity.
@@ -68,9 +83,13 @@ Version:
 				return false;
 			}
 
-			//
-			this.removeTraitWithName(aTrait.displayName);
-			this.traits.setObjectForKey(aTrait, aTrait.displayName);
+			// Remove existing version
+			if(existingVersionOfTrait) {
+				this.removeTraitWithName(aTrait.displayName);
+			}
+
+
+			this.traits.push(aTrait);
 			aTrait.attach(this);
 
 			return true;
@@ -90,45 +109,41 @@ Version:
 		},
 
 		/**
-		 * Returns a trait with a matching .displayName property
-		 * @param aTraitName
-		 */
-		getTraitWithName: function(aTraitName) { return this.traits.objectForKey(aTraitName) },
-
-		/**
 		 * Removes a trait with a matching .displayName property
 		 * @param aTraitName
 		 */
-		removeTraitWithName: function(aTraitName)
-		{
-			if(!this.traits) { throw "This GameEntity does not have a 'traits' property - race condition?" }; // CATCH ERROR DURING DEVELOPMENT
-
-			var aTrait = this.traits.objectForKey(aTraitName);
-
-			// Nothing to remove
-			if(!aTrait) {
-				return;
+		removeTraitWithName: function(aTraitName) {
+			var len = this.traits.length;
+			var removedTraits = null;
+			for( var i = 0; i < len; ++i ) {
+				if( this.traits[i].displayName === aTraitName ) {
+					removedTraits = this.traits.splice(i, 1);
+					break;
+				}
 			}
 
-			aTrait.detach();
-			this.traits.remove(aTraitName);
+			// Detach removed traits
+			if(removedTraits) {
+				i = removedTraits.length;
+				while (i--) {
+					removedTraits[i].detach();
+				}
+			}
 		},
 
 		/**
-		 * Construct an entity description for this object, it is essentually a CSV so you have to know how to read it on the receiving end
-		 * @param wantsFullUpdate	If true, certain things that are only sent when changed are always sent
+		 * Removes all traits contained in this entity
 		 */
-		constructEntityDescription: function(gameTick, wantsFullUpdate)
-		{
-			var returnString = this.entityid;
-				returnString += "," + this.clientid;
-				returnString += "," + this.entityType;
-				returnString += "," + ~~(this.position.x);
-				returnString += "," + ~~(this.position.y);
+		removeAllTraits: function() {
+			var i = this.traits.length;
+			while (i--) {
+				this.traits[i].detach();
+			}
 
-			return returnString;
+			this.traits = [];
 		},
 
+		///// MEMORY
 		dealloc: function() {
 			this.position = null;
 			this.traits.dealloc();
@@ -136,6 +151,21 @@ Version:
 
 		////// ACCESSORS
 		setView: function( aView ) { this.view = aView; },
-		getView: function() { return this.view; }
+		getView: function() { return this.view; },
+		/**
+		 * Returns a trait with a matching .displayName property
+		 * @param aTraitName
+		 */
+		getTraitWithName: function(aTraitName) {
+			var len = this.traits.length;
+			var trait = null;
+			for( var i = 0; i < len; ++i ) {
+				if( this.traits[i].displayName === aTraitName ) {
+					trait = this.traits[i];
+					break;
+				}
+			}
+			return trait;
+		}
 	}
 })();

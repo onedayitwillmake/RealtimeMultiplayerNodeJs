@@ -29,18 +29,23 @@
 	};
 
 	RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype = {
-		allCircles:					[],
-		numberOfCollisionPasses:	1,
-		numberOfTargetingPasses:	0,
-		bounds:						{},
-		collisionCallback:			null, // callback
+		allCircles:					[],						// An array containing all the circles in this CircleManager
+		numberOfCollisionPasses:	1,						// Number of times to run the collision check, higher is more accurate with less overlapping but slower
+		numberOfTargetingPasses:	0,						// Number of times to move a circle towards its target
+		bounds:						{},						// Object containing x,y,width,height
+		collisionCallback:			null,					// An object containing a scope and a function block
+
+		// These can be passed to the handleBoundaryForCircle function
+		BOUNDARY_WRAP_X 			: 1 << 0,
+		BOUNDARY_WRAP_Y 			: 1 << 1,
+		BOUNDARY_CONSTRAIN_X 		: 1 << 2,
+		BOUNDARY_CONSTRAIN_Y 		: 1 << 3,
 
 		/**
 		 * Adds a circle to the simulation
 		 * @param aCircle
 		 */
-		addCircle: function(aCircle)
-		{
+		addCircle: function(aCircle) {
 			aCircle.id = this.allCircles.length;
 			this.allCircles.push(aCircle);
 			return this;
@@ -50,8 +55,7 @@
 		 * Removes a circle from the simulations
 		 * @param aCircle	Circle to remove
 		 */
-		removeCircle: function(aCircle)
-		{
+		removeCircle: function(aCircle) {
 			var index = 0,
 				found = false,
 				len = this.allCircles.length;
@@ -99,8 +103,8 @@
 			}
 		},
 
-		pushAllCirclesTowardTarget: function(aTarget)
-		{
+
+		pushAllCirclesTowardTarget: function(aTarget) {
 			var v = new RealtimeMultiplayerGame.model.Point().set(0,0),
 				circleList = this.allCircles,
 				len = circleList.length;
@@ -203,14 +207,20 @@
 			}
 		},
 
-		BOUNDARY_WRAP_X : 1 << 0,
-		BOUNDARY_WRAP_Y : 1 << 1,
-		BOUNDARY_CONSTRAIN_X : 1 << 2,
-		BOUNDARY_CONSTRAIN_Y : 1 << 3,
-		handleBoundaryForCircle: function(aCircle, boundsRule)
-		{
-//			if(aCircle.boundsRule === true) return; // Ignore if being dragged
-
+		/**
+		 * Performs boundary check against a circle.
+		 * Valid options are:
+		 * RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_WRAP_X
+		 * RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_WRAP_Y
+		 * RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_X
+		 * RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_Y
+		 *
+		 * These can be combined in the form of:
+		 * RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_WRAP_X | RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_Y
+		 * @param {RealtimeMultiplayerGame.modules.circlecollision.PackedCircle}	aCircle Circle to perform boundary check against
+		 * @param {Number} boundsRule	A bitmask representing the boundary rules
+		 */
+		handleBoundaryForCircle: function(aCircle, boundsRule) {
 			var xpos = aCircle.position.x;
 			var ypos = aCircle.position.y;
 
@@ -220,9 +230,9 @@
 			// Toggle these on and off,
 			// Wrap and bounce, are opposite behaviors so pick one or the other for each axis, or bad things will happen.
 			var wrapXMask = 1 << 0;
-			var wrapYMask = 1 << 2;
-			var constrainXMask = 1 << 3;
-			var constrainYMask = 1 << 4;
+			var wrapYMask = 1 << 1;
+			var constrainXMask = 1 << 2;
+			var constrainYMask = 1 << 3;
 
 			// Convert to bitmask - Uncomment the one you want, or concact your own :)
 			boundsRule = wrapXMask | wrapYMask;  // Wrap Y axis, but constrain horizontally
@@ -256,48 +266,37 @@
 			}
 		},
 
-		handleBoundaryForAllCircles: function( boundsRule )
-		{
+		/**
+		 * Performs handleBoundaryForCircle on all circles
+		 * @param {Number} boundsRule	A bitmask representing the boundary rules
+		 */
+		handleBoundaryForAllCircles: function( boundsRule ) {
 			var len = this.allCircles.length;
 			for(var i = 0; i < len; i++)
 				this.handleBoundaryForCircle( this.allCircles[i], boundsRule)
 		},
 
+
+
 		/**
-		 * Given an x,y position finds circle underneath and sets it to the currently grabbed circle
-		 * @param {Number} xpos		An x position
-		 * @param {Number} ypos		A y position
-		 * @param {Number} buffer	A radiusSquared around the point in question where something is considered to match
+		 * Checks if two Circles can collide with one another.
+		 * For example, given the following three objects
+		 *
+		 * someCircleA.collisionMask = 1;
+		 * someCircleA.collisionGroup = 2;
+		 *
+		 * someCircleB.collisionMask = 2;
+		 * someCircleB.collisionGroup = 1;
+		 *
+		 * someCircleC.collisionMask = 2;
+		 * someCircleC.collisionGroup = 1;
+		 *
+		 * A and B will collide, B and C will not collide because B and C only want to collide with group 2
+		 *
+		 * @param {RealtimeMultiplayerGame.modules.circlecollision.PackedCircle}	circleA
+		 * @param {RealtimeMultiplayerGame.modules.circlecollision.PackedCircle}	circleB
 		 */
-		getCircleAt: function(xpos, ypos, buffer)
-		{
-			var circleList = this.allCircles;
-			var len = circleList.length;
-			var grabVector = new RealtimeMultiplayerGame.model.Point(xpos, ypos);
-
-			// These are set every time a better match i found
-			var closestCircle = null;
-			var closestDistance = Number.MAX_VALUE;
-
-			// Loop thru and find the closest match
-			for(var i = 0; i < len; i++)
-			{
-				var aCircle = circleList[i];
-				if(!aCircle) continue;
-				var distanceSquared = aCircle.position.getDistanceSquared(grabVector);
-
-				if(distanceSquared < closestDistance && distanceSquared < aCircle.radiusSquared + buffer * buffer)
-				{
-					closestDistance = distanceSquared;
-					closestCircle = aCircle;
-				}
-			}
-
-			return closestCircle;
-		},
-
-		circlesCanCollide: function(circleA, circleB)
-		{
+		circlesCanCollide: function(circleA, circleB) {
 			if(!circleA || !circleB || circleA === circleB) return false; 					// one is null (will be deleted next loop), or both point to same obj.
 			if(circleA.delegate == null || circleB.delegate == null) return false;			// This circle will be removed next loop, it's entity is already removed
 
@@ -310,74 +309,34 @@
 
 			return true;
 		},
-/**
- * Accessors
- */
-		setBounds: function(x, y, w, h)
-		{
+
+		///// ACCESSORS
+		getAllCircles: function() { return this.allCircles },
+		setBounds: function(x, y, w, h) {
 			this.bounds.x = x;
 			this.bounds.y = y;
 			this.bounds.width = w;
 			this.bounds.height = h;
 		},
-
-		setNumberOfCollisionPasses: function(value)
-		{
+		setNumberOfCollisionPasses: function(value) {
 			this.numberOfCollisionPasses = value;
 			return this;
 		},
-
-		setNumberOfTargetingPasses: function(value)
-		{
+		setNumberOfTargetingPasses: function(value) {
 			this.numberOfTargetingPasses = value;
 			return this;
 		},
-
-		setCallback: function(block, scope)
-		{
+		setCallback: function(block, scope) {
 			this.collisionCallback = {'block': block, 'scope': scope};
 		},
 
-		getAllCircles: function() { return this.allCircles },
-
-/**
- * Helpers
- */
-		sortOnDistanceToTarget: function(circleA, circleB)
-		{
-			var valueA = circleA.getDistanceSquaredFromPosition(circleA.targetPosition);
-			var valueB = circleB.getDistanceSquaredFromPosition(circleA.targetPosition);
-			var comparisonResult = 0;
-
-			if(valueA > valueB) comparisonResult = -1;
-			else if(valueA < valueB) comparisonResult = 1;
-
-			return comparisonResult;
-		},
-
-/**
- * Memory Management
- */
-		removeExpiredElements: function()
-		{
+		///// MEMORY MANAGEMENT
+		removeExpiredElements: function() {
 			// remove null elements
 			for (var k = this.allCircles.length; k >= 0; k--) {
 				if (this.allCircles[k] === null)
 					this.allCircles.splice(k, 1);
 			}
-		},
-
-		initialize : function(overrides)
-		{
-			if (overrides)
-			{
-				for (var i in overrides)
-				{
-					this[i] = overrides[i];
-				}
-			}
-
-			return this;
 		}
 	};
 })();

@@ -35,7 +35,7 @@ Version:
 
 		// Movement properties
 		velocityMax				:	7.0,
-		velocityDamping			:	0.9,
+		velocityDamping			:	0.85,
 
 
 		/**

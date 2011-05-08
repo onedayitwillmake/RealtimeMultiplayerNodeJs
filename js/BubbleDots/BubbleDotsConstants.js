@@ -16,10 +16,10 @@ Version:
 */
 (function(){
 	BubbleDots.Constants = {
-		ENTITY_DEFAULT_RADIUS	: 4,
+		ENTITY_DEFAULT_RADIUS	: 8,
 		GAME_WIDTH				: 700,
 		GAME_HEIGHT				: 450,
-		MAX_CIRCLES				: 100,
+		MAX_CIRCLES				: 50,
 		GAME_DURATION			: 1000*300,
 
 		ENTITY_TYPES: {

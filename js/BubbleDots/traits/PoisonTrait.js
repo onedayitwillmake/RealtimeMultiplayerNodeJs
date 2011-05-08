@@ -19,8 +19,8 @@ Abstract:
 
 	BubbleDots.traits.PoisonTrait.prototype = {
 		displayName									: "PoisonTrait",					// Unique string name for this Trait
-		originalColor								: "00FF00",
-		color										: "00FF00",
+		originalColor								: "FF0000",
+		color										: "FF0000",
 
 		/**
 		 * @inheritDoc
@@ -47,21 +47,11 @@ Abstract:
 		 * @param collisionNormal	A vector describing the collision
 		 */
 		onCollision: function(a, b, collisionNormal) {
-
 			// We're either A or B, so perform a simple check against A to figure out which of the two objects we are
 			var me = this === a ? a : b;
+			var them = this === a ? b : a;
 
-			BubbleDots.lib.TWEEN.remove( me._tween );
-		   	me._tween = new BubbleDots.lib.TWEEN.Tween({radius: me.radius})
-					.to({radius: Math.random() * 35 + 5}, 1000)
-					.easing(BubbleDots.lib.TWEEN.Easing.Back.EaseOut)
-					.onUpdate(function(){
-				    	me.radius = ~~this.radius;
-			   			me.collisionCircle.setRadius( ~~this.radius );
-					})
-					.start();
-
-			me.acceleration.translatePoint( collisionNormal.multiply(-10) );
+			them.acceleration.translatePoint( collisionNormal.multiply(them.velocityMax) );
 		}
 
 	};

@@ -62,6 +62,7 @@ Abstract:
 					.start();
 
 			me.acceleration.translatePoint( collisionNormal.multiply(-10) );
+			me.tempColor();
 		}
 
 	};

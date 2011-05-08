@@ -45,11 +45,10 @@ Basic Usage:
 
 	RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait = function() {
 		RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait.superclass.constructor.call(this);
-		return this;
 	};
 
 	RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait.prototype = {
-		displayName				: "KeyboardInputTrait",					// Unique string name for this Trait
+		displayName									: "KeyboardInputTrait",					// Unique string name for this Trait
 		/**
 		 * Attach the trait to the host object
 		 * @param anEntity
@@ -66,8 +65,7 @@ Basic Usage:
 		/**
 		 * Implement our own intercepted version of the methods/properties
 		 */
-		constructEntityDescription: function(gameTick, wantsFullUpdate)
-		{
+		constructEntityDescription: function(gameTick, wantsFullUpdate) {
 			return {
 				entityid: this.entityid,
 				input: this.input.constructInputBitmask()

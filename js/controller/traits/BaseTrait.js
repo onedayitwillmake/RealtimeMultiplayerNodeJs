@@ -69,7 +69,8 @@ Basic Usage:
 		},
 
 		/**
-		 * Execute the traits properties
+		 * Execute the trait
+		 * For example if you needed to cause an animation to start when a character is 'unfrozen', this is when you would do it
 		 */
 		execute: function() {
 
@@ -88,7 +89,7 @@ Basic Usage:
 		},
 
 		/**
-		 * Detach after N milliseconds, for example freeze trait might call this
+		 * Detach after N milliseconds, for example freeze trait might call this to unfreeze
 		 * @param aDelay
 		 */
 		detachAfterDelay: function(aDelay)

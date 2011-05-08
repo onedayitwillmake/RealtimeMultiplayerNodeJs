@@ -202,7 +202,7 @@ Version:
 		/**
 		 * Takes a WorldUpdateMessage that contains the information about all the elements inside of a string
 		 * and creates SortedLookupTable out of it with the entityid's as the keys
-		 * @param {String} singleWorldUpdate
+		 * @param {String} aWorldUpdateMessage
 		 */
 		createWorldEntityDescriptionFromString: function(aWorldUpdateMessage)
 		{

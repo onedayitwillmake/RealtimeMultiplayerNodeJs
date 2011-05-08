@@ -57,12 +57,11 @@ Version:
 		////// TRAIT SUPPORT
 		/**
 		 * Adds and attaches a trait (already created), to this entity.
-		 * The trait is only attached if we already have one of the same type attached, or don't care (aTrait.canStack = true)
-		 * @param {BaseTrait} aTrait A BaseTrait instance
+		 * The trait is only attached if we do not already have one of the same type attached, or don't care (aTrait.canStack = true)
+		 * @param {RealtimeMultiplayerGame.controller.traits.BaseTrait} aTrait A BaseTrait instance
 		 * @return {Boolean} Whether the trait was added
 		 */
-		addTrait: function(aTrait)
-		{
+		addTrait: function(aTrait) {
 			// Check if we already have this trait, if we do - make sure the trait allows stacking
 			var existingVersionOfTrait = this.getTraitWithName(aTrait.displayName);
 			if(existingVersionOfTrait && !existingVersionOfTrait.canStack) {
@@ -81,10 +80,11 @@ Version:
 		 * Calls addTrait and executes it immediately
 		 * @param aTrait
 		 */
-		addTraitAndExecute: function(aTrait)
-		{
+		addTraitAndExecute: function(aTrait) {
 			var wasAdded = this.addTrait(aTrait);
-			if(wasAdded) { aTrait.execute(); }
+			if(wasAdded) {
+				aTrait.execute();
+			}
 
 			return wasAdded;
 		},
@@ -104,8 +104,9 @@ Version:
 			if(!this.traits) { throw "This GameEntity does not have a 'traits' property - race condition?" }; // CATCH ERROR DURING DEVELOPMENT
 
 			var aTrait = this.traits.objectForKey(aTraitName);
+
+			// Nothing to remove
 			if(!aTrait) {
-				console.log("(GameEntity)::removeTraitWithName - trait not found!");
 				return;
 			}
 

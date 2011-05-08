@@ -17,6 +17,7 @@ Version:
 (function(){
 	require("../model/ImprovedNoise.js");
 	require("./lib/color.js");
+	require("./lib/Tween.js");
 
 	BubbleDots.DemoServerGame = function() {
 		BubbleDots.DemoServerGame.superclass.constructor.call(this);
@@ -54,10 +55,10 @@ Version:
 		 * Called when the collision manager detects a collision
 		 */
 		onCollisionManagerCollision: function(ci, cj, v ) {
-			ci.delegate.tempColor();
-			cj.delegate.tempColor();
-
-			ci.delegate.acceleration.translatePoint( v.multiply(-10) );
+//			ci.delegate.tempColor();
+//			cj.delegate.tempColor();
+			ci.delegate.onCollision( ci.delegate, cj.delegate, v );
+			cj.delegate.onCollision( ci.delegate, cj.delegate, v );
 		},
 
 		/**
@@ -90,6 +91,9 @@ Version:
 			circleEntity.setCollisionCircle( collisionCircle );
 
 
+			// Attach food trait
+			circleEntity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
+
 			// Place the circle and collision circle into corresponding containers
 			this.collisionManager.addCircle( circleEntity.getCollisionCircle() );
 			this.fieldController.addEntity( circleEntity );
@@ -104,6 +108,7 @@ Version:
 		tick: function() {
 			this.collisionManager.handleCollisions();
 			this.collisionManager.handleBoundaryForAllCircles();
+			BubbleDots.lib.TWEEN.update();
 
 			// Note we call superclass's implementation after we're done
 			BubbleDots.DemoServerGame.superclass.tick.call(this);
@@ -119,6 +124,7 @@ Version:
 			playerEntity.position = center.clone();
 			playerEntity.getCollisionCircle().setPosition( center.clone() );
 			playerEntity.setInput( new RealtimeMultiplayerGame.Input.Keyboard() );
+			playerEntity.removeTraitWithName( BubbleDots.traits.FoodTrait.prototype.displayName );
 
 			this.fieldController.addPlayer( playerEntity );
 		},

@@ -1,6 +1,6 @@
 /**
 File:
-	FoodTrait.js
+	PoisonTrait.js
 Created By:
 	Mario Gonzalez
 Project	:
@@ -13,12 +13,12 @@ Abstract:
 (function(){
 	BubbleDots.namespace("BubbleDots.traits");
 
-	BubbleDots.traits.FoodTrait = function() {
-		BubbleDots.traits.FoodTrait.superclass.constructor.call(this);
+	BubbleDots.traits.PoisonTrait = function() {
+		BubbleDots.traits.PoisonTrait.superclass.constructor.call(this);
 	};
 
-	BubbleDots.traits.FoodTrait.prototype = {
-		displayName									: "FoodTrait",					// Unique string name for this Trait
+	BubbleDots.traits.PoisonTrait.prototype = {
+		displayName									: "PoisonTrait",					// Unique string name for this Trait
 		originalColor								: "00FF00",
 		color										: "00FF00",
 
@@ -26,7 +26,7 @@ Abstract:
 		 * @inheritDoc
 		 */
 		attach: function(anEntity) {
-			BubbleDots.traits.FoodTrait.superclass.attach.call(this, anEntity);
+			BubbleDots.traits.PoisonTrait.superclass.attach.call(this, anEntity);
 			this.intercept(['onCollision', 'color', 'originalColor']);
 		},
 
@@ -34,7 +34,7 @@ Abstract:
 		 * @inheritDoc
 		 */
 		execute: function() {
-		   BubbleDots.traits.FoodTrait.superclass.execute.call(this);
+		   BubbleDots.traits.PoisonTrait.superclass.execute.call(this);
 		},
 
 		/**
@@ -67,5 +67,5 @@ Abstract:
 	};
 
 	// Extend BaseTrait
-	RealtimeMultiplayerGame.extend( BubbleDots.traits.FoodTrait, RealtimeMultiplayerGame.controller.traits.BaseTrait );
+	RealtimeMultiplayerGame.extend( BubbleDots.traits.PoisonTrait, RealtimeMultiplayerGame.controller.traits.BaseTrait );
 })();

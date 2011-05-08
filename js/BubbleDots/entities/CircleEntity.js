@@ -31,6 +31,7 @@ Version:
 		entityType				: 	null,
 		color					:	null,
 		originalColor			:	null,
+		_tween					:	null,
 
 		// Movement properties
 		velocityMax				:	7.0,
@@ -71,6 +72,14 @@ Version:
 
 			this.acceleration.set(0,0);
 		},
+
+		/**
+		 * Called when this object has collided with another
+		 * @param a		Object A in the collision pair, note this may be this object
+		 * @param b		Object B in the collision pair, note this may be this object
+		 * @param collisionNormal	A vector describing the collision
+		 */
+		onCollision: function(a, b, collisionNormal) {},
 
 		tempColor: function() {
 			var that = this;

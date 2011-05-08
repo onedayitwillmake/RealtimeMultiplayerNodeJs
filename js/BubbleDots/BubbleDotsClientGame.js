@@ -110,7 +110,7 @@ Version:
 			entityDescription.entityType = +entityDescAsArray[2];
 			entityDescription.x = +entityDescAsArray[3];
 			entityDescription.y = +entityDescAsArray[4];
-			entityDescription.radius = entityDescAsArray[5];
+			entityDescription.radius = +entityDescAsArray[5];
 			entityDescription.color = entityDescAsArray[6];
 			return entityDescription;
 		},

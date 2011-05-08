@@ -15,24 +15,26 @@ Version:
 require("../lib/SortedLookupTable.js");
 require("../core/RealtimeMutliplayerGame.js");
 require("../model/Point.js");
-require("../lib/circlecollision/Circle.js");
-require("../lib/circlecollision/CircleManager.js");
 require("../model/Constants.js");
 require("../model/NetChannelMessage.js");
-require("../controller/FieldController.js");
-require("../core/AbstractGame.js");
-require("../network/Client.js");
-require("../network/ServerNetChannel.js");
-require("../core/AbstractServerGame.js");
 require("../model/GameEntity.js");
 require("../model/WorldEntityDescription.js");
+require("../network/ServerNetChannel.js");
+require("../network/Client.js");
+require("../lib/circlecollision/Circle.js");
+require("../lib/circlecollision/CircleManager.js");
+require("../controller/FieldController.js");
+require("../core/AbstractGame.js");
+require("../core/AbstractServerGame.js");
 require("../input/Keyboard.js");
+require("../controller/traits/BaseTrait.js");
 
 
 require("./BubbleDotsApp.js");
 require("./BubbleDotsConstants.js");
 require("./entities/CircleEntity.js");
 require("./entities/PlayerEntity.js");
+require("./traits/FoodTrait.js");
 require("./BubbleDotsServerGame.js");
 
 var game = new BubbleDots.DemoServerGame();

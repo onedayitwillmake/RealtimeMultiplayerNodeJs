@@ -56,6 +56,9 @@ Version:
 		onCollisionManagerCollision: function(ci, cj, v ) {
 			ci.delegate.tempColor();
 			cj.delegate.tempColor();
+
+//			console.log(cj.acceleration);
+			ci.delegate.acceleration.translatePoint( v.multiply(-10) );
 		},
 
 		/**

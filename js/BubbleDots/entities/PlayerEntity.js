@@ -32,11 +32,11 @@ var count = 0;
 		},
 
 		handleInput: function( speedFactor ) {
-			var moveSpeed = 2.0;
-			if( this.input.isLeft() ) this.collisionCircle.position.x -= moveSpeed;
-			if( this.input.isRight() ) this.collisionCircle.position.x += moveSpeed;
-			if( this.input.isUp() ) this.collisionCircle.position.y -= moveSpeed;
-			if( this.input.isDown() ) this.collisionCircle.position.y += moveSpeed;
+			var moveSpeed = 0.4;
+			if( this.input.isLeft() ) this.acceleration.x -= moveSpeed;
+			if( this.input.isRight() ) this.acceleration.x += moveSpeed;
+			if( this.input.isUp() ) this.acceleration.y -= moveSpeed;
+			if( this.input.isDown() ) this.acceleration.y += moveSpeed;
 		},
 
 		///// ACCESSORS

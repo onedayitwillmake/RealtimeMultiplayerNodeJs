@@ -88,7 +88,7 @@ Version:
 
 		constructEntityDescription: function() {
 			var entityDesc = BubbleDots.CircleEntity.superclass.constructEntityDescription.call(this);
-			entityDesc += ',' + Math.round(this.radius);
+			entityDesc += ',' +  ~~(this.radius);
 			entityDesc += ',' + this.color;
 
 			return entityDesc;

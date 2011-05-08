@@ -30,7 +30,7 @@ Version:
 
 		CLIENT_SETTING:
 		{
-			INTERP		: 75,						// How far back to interpolate the client-rendered world
+			INTERP		: 65,						// How far back to interpolate the client-rendered world
 			FAKE_LAG	: 0,						// Used to simulate latency
 			UPDATE_RATE	: 1000/35, 					// How often to request a world-update from the server
 			CMD_RATE	: 1000/31,                  // How often a client can send messages to server

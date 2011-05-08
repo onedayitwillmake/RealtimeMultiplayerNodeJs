@@ -4,7 +4,7 @@
 	// Callback for when browse is ready
 	var onDocumentReady = function() {
 		var clientGame = new DemoBox2D.DemoClientGame();
-		DemoBox2D.DemoClientGame.prototype.log( "DemoClientGame: Ready..." );
+		DemoBox2D.DemoClientGame.prototype.log( "DemoBox2DClient: Ready..." );
 	};
 
 	// Listen for ready

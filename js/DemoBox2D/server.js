@@ -30,10 +30,10 @@ require("../model/WorldEntityDescription.js");
 require("../input/Keyboard.js");
 
 //
-require("v8-profiler");
+//require("v8-profiler");
 require("./DemoBox2DApp.js");
 require("./DemoBox2DConstants.js");
-require("./DemoBox2DCircleEntity.js");
+require("./DemoBox2DEntity.js");
 require("./DemoBox2DServerGame.js");
 
 var game = new DemoBox2D.DemoServerGame();

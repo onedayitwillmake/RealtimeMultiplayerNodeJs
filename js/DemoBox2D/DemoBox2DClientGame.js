@@ -50,23 +50,28 @@ Version:
 		 * @inheritDoc
 		 */
 		createEntityFromDesc: function(entityDesc) {
-			var diameter = entityDesc.radius * 2;
-			diameter = DemoBox2D.Constants.ENTITY_BOX_SIZE * DemoBox2D.Constants.PHYSICS_SCALE * 2;
+			var diameter = entityDesc.radius * DemoBox2D.Constants.PHYSICS_SCALE;
+			console.log(entityDesc.entityType, DemoBox2D.Constants.ENTITY_TYPES.BOX);
+
+			// Tell CAAT to create a circle or box depending on the info we receive
+			var entityType = (entityDesc.entityType === DemoBox2D.Constants.ENTITY_TYPES.BOX) ? CAAT.ShapeActor.prototype.SHAPE_RECTANGLE : CAAT.ShapeActor.prototype.SHAPE_CIRCLE;
 
 			// Create the entity
-			var newEntity = new DemoBox2D.CircleEntity( entityDesc.entityid, entityDesc.clientid );
+			var newEntity = new DemoBox2D.Box2DEntity( entityDesc.entityid, entityDesc.clientid );
 			newEntity.position.set( entityDesc.x, entityDesc.y );
 
 			// Create a view via CAAT
-			var aCircleView = new CAAT.ShapeActor();
-			aCircleView.create();
-			aCircleView.setShape( CAAT.ShapeActor.prototype.SHAPE_RECTANGLE  );
-			aCircleView.setSize( diameter, diameter);
-			aCircleView.setFillStyle( "#" + CAAT.Color.prototype.hsvToRgb( (entityDesc.entityid * 15) % 360, 40, 99).toHex() ); // Random color
-			aCircleView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
+			var anEntityView = new CAAT.ShapeActor();
+			anEntityView.create();
+			anEntityView.setShape( entityType );
+			anEntityView.setSize( diameter, diameter);
+			anEntityView.setFillStyle( "#" + CAAT.Color.prototype.hsvToRgb( (entityDesc.entityid * 15) % 360, 40, 99).toHex() ); // Random color
+			anEntityView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
 
+			// Set the view
+			newEntity.setView( anEntityView );
 
-			newEntity.setView( aCircleView );
+			// Add to the fieldcontroller
 			this.fieldController.addEntity( newEntity );
 		},
 

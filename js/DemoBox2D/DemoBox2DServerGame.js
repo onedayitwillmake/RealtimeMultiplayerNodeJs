@@ -26,7 +26,7 @@ Version:
 
 	DemoBox2D.DemoServerGame.prototype = {
 		_world							: null,
-		_velocityIterationsPerSecond    : 200,
+		_velocityIterationsPerSecond    : 100,
 		_positionIterationsPerSecond	: 300,
 
 		/**
@@ -39,24 +39,34 @@ Version:
 			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE] = this.shouldUpdatePlayer;
 		},
 
+		/**
+		 * Sets up the Box2D world and creates a bunch of boxes from that fall from the sky
+		 */
 		setupBox2d: function() {
-			DemoBox2D.Constants.GAME_WIDTH /= 32;
-			DemoBox2D.Constants.GAME_HEIGHT /= 32;
-			DemoBox2D.Constants.ENTITY_BOX_SIZE /= 32;
+
+			DemoBox2D.Constants.GAME_WIDTH /= DemoBox2D.Constants.PHYSICS_SCALE;
+			DemoBox2D.Constants.GAME_HEIGHT /= DemoBox2D.Constants.PHYSICS_SCALE;
+			DemoBox2D.Constants.ENTITY_BOX_SIZE /= DemoBox2D.Constants.PHYSICS_SCALE;
+
 
 			this.createBox2dWorld();
 			this._world.DestroyBody(this._wallBottom);
 
-			for(var i = 0; i < DemoBox2D.Constants.MAX_CIRCLES; i ++) {
+			for(var i = 0; i < DemoBox2D.Constants.MAX_OBJECTS ; i ++) {
 				var x = (DemoBox2D.Constants.GAME_WIDTH/2) + Math.sin(i/5);
-				var y = i*-DemoBox2D.Constants.ENTITY_BOX_SIZE*4;//DemoBox2D.Constants.ENTITY_BOX_SIZE - (i/32 * DemoBox2D.Constants.ENTITY_BOX_SIZE)
-				this.spawn(x, y, 0);
+				var y = i * -DemoBox2D.Constants.ENTITY_BOX_SIZE*3;
+
+				// Make a square or a box
+				if(Math.random() < 0.5) this.createBall(x, y, DemoBox2D.Constants.ENTITY_BOX_SIZE);
+				else this.createBox(x, y, 0, DemoBox2D.Constants.ENTITY_BOX_SIZE);
 			}
 		},
 
+		/**
+		 * Creates the Box2D world with 4 walls around the edges
+		 */
 		createBox2dWorld: function() {
 			var m_world = new BOX2D.b2World(new BOX2D.b2Vec2(0, 10), true);
-			var m_physScale = 1;
 			m_world.SetWarmStarting(true);
 
 			// Create border of boxes
@@ -64,22 +74,22 @@ Version:
 			var wallBd = new BOX2D.b2BodyDef();
 
 			// Left
-			wallBd.position.Set(-1, DemoBox2D.Constants.GAME_HEIGHT/2);
-			wall.SetAsBox(1, DemoBox2D.Constants.GAME_HEIGHT/2);
+			wallBd.position.Set(-1.5, DemoBox2D.Constants.GAME_HEIGHT/2);
+			wall.SetAsBox(1, DemoBox2D.Constants.GAME_HEIGHT*10);
 			this._wallLeft = m_world.CreateBody(wallBd);
 			this._wallLeft.CreateFixture2(wall);
 			// Right
-			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH + 1, DemoBox2D.Constants.GAME_HEIGHT/2);
-			wall.SetAsBox(1, DemoBox2D.Constants.GAME_HEIGHT/2);
+			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH + 0.55, DemoBox2D.Constants.GAME_HEIGHT/2);
+			wall.SetAsBox(1, DemoBox2D.Constants.GAME_HEIGHT*10);
 			this._wallRight = m_world.CreateBody(wallBd);
 			this._wallRight.CreateFixture2(wall);
 			// BOTTOM
-			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH/2 * DemoBox2D.Constants.PHYSICS_SCALE, DemoBox2D.Constants.GAME_HEIGHT+1);
+			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH/2, DemoBox2D.Constants.GAME_HEIGHT+0.55);
 			wall.SetAsBox(DemoBox2D.Constants.GAME_WIDTH/2, 1);
 			this._wallTop = m_world.CreateBody(wallBd);
 			this._wallTop.CreateFixture2(wall);
 			// TOP
-			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH/2 * DemoBox2D.Constants.PHYSICS_SCALE - 1, 1);
+			wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH/2, 1);
 			wall.SetAsBox(DemoBox2D.Constants.GAME_WIDTH/2, 1);
 			this._wallBottom = m_world.CreateBody(wallBd);
 			this._wallBottom.CreateFixture2(wall);
@@ -87,9 +97,14 @@ Version:
 			this._world = m_world;
 		},
 
-		createBall: function(world, x, y, radius) {
-			radius = radius || 2;
-
+		/**
+		 * Creates a Box2D circular body
+		 * @param {Number} x	Body position on X axis
+		 * @param {Number} y    Body position on Y axis
+		 * @param {Number} radius Body radius
+		 * @return {b2Body}	A Box2D body
+		 */
+		createBall: function(x, y, radius) {
 			var fixtureDef = new BOX2D.b2FixtureDef();
 			fixtureDef.shape = new BOX2D.b2CircleShape(radius);
 			fixtureDef.friction = 0.4;
@@ -97,23 +112,37 @@ Version:
 			fixtureDef.density = 1.0;
 
 			var ballBd = new BOX2D.b2BodyDef();
-			ballBd.type = b2Body.b2_dynamicBody;
+			ballBd.type = BOX2D.b2Body.b2_dynamicBody;
 			ballBd.position.Set(x,y);
-			var body = world.CreateBody(ballBd);
+			var body = this._world.CreateBody(ballBd);
 			body.CreateFixture(fixtureDef);
+
+			// Create the entity for it in RealTimeMultiplayerNodeJS
+			var aBox2DEntity = new DemoBox2D.Box2DEntity( this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
+			aBox2DEntity.setBox2DBody( body );
+			aBox2DEntity.entityType = DemoBox2D.Constants.ENTITY_TYPES.CIRCLE;
+
+			this.fieldController.addEntity( aBox2DEntity );
+
 			return body;
 		},
 
-		spawn: function(x, y, a) {
+		/**
+		 * Creates a Box2D square body
+		 * @param {Number} x	Body position on X axis
+		 * @param {Number} y    Body position on Y axis
+		 * @param {Number} rotation	Body rotation
+		 * @param {Number} size Body size
+		 * @return {b2Body}	A Box2D body
+		 */
+		createBox: function(x, y, rotation, size) {
 			var bodyDef = new BOX2D.b2BodyDef();
 			bodyDef.type = BOX2D.b2Body.b2_dynamicBody;
 			bodyDef.position.Set(x, y);
-			bodyDef.angle = a;
+			bodyDef.angle = rotation;
 
 			var body = this._world.CreateBody(bodyDef);
-			body.w = DemoBox2D.Constants.ENTITY_BOX_SIZE;
-			body.h = DemoBox2D.Constants.ENTITY_BOX_SIZE;
-			var shape = new BOX2D.b2PolygonShape.AsBox(body.w, body.h);
+			var shape = new BOX2D.b2PolygonShape.AsBox(size, size);
 			var fixtureDef = new BOX2D.b2FixtureDef();
 			fixtureDef.restitution = 0.1;
 			fixtureDef.density = 1.0;
@@ -122,10 +151,12 @@ Version:
 			body.CreateFixture(fixtureDef);
 
 			// Create the entity for it in RealTimeMultiplayerNodeJS
-			var circleEntity = new DemoBox2D.CircleEntity( this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
-			circleEntity.setBox2DBody( body );
+			var aBox2DEntity = new DemoBox2D.Box2DEntity( this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
+			aBox2DEntity.setBox2DBody( body );
+			aBox2DEntity.entityType = DemoBox2D.Constants.ENTITY_TYPES.BOX;
 
-			this.fieldController.addEntity( circleEntity );
+
+			this.fieldController.addEntity( aBox2DEntity );
 
 			return body;
 		},
@@ -139,7 +170,7 @@ Version:
 			var delta = 16 / 1000;
 			this.step( delta );
 
-			if(this.gameTick % 50 === 0) {
+			if(this.gameTick % 30 === 0) {
 				this.resetRandomBody();
 			}
 			// Note we call superclass's implementation after we're done
@@ -156,7 +187,7 @@ Version:
 			var entity = allEntities.objectForKey( allEntities._keys[randomKeyIndex] );
 
 			var x = Math.random() * DemoBox2D.Constants.GAME_WIDTH + DemoBox2D.Constants.ENTITY_BOX_SIZE;
-			var y = Math.random() * - 15;
+			var y = Math.random() * -15;
 			entity.getBox2DBody().SetPosition( new BOX2D.b2Vec2( x, y ) );
 		},
 
@@ -174,7 +205,9 @@ Version:
 		 * @inheritDoc
 		 */
 		shouldUpdatePlayer: function( aClientid, data ) {
-			var pos = new BOX2D.b2Vec2( data.payload.x/32, data.payload.y/32 );
+			var pos = new BOX2D.b2Vec2( data.payload.x, data.payload.y);
+			pos.x /= DemoBox2D.Constants.PHYSICS_SCALE;
+			pos.y /= DemoBox2D.Constants.PHYSICS_SCALE;
 
 			// Loop through each entity, retrieve it's Box2D body, and apply an impulse towards the mouse position a user clicked
 			this.fieldController.getEntities().forEach( function(key, entity) {

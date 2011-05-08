@@ -1,6 +1,6 @@
 /**
 File:
-	DemoBox2D.CircleEntity
+	DemoBox2D.Box2DEntity
 Created By:
 	Mario Gonzalez
 Project:
@@ -16,16 +16,14 @@ Version:
 	var DAG2RAD = 0.0174532925;
 	var RAD2DEG = 57.2957795;
 
-	DemoBox2D.CircleEntity = function( anEntityid, aClientid) {
-		DemoBox2D.CircleEntity.superclass.constructor.call(this, anEntityid, aClientid );
-		this.radius = DemoBox2D.Constants.ENTITY_BOX_SIZE * DemoBox2D.Constants.PHYSICS_SCALE;
-		return this;
+	DemoBox2D.Box2DEntity = function( anEntityid, aClientid) {
+		DemoBox2D.Box2DEntity.superclass.constructor.call(this, anEntityid, aClientid );
 	};
 
-	DemoBox2D.CircleEntity.prototype = {
+	DemoBox2D.Box2DEntity.prototype = {
 		b2Body		: null,												// Reference to Box2D body
 		radius		: 1,
-		entityType	: DemoBox2D.Constants.ENTITY_TYPES.CIRCLE,
+		entityType	: DemoBox2D.Constants.ENTITY_TYPES.BOX,
 
 		/**
 		 * @inheritDoc
@@ -35,15 +33,15 @@ Version:
 			this.view.x = this.position.x - this.radius;
 			this.view.y = this.position.y - this.radius;
 
-			this.view.setRotation( this.rotation * DAG2RAD );
+			this.view.setRotation( this.lastReceivedEntityDescription.rotation * DAG2RAD );
 		},
 
 		/**
 		 * @inheritDoc
 		 */
 		updatePosition: function( speedFactor, gameClock, gameTick ) {
-			this.position.x = this.b2Body.m_xf.position.x * 32;
-			this.position.y = this.b2Body.m_xf.position.y * 32;
+			this.position.x = this.b2Body.m_xf.position.x * DemoBox2D.Constants.PHYSICS_SCALE;
+			this.position.y = this.b2Body.m_xf.position.y * DemoBox2D.Constants.PHYSICS_SCALE;
 			this.rotation = this.b2Body.GetAngle();
 		},
 
@@ -52,7 +50,7 @@ Version:
 		 */
 		constructEntityDescription: function() {
 			// Send the regular entity description, but also send 'radius' and a rounded version 'rotation'
-			return DemoBox2D.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + this.radius + "," + ~~(this.rotation * RAD2DEG);
+			return DemoBox2D.Box2DEntity.superclass.constructEntityDescription.call(this) + ',' + this.radius + "," + ~~(this.rotation * RAD2DEG);
 		},
 
 		/**
@@ -62,7 +60,7 @@ Version:
 			if(this.b2Body) {
 				// Destroy box2d body -
 			}
-			DemoBox2D.CircleEntity.superclass.dealloc.call(this);
+			DemoBox2D.Box2DEntity.superclass.dealloc.call(this);
 		},
 
 		///// ACCESSORS
@@ -77,5 +75,5 @@ Version:
 	};
 
 	// extend RealtimeMultiplayerGame.model.GameEntity
-	RealtimeMultiplayerGame.extend(DemoBox2D.CircleEntity, RealtimeMultiplayerGame.model.GameEntity, null);
+	RealtimeMultiplayerGame.extend(DemoBox2D.Box2DEntity, RealtimeMultiplayerGame.model.GameEntity, null);
 })();

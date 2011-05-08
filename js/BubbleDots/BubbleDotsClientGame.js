@@ -38,6 +38,7 @@ Version:
 			BubbleDots.DemoClientGame.superclass.tick.call(this);
 			this.view.stats.update();
 			this.view.update( this.gameClockReal );
+			this.view.textfield.setText( "Ping: " + this.netChannel.getLatency() );
 		},
 
 		/**
@@ -140,4 +141,4 @@ Version:
 
 	// extend RealtimeMultiplayerGame.AbstractClientGame
 	RealtimeMultiplayerGame.extend(BubbleDots.DemoClientGame, RealtimeMultiplayerGame.AbstractClientGame, null);
-})()
+})();

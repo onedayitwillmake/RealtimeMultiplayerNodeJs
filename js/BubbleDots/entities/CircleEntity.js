@@ -32,6 +32,11 @@ Version:
 		color					:	null,
 		originalColor			:	null,
 
+		// Movement properties
+		velocityMax				:	7.0,
+		velocityDamping			:	0.9,
+
+
 		/**
 		 * Update the entity's view - this is only called on the clientside
 		 */
@@ -58,8 +63,8 @@ Version:
 
 		handleAcceleration: function() {
 			this.velocity.translatePoint( this.acceleration );
-			this.velocity.limit(7);
-			this.velocity.multiply(0.9);
+			this.velocity.limit(this.velocityMax);
+			this.velocity.multiply(this.velocityDamping);
 
 			this.collisionCircle.position.translatePoint( this.velocity );
 			this.position = this.collisionCircle.position.clone();

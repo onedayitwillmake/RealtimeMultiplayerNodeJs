@@ -46,7 +46,6 @@ Version:
 
 		// connection info
 		latency								: 1000,				// Current latency time from server
-		gameClock							: -1,				// Store last time from server
 		lastSentTime						: -1,				// Time of last sent message
 		lastRecievedTime					: -1,				// Time of last recieved message
 
@@ -150,7 +149,7 @@ Version:
 		 * Send queued messages
 		 */
 		tick: function( ) {
-			this.gameClock = this.delegate.getGameClock();
+//			this.gameClock = this.delegate.getGameClock();
 
 			// Can't send new message, still waiting for last imporant message to be returned
 			if(this.reliableBuffer !== null) return;
@@ -286,7 +285,7 @@ Version:
 		 * @param serverMessage
 		 */
 		adjustRate: function( serverMessage ) {
-			var deltaTime = this.gameClock - serverMessage.gameClock;
+			var deltaTime = serverMessage.gameClock - this.delegate.getGameClock();
 			this.latency = deltaTime;
 
 			// TODO: Adjust cl_updateRate based on message thruput
@@ -337,11 +336,12 @@ Version:
 		* Determines if it's ok for the client to send a unreliable new message yet
 		*/
 		canSendMessage: function () {
-			var isReady = (this.gameClock > this.lastSentTime + this.cl_updateRate) ;
+			var isReady = (this.delegate.getGameClock() > this.lastSentTime + this.cl_updateRate) ;
 			return isReady;
 		},
 		getClientid: function(){ return this.clientid },
-		getIncomingWorldUpdateBuffer: function() { return this.incomingWorldUpdateBuffer }
+		getIncomingWorldUpdateBuffer: function() { return this.incomingWorldUpdateBuffer },
+		getLatency: function(){ return this.latency }
 	};
 
 	/**

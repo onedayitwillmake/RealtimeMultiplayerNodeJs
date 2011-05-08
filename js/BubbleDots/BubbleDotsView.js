@@ -32,6 +32,7 @@ Version:
 		caatDirector		: null,				// CAAT Director instance
 		caatScene			: null,				// CAAT Scene instance
 		stats				: null,				// Stats.js instance
+		textfield				: null,				// CAAT text
 
 		// Methods
 		setupCAAT: function() {
@@ -42,8 +43,21 @@ Version:
 			this.caatDirector = new CAAT.Director().initialize( BubbleDots.Constants.GAME_WIDTH, BubbleDots.Constants.GAME_HEIGHT ); // Create the director instance
 			this.caatDirector.addScene( this.caatScene ); // Immediately add the scene once it's created
 
-			// Start the render loop, with at 60FPS
-//			this.caatDirector.loop(60);
+			this.setupTextfield();
+		},
+
+		setupTextfield: function() {
+			// Create a textfield
+			this.textfield = new CAAT.TextActor();
+			this.textfield.setFont( "12px sans-serif" );
+			this.textfield.textAlign = "left";
+			this.textfield.textBaseline = "top";
+			this.textfield.calcTextSize( this.caatDirector );
+			this.textfield.setSize( this.textfield.textWidth, this.textfield.textHeight );
+			this.textfield.create();
+			this.textfield.fillStyle = "#000000";
+			this.textfield.setLocation( 10, 10 );
+			this.caatScene.addChild(this.textfield);
 		},
 
 		/**

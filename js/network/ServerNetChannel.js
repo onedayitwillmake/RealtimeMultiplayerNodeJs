@@ -113,7 +113,7 @@ Version:
 			var connectMessage = new RealtimeMultiplayerGame.model.NetChannelMessage( ++this.outgoingSequenceNumber, aClient.getClientid(), true, RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT, { gameClock: this.delegate.getGameClock() });
 			connectMessage.messageTime = this.delegate.getGameClock();
 			aClient.getConnection().send( connectMessage );
-			console.log( connectMessage )
+
 			// Add to our list of connected users
 			this.clients.setObjectForKey( aClient, aClient.getSessionId() );
 		},
@@ -124,7 +124,15 @@ Version:
 		 */
 		onSocketClosed: function( clientConnection ) {
 			var client = this.clients.objectForKey( clientConnection.sessionId );
+			if(!client) {
+				console.warn("(ServerNetChannel)::onSocketClosed - ERROR - Attempting to remove client that was not found in our list! ");
+				return;
+			}
+
 			this.delegate.shouldRemovePlayer( client.getClientid() );
+			this.clients.remove( clientConnection.sessionId );
+			client.dealloc();
+
 		},
 
 		/**

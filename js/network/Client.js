@@ -60,6 +60,16 @@ Version:
 			this.incomingSequenceNumber++;
 		},
 
+		dealloc: function() {
+			this.outgoingMessageBuffer = null;
+			this.incomingMessageBuffer = null;
+			this.entityDescriptionBuffer = null;
+			this.stagnantEntities.dealloc();
+			this.stagnantEntities = null;
+			this.connection.removeAllListeners();
+			this.connection = null;
+		},
+
 		/**
 		 * Compares the worldDescription to the last one we sent - removes unchanged values
 		 * @param worldDescription A description of all the entities currently in the world
@@ -140,7 +150,11 @@ Version:
 			this.outgoingSequenceNumber++;
 		},
 
-	///// ACCESSORS
+///// MEMORY
+
+
+
+///// ACCESSORS
 		/**
 		 * Returns true if its ok to send this client a new message
 		 * @param {Number} gameClock

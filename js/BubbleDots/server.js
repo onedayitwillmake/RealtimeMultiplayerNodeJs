@@ -30,6 +30,7 @@ require("../input/Keyboard.js");
 require("../controller/traits/BaseTrait.js");
 
 
+//require("v8-profiler");
 require("./BubbleDotsApp.js");
 require("./BubbleDotsConstants.js");
 require("./entities/CircleEntity.js");

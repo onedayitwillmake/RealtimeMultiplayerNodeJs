@@ -71,7 +71,6 @@
 		removePlayer: function( clientid )
 		{
 			var player = this.players.objectForKey(clientid);
-			console.log('removing player from field: ', player );
 			if(!player) {
 				console.log("(FieldController), No 'Character' with clientid " + clientid + " ignoring...");
 				return;
@@ -173,7 +172,8 @@
 		},
 		getView: function (){ return this.view },
 		getEntities: function() { return this.entities },
-		getEntityWithid: function( anEntityid ) { return this.entities.objectForKey(anEntityid); }
+		getEntityWithid: function( anEntityid ) { return this.entities.objectForKey(anEntityid); },
+		getPlayerWithid: function( aClientid ) { return this.players.objectForKey(aClientid); }
 	};
 
 	/**

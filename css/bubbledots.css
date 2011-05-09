@@ -1,0 +1,128 @@
+
+/*
+    // ========================================== \\
+   ||                                              ||
+   ||               Your styles !                  ||
+   ||                                              ||
+    \\ ========================================== //
+*/
+
+body{
+	font-family:Helvetica, Helvetica Neue, Arial, sans-serif;
+}
+
+a, a:active, a:visited { color: #1c1c1c; }
+a:hover { color: #333333; }
+
+.wrapper{
+	margin:auto;
+	width:950px;
+}
+
+#header-container{
+	background-color: #333333;
+	height:130px;
+	border-bottom:20px solid #9dfafa;
+	margin-bottom:50px;
+	-webkit-box-shadow:0 40px 40px -40px #AAA;
+	   -moz-box-shadow:0 40px 40px -40px #AAA;
+	        box-shadow:0 40px 40px -40px #AAA;
+}
+
+#title{
+	font-size: 40px;
+	color:white;
+	padding-top:80px;
+	float:left;
+}
+
+h2{
+	font-size: 55px;
+}
+
+h3{
+	font-size: 20px;
+}
+
+nav{
+	float:right;
+	margin-top:100px;
+}
+
+nav ul, nav ul li{
+	display:inline;
+}
+
+nav a{
+	padding:20px;
+	text-decoration:none;
+	background-color: #9dfafa;
+}
+
+aside{
+	color:white;
+	padding:10px;
+	width: 230px;
+	float:right;
+	background-color: #333333;
+}
+
+#main p{
+	font-family:Helvetica, Helvetica Neue, Arial;
+	text-shadow:none;
+}
+
+aside p {
+	font-size:11px;
+	font-family:monospace;
+}
+
+#main header h2{
+	padding-bottom:30px;
+}
+
+/*
+article header{
+	margin-bottom:50px;
+	padding-bottom:30px;
+	width:700px;
+	-webkit-box-shadow:0 45px 60px -60px #AAA;
+	   -moz-box-shadow:0 45px 60px -60px #AAA;
+	        box-shadow:0 45px 60px -60px #AAA;
+}
+*/
+
+#footer-container{
+	background-color: #333333;
+	height:240px;
+	border-top:20px solid #9dfafa;
+	margin-top:50px;
+	-webkit-box-shadow:0 -40px 40px -40px #AAA;
+	   -moz-box-shadow:0 -40px 40px -40px #AAA;
+	        box-shadow:0 -40px 40px -40px #AAA;
+}
+
+#footer-container footer{
+	color:white;
+	margin-top: 10px;
+
+}
+
+.info {
+	position:absolute;
+	right: 0px;
+	top:5px;
+	background-color:white;
+	padding:10px;
+	margin-top:5px;
+}
+
+#jquery-test{
+	top:45px;
+}
+
+
+
+
+
+

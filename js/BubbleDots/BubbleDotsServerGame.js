@@ -42,6 +42,9 @@ Version:
 			this.cmdMap[RealtimeMultiplayerGame.Constants.CMDS.PLAYER_UPDATE] = this.shouldUpdatePlayer;
 		},
 
+		/**
+		 * Sets up the collision manager
+		 */
 		setupCollisionManager: function() {
 			// Collision simulation
 			this.collisionManager = new RealtimeMultiplayerGame.modules.circlecollision.CircleManager();
@@ -128,12 +131,23 @@ Version:
 			this.fieldController.addPlayer( playerEntity );
 		},
 
+		/**
+		 * @inheritDoc
+		 */
 		shouldUpdatePlayer: function( aClientid, data ) {
 			var entity = this.fieldController.getEntityWithid( data.payload.entityid );
 			entity.input.deconstructInputBitmask( data.payload.input );
 		},
 
+		/**
+		 * @inheritDoc
+		 */
 		shouldRemovePlayer: function( aClientid ) {
+			var entity = this.fieldController.getPlayerWithid( aClientid );
+			if(entity) {
+				this.collisionManager.removeCircle( entity.getCollisionCircle() );
+			}
+
 			BubbleDots.DemoServerGame.superclass.shouldRemovePlayer.call( this, aClientid );
 		}
 	};

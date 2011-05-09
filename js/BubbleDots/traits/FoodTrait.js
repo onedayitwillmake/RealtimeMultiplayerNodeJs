@@ -27,7 +27,8 @@ Abstract:
 		 */
 		attach: function(anEntity) {
 			BubbleDots.traits.FoodTrait.superclass.attach.call(this, anEntity);
-			this.intercept(['onCollision', 'color', 'originalColor']);
+//			this.intercept(['onCollision', 'color', 'originalColor']);
+			this.intercept(['onCollision']);
 		},
 
 		/**

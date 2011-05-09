@@ -146,7 +146,8 @@ Version:
 		///// MEMORY
 		dealloc: function() {
 			this.position = null;
-			this.traits.dealloc();
+			this.removeAllTraits();
+			this.traits = null;
 		},
 
 		////// ACCESSORS

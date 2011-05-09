@@ -34,8 +34,8 @@ Version:
 		_tween					:	null,
 
 		// Movement properties
-		velocityMax				:	7.0,
-		velocityDamping			:	0.85,
+		velocityMax				:	14.0,
+		velocityDamping			:	0.92,
 
 
 		/**
@@ -46,6 +46,7 @@ Version:
 
 			this.view.x = this.position.x - this.radius;
 			this.view.y = this.position.y - this.radius;
+			this.radius = this.lastReceivedEntityDescription.radius;
 
 			var diameter = this.lastReceivedEntityDescription.radius * 2;
 			this.view.setSize( diameter, diameter );
@@ -97,6 +98,7 @@ Version:
 		dealloc: function() {
 			this.collisionCircle.dealloc();
 			this.collisionCircle = null;
+
 			BubbleDots.CircleEntity.superclass.dealloc.call(this);
 		},
 

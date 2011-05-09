@@ -27,6 +27,7 @@ Abstract:
 		 */
 		attach: function(anEntity) {
 			BubbleDots.traits.PoisonTrait.superclass.attach.call(this, anEntity);
+			this.intercept(['onCollision']);
 			this.intercept(['onCollision', 'color', 'originalColor']);
 		},
 

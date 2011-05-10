@@ -21,6 +21,7 @@ Abstract:
 		displayName									: "FoodTrait",					// Unique string name for this Trait
 		originalColor								: "00FF00",
 		color										: "00FF00",
+		radius										: 10,
 
 		/**
 		 * @inheritDoc
@@ -28,7 +29,7 @@ Abstract:
 		attach: function(anEntity) {
 			BubbleDots.traits.FoodTrait.superclass.attach.call(this, anEntity);
 //			this.intercept(['onCollision', 'color', 'originalColor']);
-			this.intercept(['onCollision']);
+			this.intercept(['onCollision', 'radius']);
 		},
 
 		/**

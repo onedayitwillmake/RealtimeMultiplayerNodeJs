@@ -21,6 +21,7 @@ Abstract:
 		displayName									: "PoisonTrait",					// Unique string name for this Trait
 		originalColor								: "FF0000",
 		color										: "FF0000",
+		radius										: 6,
 
 		/**
 		 * @inheritDoc
@@ -28,7 +29,7 @@ Abstract:
 		attach: function(anEntity) {
 			BubbleDots.traits.PoisonTrait.superclass.attach.call(this, anEntity);
 			this.intercept(['onCollision']);
-			this.intercept(['onCollision', 'color', 'originalColor']);
+			this.intercept(['onCollision', 'color', 'originalColor', 'radius']);
 		},
 
 		/**

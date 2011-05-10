@@ -38,7 +38,7 @@ Abstract:
 			trait.noiseOffset+=0.005;
 
 			// Modify velocity using perlin noise
-			var theta = 0.008;
+			var theta = 0.007;
 			var noise = RealtimeMultiplayerGame.model.noise(this.position.x*theta, this.position.y*theta, trait.noiseOffset);
 			var angle = noise*12;
 			var speed = 0.2;

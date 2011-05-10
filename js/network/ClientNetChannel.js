@@ -31,8 +31,8 @@ Version:
 
 	RealtimeMultiplayerGame.ClientNetChannel = function( aDelegate ) {
 		this.setDelegate( aDelegate );
-//		this.setupSocketIO();
-		this.setupWSClient();
+		this.setupSocketIO();
+//		this.setupWSClient();
 		this.setupCmdMap();
 		return this;
 	};

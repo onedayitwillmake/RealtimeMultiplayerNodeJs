@@ -30,6 +30,7 @@ require("../input/Keyboard.js");
 require("../lib/bonsai-ws/bison.js");
 
 
+require("v8-profiler");
 require("./DemoHelloWorld.js");
 require("./DemoHelloWorldConstants.js");
 require("./CircleEntity.js");

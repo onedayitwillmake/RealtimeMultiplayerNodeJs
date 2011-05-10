@@ -30,7 +30,11 @@ Version:
 	RealtimeMultiplayerGame.network.Client = function( aConnection, aClientid ) {
 		this.clientid = aClientid;
 		this.connection = aConnection;
-		this.connection.sessionId = aClientid;
+
+		if(!this.connection.sessionId) { // No sessionId variable means we're not using socket.io - just set that property to use our clientid
+			this.connection.sessionId = aClientid;
+		}
+
 		this.stagnantEntities = new SortedLookupTable();
 		return this;
 	};
@@ -78,6 +82,7 @@ Version:
 		 */
 		compressDeltaAndQueueMessage: function( worldDescription, gameClock )
 		{
+			debugger;
 			var allEntities = worldDescription.entities,
 				len = allEntities.length;
 
@@ -139,7 +144,7 @@ Version:
 		 */
 		sendMessage: function( anEncodedMessage, gameClock )
 		{
-			anEncodedMessage = RealtimeMultiplayerGame.modules.bison.encode(anEncodedMessage)
+//			anEncodedMessage = RealtimeMultiplayerGame.modules.bison.encode(anEncodedMessage)
 			this.lastSentMessageTime = gameClock;
 
 			// Store inside our outgoingMessageBuffer - which holds 'MESSAGE_BUFFER_MASK' lerped number of messages

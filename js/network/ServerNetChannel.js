@@ -39,8 +39,8 @@ Version:
 		this.clients = new SortedLookupTable();
 
 		this.setDelegate( aDelegate );
-//		this.setupSocketIO();
-		this.setupWSServer();
+		this.setupSocketIO();
+//		this.setupWSServer();
 		this.setupCmdMap();
 		return this;
 	};
@@ -131,11 +131,26 @@ Version:
 		 */
 		tick: function( gameClock, worldDescription )
 		{
+			var allEntities = worldDescription.entities,
+				len = allEntities.length;
+			var resultDescStr = '';
+			while(len--) {
+				var anEntityDescStr = allEntities[len],
+					anEntityDesc = anEntityDescStr.split(','),
+					entityid = +anEntityDesc[0],
+					clientid = +anEntityDesc[1];
+					resultDescStr += "|" + anEntityDescStr;
+			}
+			var entityDescriptionObject = {};
+			entityDescriptionObject.entities = resultDescStr;
+			entityDescriptionObject.gameClock = worldDescription.gameClock;
+			entityDescriptionObject.gameTick = worldDescription.gameTick;
+
 			// Send client the current world info
 			this.clients.forEach( function(key, client)
 			{
 				// Collapse delta - store the world state
-				client.compressDeltaAndQueueMessage( worldDescription, gameClock );
+				client.entityDescriptionBuffer.push( entityDescriptionObject );
 
 				// Ask if enough time passed, and send a new world update
 				if ( client.canSendMessage(gameClock) ) {

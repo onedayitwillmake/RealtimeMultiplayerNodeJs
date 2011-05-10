@@ -37,6 +37,7 @@ require("./entities/CircleEntity.js");
 require("./entities/PlayerEntity.js");
 require("./traits/FoodTrait.js");
 require("./traits/PoisonTrait.js");
+require("./traits/PerlinNoiseTrait.js");
 require("./BubbleDotsServerGame.js");
 
 var game = new BubbleDots.DemoServerGame();

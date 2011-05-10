@@ -83,7 +83,7 @@ Basic Usage:
 			clearTimeout(this.detachTimeout);
 			this.restore();
 
-			delete this.interceptedProperties;
+			this.interceptedProperties.dealloc();
 			this.interceptProperties = null;
 			this.attachedEntity = null;
 		},
@@ -92,8 +92,7 @@ Basic Usage:
 		 * Detach after N milliseconds, for example freeze trait might call this to unfreeze
 		 * @param aDelay
 		 */
-		detachAfterDelay: function(aDelay)
-		{
+		detachAfterDelay: function(aDelay) {
 			var that = this;
 			this.detachTimeout = setTimeout( function(){
 				that.attachedEntity.removeTraitWithName(that.displayName);

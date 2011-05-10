@@ -78,6 +78,8 @@ Version:
 				} else {
 					entity.addTraitAndExecute( new BubbleDots.traits.PoisonTrait() );
 				}
+
+				entity.addTraitAndExecute( new BubbleDots.traits.PerlinNoiseTrait() );
 			}
 		},
 

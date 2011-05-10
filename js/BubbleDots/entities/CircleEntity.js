@@ -34,8 +34,8 @@ Version:
 		_tween					:	null,
 
 		// Movement properties
-		velocityMax				:	14.0,
-		velocityDamping			:	0.92,
+		velocityMax				:	8.0,
+		velocityDamping			:	0.9,
 
 
 		/**
@@ -67,6 +67,8 @@ Version:
 			this.velocity.translatePoint( this.acceleration );
 			this.velocity.limit(this.velocityMax);
 			this.velocity.multiply(this.velocityDamping);
+
+
 
 			this.collisionCircle.position.translatePoint( this.velocity );
 			this.position = this.collisionCircle.position.clone();

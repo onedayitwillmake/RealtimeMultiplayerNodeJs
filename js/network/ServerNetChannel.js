@@ -131,20 +131,12 @@ Version:
 		 */
 		tick: function( gameClock, worldDescription )
 		{
-			var allEntities = worldDescription.entities,
-				len = allEntities.length;
-			var resultDescStr = '';
-			while(len--) {
-				var anEntityDescStr = allEntities[len],
-					anEntityDesc = anEntityDescStr.split(','),
-					entityid = +anEntityDesc[0],
-					clientid = +anEntityDesc[1];
-					resultDescStr += "|" + anEntityDescStr;
-			}
-			var entityDescriptionObject = {};
-			entityDescriptionObject.entities = resultDescStr;
-			entityDescriptionObject.gameClock = worldDescription.gameClock;
-			entityDescriptionObject.gameTick = worldDescription.gameTick;
+			var worldEntityDescriptionString = worldDescription.getEntityDescriptionAsString();
+			var entityDescriptionObject = {
+				entities: worldEntityDescriptionString,
+				gameClock: worldDescription.gameClock,
+				gameTick: worldDescription.gameTick
+			};
 
 			// Send client the current world info
 			this.clients.forEach( function(key, client)

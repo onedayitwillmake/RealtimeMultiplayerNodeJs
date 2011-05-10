@@ -27,6 +27,7 @@ require("../core/AbstractServerGame.js");
 require("../model/GameEntity.js");
 require("../model/WorldEntityDescription.js");
 require("../input/Keyboard.js");
+require("../lib/bonsai-ws/bison.js");
 
 
 require("./DemoHelloWorld.js");

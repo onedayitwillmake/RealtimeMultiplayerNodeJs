@@ -39,7 +39,8 @@ Version:
 		this.clients = new SortedLookupTable();
 
 		this.setDelegate( aDelegate );
-		this.setupSocketIO();
+//		this.setupSocketIO();
+		this.setupWSServer();
 		this.setupCmdMap();
 		return this;
 	};
@@ -64,10 +65,54 @@ Version:
 
 
 			var that = this;
-			this.socketio.on('request', function(client){ that.onSocketRequest(client) });
 			this.socketio.on('connection', function(client){ that.onSocketConnection(client) });
 			this.socketio.on('clientMessage', function(data, client){ that.onSocketMessage( data, client ) });
 			this.socketio.on('clientDisconnect', function(client){ that.onSocketClosed(client) });
+		},
+
+		setupWSServer: function() {
+
+			var profiler = require('v8-profiler');
+			var util = require('util');
+			var ws = require("../lib/bonsai-ws/ws.js");
+
+			this.clientCount = 0;
+			this.maxClients = 8;
+			this.maxChars = 128;
+			this.socketClients = [];
+			var that = this;
+
+			this.$ = new ws.Server( false );
+			this.$.onConnect = function(conn) {
+				var aClient = new RealtimeMultiplayerGame.network.Client( conn, that.getNextClientID() );
+
+				// Send the first message back to the client, which gives them a clientid
+				var connectMessage = new RealtimeMultiplayerGame.model.NetChannelMessage( ++this.outgoingSequenceNumber, aClient.getClientid(), true, RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT, { gameClock: that.delegate.getGameClock() });
+				connectMessage.messageTime = that.delegate.getGameClock();
+				aClient.getConnection().send( RealtimeMultiplayerGame.modules.bison.encode(connectMessage) );
+
+				// Add to our list of connected users
+				that.clients.setObjectForKey( aClient, aClient.getSessionId() );
+			};
+
+			this.$.onMessage = function(conn, msg) {
+				console.log("MESSAGE RECEIVED", msg);
+			};
+
+			this.$.onClose = function(conn) {
+				that.removeClient(conn.$clientID);
+				console.log("Disconnected!");
+			};
+
+			this.removeClient = function(id) {
+				if (this.socketClients[id]) {
+					this.clientCount--;
+					this.socketClients[id].remove();
+					delete this.socketClients[id];
+				}
+			};
+
+			this.$.listen( RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PORT );
 		},
 
 		/**

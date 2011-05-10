@@ -31,7 +31,8 @@ Version:
 
 	RealtimeMultiplayerGame.ClientNetChannel = function( aDelegate ) {
 		this.setDelegate( aDelegate );
-		this.setupSocketIO();
+//		this.setupSocketIO();
+		this.setupWSClient();
 		this.setupCmdMap();
 		return this;
 	};
@@ -66,6 +67,25 @@ Version:
 			this.socketio.on('connect', function(){ that.onSocketConnect() });
 			this.socketio.on('message', function( obj ){ that.onSocketDidAcceptConnection( obj ) });
 			this.socketio.on('disconnect', function(){ that.onSocketDisconnect() });
+		},
+
+		setupWSClient: function() {
+			var that = this;
+			this.connection = new WebSocket("ws://localhost:"+ RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PORT + "/");
+			this.socketio = this.connection;
+			this.connection.onopen = function() {
+				DemoHelloWorld.DemoClientGame.prototype.log("Connection.onopen");
+			};
+
+			this.connection.onmessage = function( event ) {
+				//DemoHelloWorld.DemoClientGame.prototype.log("Connection.onmessage");
+				var message = BISON.decode(event.data);
+				that.onSocketDidAcceptConnection( message );
+			};
+			this.connection.onclose = function( event ) {
+				DemoHelloWorld.DemoClientGame.prototype.log("Connection.onclose");
+				that.onSocketDisconnect();
+			};
 		},
 
 		/**
@@ -141,6 +161,8 @@ Version:
 
 		onSocketDisconnect: function( ) {
 			this.delegate.netChannelDidDisconnect();
+			this.connection = null;
+			this.socketio = null;
 			console.log("(ClientNetChannel)::onSocketDisconnect", arguments);
 		},
 
@@ -235,7 +257,7 @@ Version:
 		 * @param aMessageInstance
 		 */
 		sendMessage: function( aMessageInstance ) {
-			if(this.socketio == undefined) {
+			if(this.socketio == undefined ) {
 				console.log("(ClientNetChannel)::sendMessage - socketio is undefined!");
 				return;
 			}

@@ -76,7 +76,7 @@ Version:
 
 			// Loop through each entity and move it to the left
 			this.fieldController.getEntities().forEach( function(key, entity) {
-				entity.position.x -= 1;
+				entity.position.x -= entity.speed;
 				if(entity.position.x < 0) { // reset
 					entity.position.x = DemoHelloWorld.Constants.GAME_WIDTH;
 				}

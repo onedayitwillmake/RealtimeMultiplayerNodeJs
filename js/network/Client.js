@@ -30,6 +30,7 @@ Version:
 	RealtimeMultiplayerGame.network.Client = function( aConnection, aClientid ) {
 		this.clientid = aClientid;
 		this.connection = aConnection;
+		this.connection.sessionId = aClientid;
 		this.stagnantEntities = new SortedLookupTable();
 		return this;
 	};
@@ -125,7 +126,6 @@ Version:
 				data:this.entityDescriptionBuffer
 			};
 			var anEncodedMessage = messageContent;	// Encode?
-//			var encodedMessage = BISON.encode(messageContent);
 
 			this.sendMessage( anEncodedMessage, gameClock);
 
@@ -139,6 +139,7 @@ Version:
 		 */
 		sendMessage: function( anEncodedMessage, gameClock )
 		{
+			anEncodedMessage = RealtimeMultiplayerGame.modules.bison.encode(anEncodedMessage)
 			this.lastSentMessageTime = gameClock;
 
 			// Store inside our outgoingMessageBuffer - which holds 'MESSAGE_BUFFER_MASK' lerped number of messages

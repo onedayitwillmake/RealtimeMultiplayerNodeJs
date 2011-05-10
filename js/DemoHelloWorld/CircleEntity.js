@@ -22,13 +22,12 @@ Version:
 (function(){
 	DemoHelloWorld.CircleEntity = function( anEntityid, aClientid) {
 		DemoHelloWorld.CircleEntity.superclass.constructor.call(this, anEntityid, aClientid );
-
-		this.velocity = new RealtimeMultiplayerGame.model.Point(0,0);
-		this.acceleration = new RealtimeMultiplayerGame.model.Point(0,0);
+		this.speed = Math.random();
 		return this;
 	};
 
 	DemoHelloWorld.CircleEntity.prototype = {
+		speed					:	0,
 		radius					:	DemoHelloWorld.Constants.ENTITY_DEFAULT_RADIUS,
 		entityType				:	DemoHelloWorld.Constants.ENTITY_TYPES.CIRCLE,
 

@@ -21,7 +21,7 @@ Abstract:
 		displayName									: "PoisonTrait",					// Unique string name for this Trait
 		originalColor								: "FF0000",
 		color										: "FF0000",
-		radius										: 6,
+		radius										: 7,
 
 		/**
 		 * @inheritDoc
@@ -52,6 +52,10 @@ Abstract:
 			// We're either A or B, so perform a simple check against A to figure out which of the two objects we are
 			var me = this === a ? a : b;
 			var them = this === a ? b : a;
+
+			var newRadius = Math.max( 0.1, them.radius-0.5 );
+			them.radius = newRadius;
+			them.collisionCircle.setRadius( newRadius );
 
 			them.acceleration.translatePoint( collisionNormal.multiply(them.velocityMax) );
 		}

@@ -60,7 +60,8 @@ Version:
 		 * Append radius to our entity description created by the super class
 		 */
 		constructEntityDescription: function() {
-			return DemoHelloWorld.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + this.radius;
+			// Note: "~~" is just a way to round the value without the Math.round function call
+			return DemoHelloWorld.CircleEntity.superclass.constructEntityDescription.call(this) + ',' + ~~this.radius;
 		}
 	};
 

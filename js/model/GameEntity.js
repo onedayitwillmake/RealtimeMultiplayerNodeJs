@@ -60,11 +60,12 @@ Version:
 		 */
 		constructEntityDescription: function(gameTick, wantsFullUpdate)
 		{
+			// Note: "~~" is just a way to round the value without the Math.round function call
 			var returnString = this.entityid;
 				returnString += "," + this.clientid;
 				returnString += "," + this.entityType;
-				returnString += "," + ~~(this.position.x);
-				returnString += "," + ~~(this.position.y);
+				returnString += "," + ~~this.position.x;
+				returnString += "," + ~~this.position.y;
 
 			return returnString;
 		},

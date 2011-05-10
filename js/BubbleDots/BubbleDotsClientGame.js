@@ -51,7 +51,7 @@ Version:
 			var aCircleView = new CAAT.ShapeActor();
 			aCircleView.create();
 			aCircleView.setShape( CAAT.ShapeActor.prototype.SHAPE_CIRCLE);
-			aCircleView.setAlpha( 0.25 );
+			aCircleView.setAlpha( 0.5 );
 			aCircleView.setSize( diameter, diameter );
 			aCircleView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
 

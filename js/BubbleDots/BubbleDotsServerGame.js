@@ -73,10 +73,10 @@ Version:
 				var entity = this.createEntity( BubbleDots.CircleEntity, radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
 
 				// Randomly make the object 'food' or 'poison'
-				if(i%2 === 0) {
-					entity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
-				} else {
+				if(i%3 === 0) {
 					entity.addTraitAndExecute( new BubbleDots.traits.PoisonTrait() );
+				} else {
+					entity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
 				}
 
 				entity.addTraitAndExecute( new BubbleDots.traits.PerlinNoiseTrait() );
@@ -129,6 +129,7 @@ Version:
 			playerEntity.getCollisionCircle().setPosition( center.clone() );
 			playerEntity.setInput( new RealtimeMultiplayerGame.Input.Keyboard() );
 			playerEntity.removeAllTraits();
+			playerEntity.setColor( "000000" );
 
 			this.fieldController.addPlayer( playerEntity );
 		},

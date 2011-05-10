@@ -58,7 +58,7 @@ Version:
 
 			// Create the GameEntity
 			var circleEntity = new DemoHelloWorld.CircleEntity( anEntityid, aClientid );
-			circleEntity.entityType = DemoHelloWorld.Constants.ENTITY_TYPES.GENERIC_CIRCLE;
+			circleEntity.entityType = DemoHelloWorld.Constants.ENTITY_TYPES.CIRCLE;
 			circleEntity.radius = aRadius;
 			circleEntity.position.set( Math.random() * DemoHelloWorld.Constants.GAME_WIDTH, Math.random() * DemoHelloWorld.Constants.GAME_HEIGHT);
 

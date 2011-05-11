@@ -73,13 +73,12 @@ Version:
 				var entity = this.createEntity( BubbleDots.CircleEntity, radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
 
 				// Randomly make the object 'food' or 'poison'
-//				if(i%3 === 0) {
-//					entity.addTraitAndExecute( new BubbleDots.traits.PoisonTrait() );
-//				} else {
-//					entity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
-//				}
+				if(i%3 === 0) {
+					entity.addTraitAndExecute( new BubbleDots.traits.PoisonTrait() );
+				} else {
+					entity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
+				}
 
-				entity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
 				entity.addTraitAndExecute( new BubbleDots.traits.PerlinNoiseTrait() );
 			}
 		},
@@ -93,13 +92,12 @@ Version:
 		createEntity: function( aBubbleDotEntityConstructor, aRadius, anEntityid, aClientid ) {
 			// Create the GameEntity
 			var circleEntity = new aBubbleDotEntityConstructor( anEntityid, aClientid );
-			circleEntity.radius = aRadius;
 			circleEntity.position.set( Math.random() * BubbleDots.Constants.GAME_WIDTH, Math.random() * BubbleDots.Constants.GAME_HEIGHT );
-//			circleEntity.setColor( CAAT.Color.prototype.hsvToRgb( (anEntityid * 15) % 360, 80, 99).toHex() );
 
 			// Create a randomly sized circle, that will represent this entity in the collision manager
 			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
 			circleEntity.setCollisionCircle( collisionCircle );
+			circleEntity.setRadius( aRadius );
 
 			// Place the circle and collision circle into corresponding containers
 			this.collisionManager.addCircle( circleEntity.getCollisionCircle() );
@@ -125,7 +123,7 @@ Version:
 		 */
 		shouldAddPlayer: function( aClientid, data ) {
 			var center = new RealtimeMultiplayerGame.model.Point( BubbleDots.Constants.GAME_WIDTH / 2,BubbleDots.Constants.GAME_HEIGHT / 2 );
-			var playerEntity = this.createEntity( BubbleDots.PlayerEntity, 30, this.getNextEntityID(), aClientid );
+			var playerEntity = this.createEntity( BubbleDots.PlayerEntity, BubbleDots.Constants.ENTITY_DEFAULT_RADIUS, this.getNextEntityID(), aClientid );
 			playerEntity.position = center.clone();
 			playerEntity.getCollisionCircle().setPosition( center.clone() );
 			playerEntity.setInput( new RealtimeMultiplayerGame.Input.Keyboard() );

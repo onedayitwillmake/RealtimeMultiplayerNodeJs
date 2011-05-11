@@ -44,10 +44,9 @@ Version:
 		updateView: function() {
 			if(!this.view) return;
 
-			this.view.x = this.position.x - this.radius;
-			this.view.y = this.position.y - this.radius;
-			this.radius = this.lastReceivedEntityDescription.radius;
-
+			this.view.x = this.position.x;// - this.radius;
+			this.view.y = this.position.y;// - this.radius;
+			this.view.setScale(this.lastReceivedEntityDescription.scale*0.01, this.lastReceivedEntityDescription.scale*0.01);
 			return;
 
 			var diameter = this.lastReceivedEntityDescription.radius * 2;
@@ -62,10 +61,10 @@ Version:
 		 * @param {Number} gameTick		Current game tick (incrimented each frame)
 		 */
 		updatePosition: function( speedFactor, gameClock, gameTick ) {
-			this.handleAcceleration();
+			this.handleAcceleration( speedFactor, gameClock, gameTick );
 		},
 
-		handleAcceleration: function() {
+		handleAcceleration: function( speedFactor, gameClock, gameTick ) {
 			this.velocity.translatePoint( this.acceleration );
 			this.velocity.limit(this.velocityMax);
 			this.velocity.multiply(this.velocityDamping);
@@ -106,11 +105,17 @@ Version:
 
 		constructEntityDescription: function() {
 			var entityDesc = BubbleDots.CircleEntity.superclass.constructEntityDescription.call(this);
-			entityDesc += ',' +  ~~(this.radius);
+			entityDesc += ',' +  ~~(this.scale*100);
 			entityDesc += ',' + this.color;
 
 			return entityDesc;
 		},
+
+//		addTrait: function( aTrait ) {
+//			if( aTrait.displayName === RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait )
+//				return BubbleDots.CircleEntity.superclass.addTrait.call(this, aTrait);
+//			return null;
+//		},
 
 		///// ACCESSORS
 		/**
@@ -140,7 +145,14 @@ Version:
 			this.color = aColor;
 		},
 		getColor: function(){ return this.color },
-		getOriginalColor: function(){ return this.originalColor }
+		getOriginalColor: function(){ return this.originalColor },
+		setRadius: function(aRadius) {
+			this.radius = aRadius;
+			this.collisionCircle.setRadius( this.radius );
+			this.scale = this.radius / BubbleDots.Constants.ENTITY_DEFAULT_RADIUS;
+		},
+		getRadius: function(){ return this.radius; }
+
 	};
 
 	// extend RealtimeMultiplayerGame.model.GameEntity

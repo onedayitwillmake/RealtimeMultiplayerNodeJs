@@ -12,14 +12,15 @@ Abstract:
 */
 (function(){
 	BubbleDots.namespace("BubbleDots.traits");
+
+	var NOISE_SEED = Math.random() * 1000;
+
 	BubbleDots.traits.PerlinNoiseTrait = function() {
 		BubbleDots.traits.PerlinNoiseTrait.superclass.constructor.call(this);
-		this.noiseOffset = 0.0;
 	};
 
 	BubbleDots.traits.PerlinNoiseTrait.prototype = {
 		displayName									: "PerlinNoiseTraitTrait",					// Unique string name for this Trait
-		noiseOffset									: 0.0,
 
 		/**
 	 	 * @inheritDoc
@@ -32,20 +33,19 @@ Abstract:
 		/**
 		 * Intercepted properties
 		 */
-		updatePosition: function() {
+		updatePosition: function( speedFactor, gameClock, gameTick ) {
 			// Call the original handleAcceleration
 			var trait = this.getTraitWithName("PerlinNoiseTraitTrait");
-			trait.noiseOffset+=0.005;
 
 			// Modify velocity using perlin noise
 			var theta = 0.008;
-			var noise = RealtimeMultiplayerGame.model.noise(this.position.x*theta, this.position.y*theta, trait.noiseOffset);
-			var angle = noise*12;
+			var noise = RealtimeMultiplayerGame.model.noise(this.position.x*theta, this.position.y*theta, NOISE_SEED + gameTick*0.001);
+			var angle = noise*Math.PI*12.566370614359172; // PI * 4
 			var speed = 0.2;
-			this.acceleration.x += Math.cos( angle ) * speed - 0.3;
-			this.acceleration.y -= Math.sin( angle ) * speed;
+			this.acceleration.x += Math.cos( angle ) * speed - 0.25;
+			this.acceleration.y += Math.sin( angle ) * speed;
 
-			trait.interceptedProperties._data.updatePosition.call(this);
+			trait.interceptedProperties._data.updatePosition.call(this, speedFactor, gameClock, gameTick);
 		}
 	};
 

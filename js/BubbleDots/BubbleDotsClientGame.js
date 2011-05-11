@@ -50,7 +50,6 @@ Version:
 			var newEntity = new BubbleDots.CircleEntity( entityDesc.entityid, entityDesc.clientid );
 			newEntity.position.set( entityDesc.x, entityDesc.y );
 			newEntity.setView( this.view.createEntityView( entityDesc ) );
-			newEntity.radius = entityDesc.radius;
 
 			this.fieldController.addEntity( newEntity );
 
@@ -100,7 +99,7 @@ Version:
 			entityDescription.entityType = +entityDescAsArray[2];
 			entityDescription.x = +entityDescAsArray[3];
 			entityDescription.y = +entityDescAsArray[4];
-			entityDescription.radius = +entityDescAsArray[5];
+			entityDescription.scale = +entityDescAsArray[5];
 			entityDescription.color = entityDescAsArray[6];
 			return entityDescription;
 		},

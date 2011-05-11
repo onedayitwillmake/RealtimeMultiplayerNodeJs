@@ -12,7 +12,7 @@ Abstract:
 */
 (function(){
 	BubbleDots.namespace("BubbleDots.traits");
-	var RATE = 0.01;
+	var RATE = 0.2;
 	BubbleDots.traits.ChaseTrait = function() {
 		BubbleDots.traits.ChaseTrait.superclass.constructor.call(this);
 	};
@@ -36,17 +36,18 @@ Abstract:
 		 * @inheritDoc
 		 */
 		execute: function() {
+			RATE += 0.3;
+			this.radius = Math.random() * 20 + 5;
 			this.offset = new RealtimeMultiplayerGame.model.Point(  Math.cos(RATE) * this.radius,  Math.sin(RATE) * -this.radius);
-
+			this.chaseSpeed = Math.random() * 0.02 + 0.001;
 			BubbleDots.traits.ChaseTrait.superclass.execute.call(this);
 		},
 
 		/**
 		 * Intercepted properties
 		 */
-		updatePosition: function() {
+		updatePosition: function( speedFactor, gameClock, gameTick ) {
 			var trait = this.getTraitWithName("ChaseTrait");
-			RATE += 0.1;
 
 			// Move towards the target position overtime
 			var delta = trait.target.position.subtractClone(this.position);
@@ -57,7 +58,7 @@ Abstract:
 			this.acceleration.translatePoint( delta );
 
 			// Call the original handleAcceleration
-			trait.interceptedProperties._data.updatePosition.call(this);
+			trait.interceptedProperties._data.updatePosition.call(this, speedFactor, gameClock, gameTick);
 		},
 
 		///// ACCESSORS

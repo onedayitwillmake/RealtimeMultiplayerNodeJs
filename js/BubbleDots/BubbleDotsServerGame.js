@@ -73,12 +73,13 @@ Version:
 				var entity = this.createEntity( BubbleDots.CircleEntity, radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
 
 				// Randomly make the object 'food' or 'poison'
-				if(i%3 === 0) {
-					entity.addTraitAndExecute( new BubbleDots.traits.PoisonTrait() );
-				} else {
-					entity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
-				}
+//				if(i%3 === 0) {
+//					entity.addTraitAndExecute( new BubbleDots.traits.PoisonTrait() );
+//				} else {
+//					entity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
+//				}
 
+				entity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
 				entity.addTraitAndExecute( new BubbleDots.traits.PerlinNoiseTrait() );
 			}
 		},

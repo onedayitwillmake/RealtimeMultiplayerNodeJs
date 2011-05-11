@@ -93,7 +93,7 @@ Version:
 			this.traits.push(aTrait);
 			aTrait.attach(this);
 
-			return true;
+			return aTrait;
 		},
 
 		/**
@@ -104,9 +104,10 @@ Version:
 			var wasAdded = this.addTrait(aTrait);
 			if(wasAdded) {
 				aTrait.execute();
+				return aTrait;
 			}
 
-			return wasAdded;
+			return null;
 		},
 
 		/**

@@ -26,13 +26,13 @@ Abstract:
 		 */
 		attach: function(anEntity) {
 			BubbleDots.traits.PerlinNoiseTrait.superclass.attach.call(this, anEntity);
-			this.intercept(['handleAcceleration']);
+			this.intercept(['updatePosition']);
 		},
 
 		/**
 		 * Intercepted properties
 		 */
-		handleAcceleration: function() {
+		updatePosition: function() {
 			// Call the original handleAcceleration
 			var trait = this.getTraitWithName("PerlinNoiseTraitTrait");
 			trait.noiseOffset+=0.005;
@@ -45,7 +45,7 @@ Abstract:
 			this.acceleration.x += Math.cos( angle ) * speed - 0.3;
 			this.acceleration.y -= Math.sin( angle ) * speed;
 
-			trait.interceptedProperties._data.handleAcceleration.call(this);
+			trait.interceptedProperties._data.updatePosition.call(this);
 		}
 	};
 

@@ -83,6 +83,17 @@
 			this.y -= aPoint.y;
 			return this;
 		},
+
+		/**
+         * Substract a point from this one
+		 * Returns a new point with the difference
+         * @param aPoint {RealtimeMultiplayerGame.model.Point}
+		 * @return {RealtimeMultiplayerGame.model.Point}
+         */
+		subtractClone: function(aPoint) {
+			return new RealtimeMultiplayerGame.model.Point(this.x - aPoint.x, this.y - aPoint.y)
+		},
+
         /**
          * Multiply this point by a scalar.
          * @param factor {number}

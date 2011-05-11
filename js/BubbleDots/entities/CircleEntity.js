@@ -70,8 +70,6 @@ Version:
 			this.velocity.limit(this.velocityMax);
 			this.velocity.multiply(this.velocityDamping);
 
-
-
 			this.collisionCircle.position.translatePoint( this.velocity );
 			this.position = this.collisionCircle.position.clone();
 

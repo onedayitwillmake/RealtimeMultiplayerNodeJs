@@ -27,8 +27,8 @@ Abstract:
 		 */
 		attach: function(anEntity) {
 			BubbleDots.traits.FoodTrait.superclass.attach.call(this, anEntity);
-//			this.intercept(['onCollision', 'color', 'originalColor']);
 			this.color = Math.random() < 0.5 ? "2" : "3";
+			this.originalColor = this.color;
 			this.intercept(['onCollision', 'color']);
 		},
 
@@ -53,22 +53,26 @@ Abstract:
 			// We're either A or B, so perform a simple check against A to figure out which of the two objects we are
 			var me = this === a ? a : b;
 			var them = this === a ? b : a;
-			return;
-			BubbleDots.lib.TWEEN.remove( me._tween );
-		   	me._tween = new BubbleDots.lib.TWEEN.Tween({radius: me.radius})
-					.to({radius: 0.1}, 1000)
-					.easing(BubbleDots.lib.TWEEN.Easing.Sinusoidal.EaseOut)
-					.onUpdate(function(){
-				    	me.radius = ~~this.radius;
-			   			me.collisionCircle.setRadius( ~~this.radius );
-					})
-					.start();
 
-			var newRadius = Math.max( BubbleDots.traits.FoodTrait.prototype.radius, them.radius+0.1 );
-			them.radius = newRadius;
-			them.collisionCircle.setRadius( newRadius );
+//			me.addTrait( )
+
+//			BubbleDots.lib.TWEEN.remove( me._tween );
+//		   	me._tween = new BubbleDots.lib.TWEEN.Tween({radius: me.radius})
+//					.to({radius: 0.1}, 1000)
+//					.easing(BubbleDots.lib.TWEEN.Easing.Sinusoidal.EaseOut)
+//					.onUpdate(function(){
+//				    	me.radius = ~~this.radius;
+//			   			me.collisionCircle.setRadius( ~~this.radius );
+//					})
+//					.start();
+
+//			var newRadius = Math.max( BubbleDots.traits.FoodTrait.prototype.radius, them.radius+0.1 );
+//			them.radius = newRadius;
+//			them.collisionCircle.setRadius( newRadius );
 			me.collisionCircle.collisionGroup = 0;
 //			me.acceleration.translatePoint( collisionNormal.multiply(-10) );
+			var chaseTrait = this.addTraitAndExecute( new BubbleDots.traits.ChaseTrait() );
+			chaseTrait.setTarget( them );
 			me.tempColor();
 		}
 

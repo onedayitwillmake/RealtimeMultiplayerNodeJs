@@ -19,9 +19,8 @@ Abstract:
 
 	BubbleDots.traits.PoisonTrait.prototype = {
 		displayName									: "PoisonTrait",					// Unique string name for this Trait
-		originalColor								: "FF0000",
-		color										: "FF0000",
-		radius										: 7,
+		originalColor								: "1",
+		color										: "1",
 
 		/**
 		 * @inheritDoc
@@ -29,7 +28,7 @@ Abstract:
 		attach: function(anEntity) {
 			BubbleDots.traits.PoisonTrait.superclass.attach.call(this, anEntity);
 			this.intercept(['onCollision']);
-			this.intercept(['onCollision', 'color', 'originalColor', 'radius']);
+			this.intercept(['onCollision', 'color', 'originalColor']);
 		},
 
 		/**
@@ -49,6 +48,7 @@ Abstract:
 		 * @param collisionNormal	A vector describing the collision
 		 */
 		onCollision: function(a, b, collisionNormal) {
+			return;
 			// We're either A or B, so perform a simple check against A to figure out which of the two objects we are
 			var me = this === a ? a : b;
 			var them = this === a ? b : a;

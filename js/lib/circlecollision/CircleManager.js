@@ -298,14 +298,14 @@
 		 */
 		circlesCanCollide: function(circleA, circleB) {
 			if(!circleA || !circleB || circleA === circleB) return false; 					// one is null (will be deleted next loop), or both point to same obj.
-			if(circleA.delegate == null || circleB.delegate == null) return false;			// This circle will be removed next loop, it's entity is already removed
-
-			// both
-			if(circleA.isFixed & circleB.isFixed) return false;
-
-			// They dont want to collide
-			if((circleA.collisionGroup & circleB.collisionMask) == 0) return false;
-			if((circleB.collisionGroup & circleA.collisionMask) == 0) return false;
+//			if(circleA.delegate == null || circleB.delegate == null) return false;			// This circle will be removed next loop, it's entity is already removed
+//
+//			both
+//			if(circleA.isFixed & circleB.isFixed) return false;
+//
+//			They dont want to collide
+//			if((circleA.collisionGroup & circleB.collisionMask) == 0) return false;
+//			if((circleB.collisionGroup & circleA.collisionMask) == 0) return false;
 
 			return true;
 		},

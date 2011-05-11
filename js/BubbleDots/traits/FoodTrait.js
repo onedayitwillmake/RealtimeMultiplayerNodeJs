@@ -19,9 +19,8 @@ Abstract:
 
 	BubbleDots.traits.FoodTrait.prototype = {
 		displayName									: "FoodTrait",					// Unique string name for this Trait
-		originalColor								: "00FF00",
-		color										: "00FF00",
-		radius										: 5,
+		originalColor								: "2",
+		color										: "3",
 
 		/**
 		 * @inheritDoc
@@ -29,7 +28,8 @@ Abstract:
 		attach: function(anEntity) {
 			BubbleDots.traits.FoodTrait.superclass.attach.call(this, anEntity);
 //			this.intercept(['onCollision', 'color', 'originalColor']);
-			this.intercept(['onCollision', 'radius']);
+			this.color = Math.random() < 0.5 ? "2" : "3";
+			this.intercept(['onCollision', 'color']);
 		},
 
 		/**
@@ -53,7 +53,7 @@ Abstract:
 			// We're either A or B, so perform a simple check against A to figure out which of the two objects we are
 			var me = this === a ? a : b;
 			var them = this === a ? b : a;
-
+			return;
 			BubbleDots.lib.TWEEN.remove( me._tween );
 		   	me._tween = new BubbleDots.lib.TWEEN.Tween({radius: me.radius})
 					.to({radius: 0.1}, 1000)

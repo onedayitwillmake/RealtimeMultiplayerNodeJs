@@ -29,8 +29,8 @@ Version:
 		acceleration			:	RealtimeMultiplayerGame.model.Point.prototype.ZERO,
 		collisionCircle			:	null,										// An instance of RealtimeMultiplayerGame.modules.circlecollision.PackedCircle
 		entityType				: 	null,
-		color					:	null,
-		originalColor			:	null,
+		color					:	"2",
+		originalColor			:	"2",
 		_tween					:	null,
 
 		// Movement properties
@@ -47,6 +47,8 @@ Version:
 			this.view.x = this.position.x - this.radius;
 			this.view.y = this.position.y - this.radius;
 			this.radius = this.lastReceivedEntityDescription.radius;
+
+			return;
 
 			var diameter = this.lastReceivedEntityDescription.radius * 2;
 			this.view.setSize( diameter, diameter );
@@ -88,7 +90,7 @@ Version:
 			var that = this;
 
 			clearTimeout( this.timeout );
-			this.color = "FF0000";
+			this.color = "1";
 			this.timeout = setTimeout(function(){
 				that.setColor( that.originalColor );
 			}, 50);

@@ -94,7 +94,7 @@ Version:
 			var circleEntity = new aBubbleDotEntityConstructor( anEntityid, aClientid );
 			circleEntity.radius = aRadius;
 			circleEntity.position.set( Math.random() * BubbleDots.Constants.GAME_WIDTH, Math.random() * BubbleDots.Constants.GAME_HEIGHT );
-			circleEntity.setColor( CAAT.Color.prototype.hsvToRgb( (anEntityid * 15) % 360, 80, 99).toHex() );
+//			circleEntity.setColor( CAAT.Color.prototype.hsvToRgb( (anEntityid * 15) % 360, 80, 99).toHex() );
 
 			// Create a randomly sized circle, that will represent this entity in the collision manager
 			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
@@ -129,7 +129,7 @@ Version:
 			playerEntity.getCollisionCircle().setPosition( center.clone() );
 			playerEntity.setInput( new RealtimeMultiplayerGame.Input.Keyboard() );
 			playerEntity.removeAllTraits();
-			playerEntity.setColor( "000000" );
+			playerEntity.setColor( "4" );
 
 			this.fieldController.addPlayer( playerEntity );
 		},

@@ -38,11 +38,11 @@ Version:
 		setupCAAT: function() {
 			this.caatScene = new CAAT.Scene(); // Create a scene, all directors must have at least one scene - this is where all your stuff goes
 			this.caatScene.create();	// Notice we call create when creating this, and ShapeActor below. Both are Actors
-			this.caatScene.setFillStyle('#F7F7F7');
+			this.caatScene.setFillStyle('#323232');
 
 			this.caatDirector = new CAAT.Director().initialize( BubbleDots.Constants.GAME_WIDTH, BubbleDots.Constants.GAME_HEIGHT ); // Create the director instance
 			this.caatDirector.addScene( this.caatScene ); // Immediately add the scene once it's created
-
+			this.caatDirector.setImagesCache( BubbleDots.IMAGE_CACHE );
 			this.setupTextfield();
 		},
 
@@ -55,7 +55,7 @@ Version:
 			this.textfield.calcTextSize( this.caatDirector );
 			this.textfield.setSize( this.textfield.textWidth, this.textfield.textHeight );
 			this.textfield.create();
-			this.textfield.fillStyle = "#000000";
+			this.textfield.fillStyle = "#EEEEEE";
 			this.textfield.setLocation( 10, 10 );
 			this.caatScene.addChild(this.textfield);
 		},
@@ -90,6 +90,28 @@ Version:
 		removeEntity: function( anEntityView ) {
 			console.log( "Removing Entity From CAAT", anEntityView );
 			this.caatScene.removeChild( anEntityView );
+		},
+
+		/**
+		 * Create a view for an entity in CAAT using the entity description
+		 * @param {Object} entityDesc An object containing properties for this entity, sent from the server
+		 */
+		createEntityView: function( entityDesc ) {
+			//BubbleDots.IMAGE_CACHE[0].image
+			// Retrieve the image from caatDirector (stored in the preloading sequence in script.js)
+			var imageName = "particle" + entityDesc.color;
+			console.log(imageName)
+			var imageRef = this.caatDirector.getImage(imageName);
+			var caatImage = new CAAT.CompoundImage()
+			.initialize(imageRef, 1, 1);
+
+			// Create the actor using the image
+			var actor = this.CAATSprite = new CAAT.SpriteActor()
+					.create()
+					.setSpriteImage(caatImage)
+					.setLocation(entityDesc.x, entityDesc.y);
+
+			return actor;
 		},
 
 		/**

@@ -24,8 +24,8 @@ Version:
 	};
 
 	BubbleDots.DemoClientGame.prototype = {
-		setupView: function() {
-			this.view = new BubbleDots.DemoView();
+		setupView: function(images) {
+			this.view = new BubbleDots.DemoView( images );
 			this.view.insertIntoHTMLElementWithId( "gamecontainer" );
 
 			BubbleDots.DemoClientGame.superclass.setupView.call( this );
@@ -45,21 +45,11 @@ Version:
 		 * @inheritDoc
 		 */
 		createEntityFromDesc: function(entityDesc) {
-			var diameter = entityDesc.radius*2;
-
-			// Create a view via CAAT
-			var aCircleView = new CAAT.ShapeActor();
-			aCircleView.create();
-			aCircleView.setShape( CAAT.ShapeActor.prototype.SHAPE_CIRCLE);
-			aCircleView.setAlpha( 0.5 );
-			aCircleView.setSize( diameter, diameter );
-			aCircleView.setLocation(entityDesc.x, entityDesc.y); // Place in the center of the screen, use the director's width/height
-
 
 			// Create a new BubbleDots entity
 			var newEntity = new BubbleDots.CircleEntity( entityDesc.entityid, entityDesc.clientid );
 			newEntity.position.set( entityDesc.x, entityDesc.y );
-			newEntity.setView( aCircleView );
+			newEntity.setView( this.view.createEntityView( entityDesc ) );
 			newEntity.radius = entityDesc.radius;
 
 			this.fieldController.addEntity( newEntity );
@@ -123,7 +113,7 @@ Version:
 		log: (function(){
 			var message = function(message){
 				var el = document.createElement('p');
- 				el.innerHTML = '<b>' + esc(message) + ':</b> ';
+ 				el.innerHTML = '<b>' + esc(message)  + ':</b> ';
 
 				// Log if possible
 				console.log(message);

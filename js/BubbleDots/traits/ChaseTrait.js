@@ -37,7 +37,7 @@ Abstract:
 		 */
 		execute: function() {
 			RATE += 0.3;
-			this.radius = Math.random() * 20 + 5;
+			this.radius = Math.random() * 20 + 10;
 			this.offset = new RealtimeMultiplayerGame.model.Point(  Math.cos(RATE) * this.radius,  Math.sin(RATE) * -this.radius);
 			this.chaseSpeed = Math.random() * 0.02 + 0.001;
 			BubbleDots.traits.ChaseTrait.superclass.execute.call(this);

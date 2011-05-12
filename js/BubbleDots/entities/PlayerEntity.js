@@ -33,7 +33,7 @@ var count = 0;
 
 		handleInput: function( speedFactor ) {
 			var moveSpeed = 0.3;
-			if( this.input.isLeft() ) this.acceleration.x -= moveSpeed;
+			if( this.input.isLeft() ) this.acceleration.x -= moveSpeed*2.1;
 			if( this.input.isRight() ) this.acceleration.x += moveSpeed;
 			if( this.input.isUp() ) this.acceleration.y -= moveSpeed;
 			if( this.input.isDown() ) this.acceleration.y += moveSpeed;

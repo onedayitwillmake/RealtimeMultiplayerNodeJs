@@ -133,27 +133,21 @@
 
 		},
 
-		dealloc: function()
-		{
-			this.isDeallocated = true;
-
+		dealloc: function() {
 			this.players.forEach( function(key, entity){
 				this.removePlayer(entity.clientid);
 			}, this );
+			this.players.dealloc();
+			this.players = null;
 
 			this.entities.forEach( function(key, entity){
 				this.removeEntity(entity.entityid);
 			}, this );
-
-
 			this.entities.dealloc();
-			this.players.dealloc();
+			this.entities = null;
+
 
 			this.view = null;
-
-			delete this.view;
-			delete this.players;
-			delete this.entities;
 		},
 
 ///// Accessors

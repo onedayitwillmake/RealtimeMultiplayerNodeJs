@@ -55,7 +55,7 @@ Abstract:
 
 			BubbleDots.lib.TWEEN.remove( me._tween );
 		   	me._tween = new BubbleDots.lib.TWEEN.Tween({radius: me.radius})
-					.to({radius: 5}, 250)
+					.to({radius: 2}, 500)
 					.easing(BubbleDots.lib.TWEEN.Easing.Back.EaseInOut)
 					.onUpdate(function(){
 				    	me.setRadius(~~this.radius);
@@ -67,6 +67,7 @@ Abstract:
 //			them.collisionCircle.setRadius( newRadius );
 			me.collisionCircle.collisionGroup = 0;
 //			me.acceleration.translatePoint( collisionNormal.multiply(-10) );
+
 			var chaseTrait = this.addTraitAndExecute( new BubbleDots.traits.ChaseTrait() );
 			chaseTrait.setTarget( them );
 //			me.tempColor();

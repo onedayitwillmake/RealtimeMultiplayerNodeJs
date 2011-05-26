@@ -166,6 +166,7 @@
 		},
 		getView: function (){ return this.view },
 		getEntities: function() { return this.entities },
+		getPlayers: function() { return this.players; },
 		getEntityWithid: function( anEntityid ) { return this.entities.objectForKey(anEntityid); },
 		getPlayerWithid: function( aClientid ) { return this.players.objectForKey(aClientid); }
 	};

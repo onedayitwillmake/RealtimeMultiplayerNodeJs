@@ -229,13 +229,13 @@
 
 			// Toggle these on and off,
 			// Wrap and bounce, are opposite behaviors so pick one or the other for each axis, or bad things will happen.
-			var wrapXMask = 1 << 0;
-			var wrapYMask = 1 << 1;
-			var constrainXMask = 1 << 2;
-			var constrainYMask = 1 << 3;
+			var wrapXMask = RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_WRAP_X;
+			var wrapYMask = RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_WRAP_Y;
+			var constrainXMask = RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_X;
+			var constrainYMask = RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_Y;
 
 			// Convert to bitmask - Uncomment the one you want, or concact your own :)
-			boundsRule = wrapXMask | wrapYMask;  // Wrap Y axis, but constrain horizontally
+//			boundsRule = wrapXMask | wrapYMask;  // Wrap Y axis, but constrain horizontally
 
 
 			// Wrap X

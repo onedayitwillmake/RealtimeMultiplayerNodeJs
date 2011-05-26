@@ -73,12 +73,12 @@ Version:
 				var entity = this.createEntity( BubbleDots.CircleEntity, radius, this.getNextEntityID(), RealtimeMultiplayerGame.Constants.SERVER_SETTING.CLIENT_ID );
 
 				// Randomly make the object 'food' or 'poison'
-//				if(i%10 === 0) {
-//					entity.addTraitAndExecute( new BubbleDots.traits.PoisonTrait() );
-//				} else {
-//					entity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
-//				}
-//
+				if(i%5 === 0) {
+					entity.addTraitAndExecute( new BubbleDots.traits.PoisonTrait() );
+				} else {
+					entity.addTraitAndExecute( new BubbleDots.traits.FoodTrait() );
+				}
+
 //				entity.addTraitAndExecute( new BubbleDots.traits.PerlinNoiseTrait() );
 			}
 		},
@@ -92,7 +92,7 @@ Version:
 		createEntity: function( aBubbleDotEntityConstructor, aRadius, anEntityid, aClientid ) {
 			// Create the GameEntity
 			var circleEntity = new aBubbleDotEntityConstructor( anEntityid, aClientid );
-			circleEntity.position.set( Math.random() * BubbleDots.Constants.GAME_WIDTH * 10, Math.random() * BubbleDots.Constants.GAME_HEIGHT );
+			circleEntity.position.set( Math.random() * BubbleDots.Constants.GAME_WIDTH * 20, Math.random() * BubbleDots.Constants.GAME_HEIGHT );
 
 			// Create a randomly sized circle, that will represent this entity in the collision manager
 			var collisionCircle = new RealtimeMultiplayerGame.modules.circlecollision.PackedCircle();
@@ -111,8 +111,13 @@ Version:
 		 */
 		tick: function() {
 			this.collisionManager.handleCollisions();
-//			this.collisionManager.handleBoundaryForAllCircles();
 			BubbleDots.lib.TWEEN.update();
+
+			var boundaryRule = RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_Y;
+			var that = this;
+			this.fieldController.getPlayers().forEach(function(key, value) {
+				this.collisionManager.handleBoundaryForCircle( value.getCollisionCircle(), boundaryRule );
+			}, this);
 
 			// Note we call superclass's implementation after we're done
 			BubbleDots.DemoServerGame.superclass.tick.call(this);

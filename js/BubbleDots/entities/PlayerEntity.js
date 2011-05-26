@@ -25,7 +25,7 @@ var count = 0;
 		_thrustLevel			: 0,
 
 		THRUST_DECREMENT		: 0.001,		// How much to decrease thrust by
-		THRUST_FORCE			: 0.4,			// How much force to apply every tick when applying thrust
+		THRUST_FORCE			: 0.3,			// How much force to apply every tick when applying thrust
 
 		initThrust: function() {
 			this._thrustLevel = 100.0;
@@ -34,10 +34,11 @@ var count = 0;
 
 		startThrust: function() {
 			this._isThrusting = true;
+//			this.velocity.y *= 0.5;
 		},
 
 		applyThrust: function() {
-			//this._thrustLevel -= BubbleDots.PlayerEntity.prototype.THRUST_DECREMENT;
+			this._thrustLevel -= BubbleDots.PlayerEntity.prototype.THRUST_DECREMENT;
 			if( this._thrustLevel > 0.0 ) {
 				this.acceleration.y -= BubbleDots.PlayerEntity.prototype.THRUST_FORCE;
 			}
@@ -60,7 +61,8 @@ var count = 0;
 
 		handleInput: function( speedFactor ) {
 			var moveSpeed = 0.2;
-			if( this.input.isLeft() ) this.acceleration.x -= moveSpeed*2.1;
+
+			if( this.input.isLeft() ) this.acceleration.x -= moveSpeed;
 			if( this.input.isRight() ) this.acceleration.x += moveSpeed;
 			if( this.input.isDown() ) this.acceleration.y += moveSpeed;
 
@@ -72,12 +74,15 @@ var count = 0;
 				}
 
 				this.applyThrust();
-			} else if ( !this._isThrusting ) {
+			} else if ( this._isThrusting ) {
 				this.stopThrust();
+			} else { // Default behavior - increase _thrustLevel
+				this._thrustLevel += BubbleDots.PlayerEntity.prototype.THRUST_DECREMENT * 2;
+				this._thrustLevel = Math.min( this._thrustLevel, 100 );
 			}
 		},
 		applyGravity: function( speedFactor ) {
-//			this.acceleration.y += 0.2 * speedFactor;
+			this.acceleration.y += 0.21 * speedFactor;
 		},
 
 		///// ACCESSORS

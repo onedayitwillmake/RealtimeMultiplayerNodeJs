@@ -54,6 +54,7 @@ Version:
 			this.caatScene.addChild( this.caatRoot );
 
 			this.setupTextfield();
+			this.createGround();
 		},
 
 		setupTextfield: function() {
@@ -87,8 +88,8 @@ Version:
 
 		followFocusCharacter: function() {
 			var camSpeed = 0.1;
-			var targetX = -this.focusCharacter.x + this.caatScene.width/2 - 300;
-			var targetY = -this.focusCharacter.y + this.caatScene.height/2 + 100;
+			var targetX = -this.focusCharacter.x + this.caatScene.width/2 - 100;
+			var targetY = -this.focusCharacter.y + this.caatScene.height/2 + 50;
 			this.caatRoot.x -= (this.caatRoot.x - targetX) * camSpeed;
 			this.caatRoot.y -= (this.caatRoot.y - targetY) * camSpeed * 2;
 		},
@@ -120,7 +121,6 @@ Version:
 		 * @param {Object} entityDesc An object containing properties for this entity, sent from the server
 		 */
 		createEntityView: function( entityDesc ) {
-			//BubbleDots.IMAGE_CACHE[0].image
 			// Retrieve the image from caatDirector (stored in the preloading sequence in script.js)
 			var imageName = "particle" + entityDesc.color;
 			var imageRef = this.caatDirector.getImage(imageName);
@@ -132,6 +132,25 @@ Version:
 					.create()
 					.setSpriteImage(caatImage)
 					.setLocation(entityDesc.x, entityDesc.y);
+
+			return actor;
+		},
+
+		createGround: function() {
+			// Retrieve the image from caatDirector (stored in the preloading sequence in script.js)
+			var imageRef = this.caatDirector.getImage("ground");
+			var caatImage = new CAAT.CompoundImage()
+			.initialize(imageRef, 1, 1);
+
+			for(var i = 0; i < 10; ++i) {
+				// Create the actor using the image
+				var actor = this.CAATSprite = new CAAT.SpriteActor()
+						.create()
+						.setSpriteImage(caatImage)
+						.setLocation(i * caatImage.width, 465);
+
+				this.caatRoot.addChild( actor );
+			}
 
 			return actor;
 		},

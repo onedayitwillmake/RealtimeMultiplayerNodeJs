@@ -35,7 +35,7 @@ Version:
 
 		// Movement properties
 		velocityMax				:	8.0,
-		velocityDamping			:	0.9,
+		velocityDamping			:	0.98,
 
 
 		/**
@@ -61,18 +61,22 @@ Version:
 		 * @param {Number} gameTick		Current game tick (incrimented each frame)
 		 */
 		updatePosition: function( speedFactor, gameClock, gameTick ) {
+			this.applyGravity( speedFactor );
 			this.handleAcceleration( speedFactor, gameClock, gameTick );
 		},
 
 		handleAcceleration: function( speedFactor, gameClock, gameTick ) {
 			this.velocity.translatePoint( this.acceleration );
-			this.velocity.limit(this.velocityMax);
+//			this.velocity.limit(this.velocityMax);
 			this.velocity.multiply(this.velocityDamping);
 
 			this.collisionCircle.position.translatePoint( this.velocity );
 			this.position = this.collisionCircle.position.clone();
 
 			this.acceleration.set(0,0);
+		},
+
+		applyGravity: function() {
 		},
 
 		/**

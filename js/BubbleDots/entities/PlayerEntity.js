@@ -17,9 +17,36 @@ var count = 0;
 	BubbleDots.PlayerEntity = function( anEntityid, aClientid) {
 		BubbleDots.PlayerEntity.superclass.constructor.call(this, anEntityid, aClientid );
 		this.entityType = BubbleDots.Constants.ENTITY_TYPES.PLAYER_ENTITY;
+		this.initThrust();
 	};
 
 	BubbleDots.PlayerEntity.prototype = {
+		_isThrusting			: false	,		// We need a better variable name.
+		_thrustLevel			: 0,
+
+		THRUST_DECREMENT		: 0.001,		// How much to decrease thrust by
+		THRUST_FORCE			: 0.4,			// How much force to apply every tick when applying thrust
+
+		initThrust: function() {
+			this._thrustLevel = 100.0;
+			this._isThrusting = false;
+		},
+
+		startThrust: function() {
+			this._isThrusting = true;
+		},
+
+		applyThrust: function() {
+			//this._thrustLevel -= BubbleDots.PlayerEntity.prototype.THRUST_DECREMENT;
+			if( this._thrustLevel > 0.0 ) {
+				this.acceleration.y -= BubbleDots.PlayerEntity.prototype.THRUST_FORCE;
+			}
+		},
+
+		stopThrust: function() {
+			this._isThrusting = false;
+		},
+
 		/**
 		 * Update position of this entity - this is only called on the serverside
 		 * @param {Number} speedFactor	A number signifying how much faster or slower we are moving than the target framerate
@@ -32,11 +59,25 @@ var count = 0;
 		},
 
 		handleInput: function( speedFactor ) {
-			var moveSpeed = 0.3;
+			var moveSpeed = 0.2;
 			if( this.input.isLeft() ) this.acceleration.x -= moveSpeed*2.1;
 			if( this.input.isRight() ) this.acceleration.x += moveSpeed;
-			if( this.input.isUp() ) this.acceleration.y -= moveSpeed;
 			if( this.input.isDown() ) this.acceleration.y += moveSpeed;
+
+			// We're pressing up - apply thrust...
+			// Call startThrust if we were not thrusting before
+			if( this.input.isUp() ) {
+				if( !this._isThrusting ) {
+					this.startThrust();
+				}
+
+				this.applyThrust();
+			} else if ( !this._isThrusting ) {
+				this.stopThrust();
+			}
+		},
+		applyGravity: function( speedFactor ) {
+//			this.acceleration.y += 0.2 * speedFactor;
 		},
 
 		///// ACCESSORS

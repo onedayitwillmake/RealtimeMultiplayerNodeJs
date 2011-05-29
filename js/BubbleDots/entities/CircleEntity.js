@@ -61,7 +61,6 @@ Version:
 		 * @param {Number} gameTick		Current game tick (incrimented each frame)
 		 */
 		updatePosition: function( speedFactor, gameClock, gameTick ) {
-			this.applyGravity( speedFactor );
 			this.handleAcceleration( speedFactor, gameClock, gameTick );
 		},
 
@@ -74,9 +73,6 @@ Version:
 			this.position = this.collisionCircle.position.clone();
 
 			this.acceleration.set(0,0);
-		},
-
-		applyGravity: function() {
 		},
 
 		/**

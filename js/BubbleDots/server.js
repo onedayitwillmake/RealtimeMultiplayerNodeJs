@@ -39,6 +39,7 @@ require("./traits/FoodTrait.js");
 require("./traits/PoisonTrait.js");
 require("./traits/PerlinNoiseTrait.js");
 require("./traits/ChaseTrait.js");
+require("./traits/GravityTrait.js");
 require("./BubbleDotsServerGame.js");
 
 var game = new BubbleDots.DemoServerGame();

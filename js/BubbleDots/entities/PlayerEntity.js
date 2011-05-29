@@ -56,6 +56,10 @@ var count = 0;
 		 */
 		updatePosition: function( speedFactor, gameClock, gameTick ) {
 			this.handleInput( speedFactor );
+
+			var boundaryRule = RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_Y;
+			this.collisionManager.handleBoundaryForCircle( this.getCollisionCircle(), boundaryRule );
+
 			BubbleDots.PlayerEntity.superclass.updatePosition.call( this, speedFactor, gameClock, gameTick );
 		},
 
@@ -80,9 +84,6 @@ var count = 0;
 				this._thrustLevel += BubbleDots.PlayerEntity.prototype.THRUST_DECREMENT * 2;
 				this._thrustLevel = Math.min( this._thrustLevel, 100 );
 			}
-		},
-		applyGravity: function( speedFactor ) {
-			this.acceleration.y += 0.21 * speedFactor;
 		},
 
 		///// ACCESSORS

@@ -113,11 +113,11 @@ Version:
 			this.collisionManager.handleCollisions();
 			BubbleDots.lib.TWEEN.update();
 
-			var boundaryRule = RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_Y;
-			var that = this;
-			this.fieldController.getPlayers().forEach(function(key, value) {
-				this.collisionManager.handleBoundaryForCircle( value.getCollisionCircle(), boundaryRule );
-			}, this);
+//			var boundaryRule = RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_Y;
+//			var that = this;
+//			this.fieldController.getPlayers().forEach(function(key, value) {
+//				this.collisionManager.handleBoundaryForCircle( value.getCollisionCircle(), boundaryRule );
+//			}, this);
 
 			// Note we call superclass's implementation after we're done
 			BubbleDots.DemoServerGame.superclass.tick.call(this);
@@ -135,6 +135,7 @@ Version:
 			playerEntity.removeAllTraits();
 			playerEntity.setColor( "4" );
 
+			playerEntity.addTraitAndExecute( new BubbleDots.traits.GravityTrait() );
 			this.fieldController.addPlayer( playerEntity );
 		},
 

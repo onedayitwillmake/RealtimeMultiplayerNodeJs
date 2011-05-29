@@ -147,7 +147,7 @@ Version:
 				var actor = this.CAATSprite = new CAAT.SpriteActor()
 						.create()
 						.setSpriteImage(caatImage)
-						.setLocation(i * caatImage.width, 465);
+						.setLocation(i * caatImage.width, 470);
 
 				this.caatRoot.addChild( actor );
 			}

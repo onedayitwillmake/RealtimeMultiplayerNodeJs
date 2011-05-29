@@ -56,10 +56,6 @@ var count = 0;
 		 */
 		updatePosition: function( speedFactor, gameClock, gameTick ) {
 			this.handleInput( speedFactor );
-
-			var boundaryRule = RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_Y;
-			this.collisionManager.handleBoundaryForCircle( this.getCollisionCircle(), boundaryRule );
-
 			BubbleDots.PlayerEntity.superclass.updatePosition.call( this, speedFactor, gameClock, gameTick );
 		},
 

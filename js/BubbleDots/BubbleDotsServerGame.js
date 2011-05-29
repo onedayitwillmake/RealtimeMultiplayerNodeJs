@@ -132,10 +132,15 @@ Version:
 			playerEntity.position = center.clone();
 			playerEntity.getCollisionCircle().setPosition( center.clone() );
 			playerEntity.setInput( new RealtimeMultiplayerGame.Input.Keyboard() );
-			playerEntity.removeAllTraits();
 			playerEntity.setColor( "4" );
 
 			playerEntity.addTraitAndExecute( new BubbleDots.traits.GravityTrait() );
+
+			// Set the boundary trait and the rule it will use
+			var boundaryTrait = new BubbleDots.traits.BoundaryTrait( this.collisionManager );
+			boundaryTrait.setBoundaryRule( RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_Y );
+			playerEntity.addTraitAndExecute( boundaryTrait );
+
 			this.fieldController.addPlayer( playerEntity );
 		},
 

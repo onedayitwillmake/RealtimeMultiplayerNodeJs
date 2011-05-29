@@ -111,12 +111,6 @@ Version:
 			return entityDesc;
 		},
 
-//		addTrait: function( aTrait ) {
-//			if( aTrait.displayName === RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait )
-//				return BubbleDots.CircleEntity.superclass.addTrait.call(this, aTrait);
-//			return null;
-//		},
-
 		///// ACCESSORS
 		/**
 		 * Set the CollisionCircle for this game entity.

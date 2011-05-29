@@ -221,6 +221,9 @@
 		 * @param {Number} boundsRule	A bitmask representing the boundary rules
 		 */
 		handleBoundaryForCircle: function(aCircle, boundsRule) {
+			if(boundsRule === undefined) {
+				throw "No Boundary rule defined!";
+			}
 			var xpos = aCircle.position.x;
 			var ypos = aCircle.position.y;
 
@@ -271,6 +274,9 @@
 		 * @param {Number} boundsRule	A bitmask representing the boundary rules
 		 */
 		handleBoundaryForAllCircles: function( boundsRule ) {
+			if( boundsRule === undefined ) {
+				throw "handleBoundaryForAllCircles - No Bounds Rule defined!";
+			}
 			var len = this.allCircles.length;
 			for(var i = 0; i < len; i++)
 				this.handleBoundaryForCircle( this.allCircles[i], boundsRule)

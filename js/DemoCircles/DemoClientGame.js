@@ -56,14 +56,13 @@ Version:
 
 			var newEntity = null;
 
-			var isOwnedByMe = entityDesc.clientid === this.netChannel.clientid;
-
-			// is this a player entity that is mine, if so i should attach the keyboard to it
+			var isOwnedByMe = entityDesc.clientid == this.netChannel.clientid;
+			// If this is a player entity
 			if( entityDesc.entityType & DemoApp.Constants.ENTITY_TYPES.PLAYER_ENTITY ) {
 				newEntity = new DemoApp.PlayerEntity( entityDesc.entityid, entityDesc.clientid );
-				console.log('got my player, adding keyboard');
+
+				// If it is a player entity and it's my player entity - attach a KeyboardInputTrait to it
 				if( isOwnedByMe ) {
-					console.log("adding trait to this keyboard's user");
 					newEntity.addTraitAndExecute( new RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait() );
 					this.clientCharacter = newEntity;
 				} 

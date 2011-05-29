@@ -31,7 +31,8 @@ Version:
 			{id: "particle" + 1, url: "assets/bubbledots/blueParticle.png"},
 			{id: "particle" + 2, url: "assets/bubbledots/redParticle.png"},
 			{id: "particle" + 3, url: "assets/bubbledots/greenParticle.png"},
-			{id: "particle" + 4, url: "assets/bubbledots/yellowParticle.png"}
+			{id: "particle" + 4, url: "assets/bubbledots/yellowParticle.png"},
+			{id: "ground", url: "assets/bubbledots/ground.png"}
 		]
 	}
 })();

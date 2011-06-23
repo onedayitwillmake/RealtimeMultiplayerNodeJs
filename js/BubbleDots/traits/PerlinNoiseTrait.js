@@ -41,8 +41,8 @@ Abstract:
 			var theta = 0.008;
 			var noise = RealtimeMultiplayerGame.model.noise(this.position.x*theta, this.position.y*theta, NOISE_SEED + gameTick*0.001);
 			var angle = noise*Math.PI*12.566370614359172; // PI * 4
-			var speed = 0.2;
-			this.acceleration.x += Math.cos( angle ) * speed - 0.25;
+			var speed = 0.05;
+			this.acceleration.x += Math.cos( angle ) * speed;//- 0.1;
 			this.acceleration.y += Math.sin( angle ) * speed;
 
 			trait.interceptedProperties._data.updatePosition.call(this, speedFactor, gameClock, gameTick);

@@ -31,8 +31,10 @@ Version:
 		// Properties
 		caatDirector		: null,				// CAAT Director instance
 		caatScene			: null,				// CAAT Scene instance
+		caatRoot			: null,
+		focusCharacter		: null,				// The 'camera' will follow this player
 		stats				: null,				// Stats.js instance
-		textfield				: null,				// CAAT text
+		textfield			: null,				// CAAT text
 
 		// Methods
 		setupCAAT: function() {
@@ -43,7 +45,16 @@ Version:
 			this.caatDirector = new CAAT.Director().initialize( BubbleDots.Constants.GAME_WIDTH, BubbleDots.Constants.GAME_HEIGHT ); // Create the director instance
 			this.caatDirector.addScene( this.caatScene ); // Immediately add the scene once it's created
 			this.caatDirector.setImagesCache( BubbleDots.IMAGE_CACHE );
+
+
+			this.caatRoot = new CAAT.ActorContainer()
+			.setBounds( 0, 0, this.caatScene.width, this.caatScene.height )
+			.create()
+			.enableEvents(false);
+			this.caatScene.addChild( this.caatRoot );
+
 			this.setupTextfield();
+			this.createGround();
 		},
 
 		setupTextfield: function() {
@@ -66,8 +77,21 @@ Version:
 		 */
 		update: function( gameClockReal ) {
 			var delta = gameClockReal - this.caatDirector.timeline;
+
+			if( this.focusCharacter ) {
+				this.followFocusCharacter();
+			}
+
 			this.caatDirector.render( delta );
 			this.caatDirector.timeline = gameClockReal;
+		},
+
+		followFocusCharacter: function() {
+			var camSpeed = 0.1;
+			var targetX = -this.focusCharacter.x + this.caatScene.width/2 - 100;
+			var targetY = -this.focusCharacter.y + this.caatScene.height/2 + 50;
+			this.caatRoot.x -= (this.caatRoot.x - targetX) * camSpeed;
+			this.caatRoot.y -= (this.caatRoot.y - targetY) * camSpeed * 2;
 		},
 
 		/**
@@ -84,12 +108,12 @@ Version:
 
 		addEntity: function( anEntityView ) {
 //			console.log( "Adding Entity To CAAT", anEntityView );
-			this.caatScene.addChild( anEntityView );
+			this.caatRoot.addChild( anEntityView );
 		},
 
 		removeEntity: function( anEntityView ) {
 			console.log( "Removing Entity From CAAT", anEntityView );
-			this.caatScene.removeChild( anEntityView );
+			this.caatRoot.removeChild( anEntityView );
 		},
 
 		/**
@@ -97,10 +121,8 @@ Version:
 		 * @param {Object} entityDesc An object containing properties for this entity, sent from the server
 		 */
 		createEntityView: function( entityDesc ) {
-			//BubbleDots.IMAGE_CACHE[0].image
 			// Retrieve the image from caatDirector (stored in the preloading sequence in script.js)
 			var imageName = "particle" + entityDesc.color;
-			console.log(imageName)
 			var imageRef = this.caatDirector.getImage(imageName);
 			var caatImage = new CAAT.CompoundImage()
 			.initialize(imageRef, 1, 1);
@@ -110,6 +132,25 @@ Version:
 					.create()
 					.setSpriteImage(caatImage)
 					.setLocation(entityDesc.x, entityDesc.y);
+
+			return actor;
+		},
+
+		createGround: function() {
+			// Retrieve the image from caatDirector (stored in the preloading sequence in script.js)
+			var imageRef = this.caatDirector.getImage("ground");
+			var caatImage = new CAAT.CompoundImage()
+			.initialize(imageRef, 1, 1);
+
+			for(var i = 0; i < 10; ++i) {
+				// Create the actor using the image
+				var actor = this.CAATSprite = new CAAT.SpriteActor()
+						.create()
+						.setSpriteImage(caatImage)
+						.setLocation(i * caatImage.width, 470);
+
+				this.caatRoot.addChild( actor );
+			}
 
 			return actor;
 		},
@@ -125,6 +166,10 @@ Version:
 		// Memory
 		dealloc: function() {
 			this.director.destroy();
+		},
+
+		setFocusCharacter: function( entity ) {
+			this.focusCharacter = entity;
 		}
 	};
 })();

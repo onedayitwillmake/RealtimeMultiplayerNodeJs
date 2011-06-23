@@ -29,7 +29,7 @@ require("../model/WorldEntityDescription.js");
 require("../input/Keyboard.js");
 
 
-require("v8-profiler");
+//require("v8-profiler");
 require("./DemoHelloWorld.js");
 require("./DemoHelloWorldConstants.js");
 require("./CircleEntity.js");

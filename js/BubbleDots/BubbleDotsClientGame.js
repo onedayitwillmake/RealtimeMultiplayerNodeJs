@@ -49,13 +49,16 @@ Version:
 			// Create a new BubbleDots entity
 			var newEntity = new BubbleDots.CircleEntity( entityDesc.entityid, entityDesc.clientid );
 			newEntity.position.set( entityDesc.x, entityDesc.y );
-			newEntity.setView( this.view.createEntityView( entityDesc ) );
+
+			var entityView = this.view.createEntityView( entityDesc );
+			newEntity.setView( entityView );
 
 			this.fieldController.addEntity( newEntity );
 
 			// Our own character
 			if(entityDesc.clientid == this.netChannel.getClientid() && entityDesc.entityType & BubbleDots.Constants.ENTITY_TYPES.PLAYER_ENTITY) {
 				this.setupClientPlayer( newEntity );
+				this.view.setFocusCharacter( entityView );
 			}
 		},
 

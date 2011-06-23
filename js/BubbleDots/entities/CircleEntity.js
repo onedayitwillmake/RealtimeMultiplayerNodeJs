@@ -35,7 +35,7 @@ Version:
 
 		// Movement properties
 		velocityMax				:	8.0,
-		velocityDamping			:	0.9,
+		velocityDamping			:	0.98,
 
 
 		/**
@@ -66,7 +66,7 @@ Version:
 
 		handleAcceleration: function( speedFactor, gameClock, gameTick ) {
 			this.velocity.translatePoint( this.acceleration );
-			this.velocity.limit(this.velocityMax);
+//			this.velocity.limit(this.velocityMax);
 			this.velocity.multiply(this.velocityDamping);
 
 			this.collisionCircle.position.translatePoint( this.velocity );
@@ -110,12 +110,6 @@ Version:
 
 			return entityDesc;
 		},
-
-//		addTrait: function( aTrait ) {
-//			if( aTrait.displayName === RealtimeMultiplayerGame.controller.traits.KeyboardInputTrait )
-//				return BubbleDots.CircleEntity.superclass.addTrait.call(this, aTrait);
-//			return null;
-//		},
 
 		///// ACCESSORS
 		/**

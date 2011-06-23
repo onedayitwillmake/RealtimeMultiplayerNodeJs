@@ -116,7 +116,11 @@ Version:
 		 * Creates a WorldEntityDescription which it sends to NetChannel
 		 */
 		tick: function() {
-			this.collisionManager.handleBoundaryForAllCircles();
+			// Use both the BOUNDARY_WRAP_X flag, and the BOUNDARY_CONSTRAIN_Y flags as the rule
+			var boundsRule = RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_WRAP_X;
+			boundsRule |= RealtimeMultiplayerGame.modules.circlecollision.CircleManager.prototype.BOUNDARY_CONSTRAIN_Y;
+
+			this.collisionManager.handleBoundaryForAllCircles( boundsRule );
 			this.collisionManager.handleCollisions();
 
 			// Note we call superclass's implementation after we're done
@@ -140,4 +144,4 @@ Version:
 
 	// extend RealtimeMultiplayerGame.AbstractServerGame
 	RealtimeMultiplayerGame.extend(DemoApp.DemoServerGame, RealtimeMultiplayerGame.AbstractServerGame, null);
-})()
+})();

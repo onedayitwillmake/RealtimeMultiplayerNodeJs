@@ -29,7 +29,6 @@ require("../model/GameEntity.js");
 require("../model/WorldEntityDescription.js");
 require("../input/Keyboard.js");
 
-//
 //require("v8-profiler");
 require("./DemoBox2DApp.js");
 require("./DemoBox2DConstants.js");

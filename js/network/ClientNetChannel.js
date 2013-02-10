@@ -60,8 +60,15 @@ Version:
 
 
 		setupSocketIO: function() {
-		    this.socketio = new io.Socket(RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_ADDRESS, {port: RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PORT, transports:['websocket', 'xhr-polling', 'jsonp-polling'], reconnect: false, rememberTransport: false});
-			this.socketio.connect();
+			var socket = io.connect('http://localhost');
+			socket.on('news', function (data) {
+				console.log(data);
+				socket.emit('my other event', { my: 'data' });
+			});
+
+
+			debugger;
+		    this.socketio = new io.connect( RealtimeMultiplayerGame.Constants.SERVER_SETTING.GET_URI(), {transports:['websocket', 'xhr-polling', 'jsonp-polling'], reconnect: false, rememberTransport: false});
 
 			var that = this;
 			this.socketio.on('connect', function(){ that.onSocketConnect() });

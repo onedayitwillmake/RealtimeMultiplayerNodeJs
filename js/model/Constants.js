@@ -24,9 +24,17 @@ Version:
 
 		SERVER_SETTING:
 		{
-			CLIENT_ID	: 0,						// If an object has a client id of zero, that means it is owned by the server
-			SOCKET_ADDRESS: "localhost",
-			SOCKET_PORT	: 8081
+			CLIENT_ID		: 0,						// If an object has a client id of zero, that means it is owned by the server
+			SOCKET_PROTOCOL	: "http",
+			SOCKET_DOMAIN	: "localhost",
+			SOCKET_PORT		: 8081,
+
+			/** @return {string} */
+			GET_URI			: function() {
+				return  RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PROTOCOL
+					+ "://" + RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_DOMAIN
+					+ ":" + RealtimeMultiplayerGame.Constants.SERVER_SETTING.SOCKET_PORT;
+			}
 		},
 
 		CLIENT_SETTING:

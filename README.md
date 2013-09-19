@@ -1,6 +1,9 @@
 __RealtimeMultiplayerNodeJS is a framework specifically for building HTML5 multiplayer games with the Client / Server model__  
   
-## How to use
+# Video Demo
+https://vimeo.com/24149718  
+
+# How to use
 1. Download this repo
 2. In the terminal type "node js/DemoHelloWorld/server.js"
 3. Browse to "/DemoHelloWorld.html"

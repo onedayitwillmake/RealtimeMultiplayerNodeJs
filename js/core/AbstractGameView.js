@@ -10,8 +10,6 @@ Abstract:
 Basic Usage:
  	[This class only contains an interface]
  	Your specific game's implementation of a GameView should implement at least these methods.
-Version:
-	1.0
 */
 (function(){
 	RealtimeMultiplayerGame.AbstractGameView = function() {

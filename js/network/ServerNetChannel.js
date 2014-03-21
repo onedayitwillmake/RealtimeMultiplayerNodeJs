@@ -14,8 +14,6 @@
 
  Basic Usage:
  	TODO: UPDATE USAGE
- Version:
-	 1.1.0
  */
 (function () {
 	/**

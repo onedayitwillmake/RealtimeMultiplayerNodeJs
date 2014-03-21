@@ -17,8 +17,6 @@ Basic Usage:
 	for( var clientid in this.clients ) {
 		this.clients[clientid].sendMessage(encodedMessage);
 	}
-Version:
-	1.0
 */
 (function(){
 

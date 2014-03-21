@@ -16,9 +16,6 @@ Basic Usage:
 	// Create a new world-entity-description, could be some room for optimization here but it only happens once per game loop anyway
 	var worldEntityDescription = new WorldEntityDescription( this );
 	this.netChannel.tick( this.gameClock, worldEntityDescription );
-
-Version:
-	1.0
 */
 (function(){
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.model");

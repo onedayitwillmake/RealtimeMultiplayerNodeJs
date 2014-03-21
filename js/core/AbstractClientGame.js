@@ -17,8 +17,6 @@ Basic Usage:
 
 		RealtimeMultiplayerGame.extend(MyGameClass, RealtimeMultiplayerGame.AbstractGame, null);
 	};
-Version:
-	1.0
 */
 (function(){
 	RealtimeMultiplayerGame.AbstractClientGame = function() {

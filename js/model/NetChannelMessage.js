@@ -24,8 +24,6 @@ Basic Usage:
 	(from netchannel)
 	this.connection.send(message.encodedSelf());
 	};
-Version:
-	1.0
 */
 (function(){
 

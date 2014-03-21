@@ -20,8 +20,6 @@ Basic Usage:
  	netChannelDidConnect();
  	netChannelDidReceiveMessage();
  	netChannelDidDisconnect();
-Version:
-	1.0
 */
 (function(){
 	var BUFFER_MASK = RealtimeMultiplayerGame.Constants.CLIENT_SETTING.MAX_BUFFER;

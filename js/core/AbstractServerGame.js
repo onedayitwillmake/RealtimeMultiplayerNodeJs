@@ -18,8 +18,6 @@ Basic Usage:
 
 		RealtimeMultiplayerGame.extend(MyGameClass, RealtimeMultiplayerGame.AbstractServerGame, null);
 	};
-Version:
-	1.0
 */
 (function(){
 

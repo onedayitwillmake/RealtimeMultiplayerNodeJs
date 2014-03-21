@@ -1,5 +1,8 @@
 __RealtimeMultiplayerNodeJS is a framework specifically for building HTML5 multiplayer games with the Client / Server model__  
-  
+
+######ChangeLog: 
+* Updated to work with socket.io 0.9.16 (thx @brendonjohn)
+
 # Video Demo
 https://vimeo.com/24149718  
 

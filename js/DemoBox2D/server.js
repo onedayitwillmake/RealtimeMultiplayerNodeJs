@@ -1,17 +1,17 @@
 /**
-File:
-	server.js
-Created By:
-	Mario Gonzalez
-Project:
-	RealtimeMultiplayerNodeJS
-Abstract:
-	This is the base server module for starting RealtimeMultiplayerGame
-Basic Usage:
- 	node server.js
-Version:
-	1.0
-*/
+ File:
+ server.js
+ Created By:
+ Mario Gonzalez
+ Project:
+ RealtimeMultiplayerNodeJS
+ Abstract:
+ This is the base server module for starting RealtimeMultiplayerGame
+ Basic Usage:
+ node server.js
+ Version:
+ 1.0
+ */
 
 require("../lib/SortedLookupTable.js");
 require("../core/RealtimeMutliplayerGame.js");

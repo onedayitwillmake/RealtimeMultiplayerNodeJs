@@ -20,8 +20,6 @@ Basic Usage:
  	netChannelDidConnect();
  	netChannelDidReceiveMessage();
  	netChannelDidDisconnect();
-Version:
-	1.0
 */
 (function(){
 	var BUFFER_MASK = RealtimeMultiplayerGame.Constants.CLIENT_SETTING.MAX_BUFFER;
@@ -60,13 +58,6 @@ Version:
 
 
 		setupSocketIO: function() {
-			var socket = io.connect('http://localhost');
-			socket.on('news', function (data) {
-				console.log(data);
-				socket.emit('my other event', { my: 'data' });
-			});
-
-
 			debugger;
 		    this.socketio = new io.connect( RealtimeMultiplayerGame.Constants.SERVER_SETTING.GET_URI(), {transports:['websocket', 'xhr-polling', 'jsonp-polling'], reconnect: false, rememberTransport: false});
 
@@ -269,7 +260,7 @@ Version:
 				return;
 			}
 
-			if(!this.socketio.connected) { // Socket.IO is not connectd, probably not ready yet
+			if(!this.socketio.socket.connected) { // Socket.IO is not connectd, probably not ready yet
 				// console.log("(ClientNetChannel)::sendMessage - socketio is undefined!");
 				return;      //some error here
 			}
@@ -282,7 +273,7 @@ Version:
 				this.reliableBuffer = aMessageInstance; // Block new connections
 			}
 
-			this.socketio.send( aMessageInstance );
+			this.socketio.json.send( aMessageInstance );
 
 			if( RealtimeMultiplayerGame.Constants.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Sending Message, isReliable', aMessageInstance.isReliable, aMessageInstance);
 		},
@@ -304,7 +295,7 @@ Version:
 			}
 
 			++this.outgoingSequenceNumber;
-			if( RealtimeMultiplayerGame.Constants.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Adding Message to queue', this.messageBuffer[this.outgoingSequenceNumber & BUFFER_MASK], " ReliableBuffer currently contains: ", this.reliableBuffer);
+			if( RealtimeMultiplayerGame.Constants.DEBUG_SETTING.CLIENT_NETCHANNEL_DEBUG ) console.log('(NetChannel) Adding Message to queue', this.messageBuffer[this.outgoingSequenceNumber & BUFFER_MASK], " ReliableBuffer currently contains: ", this.reliableBuffer);
 		},
 
 		/**

@@ -14,8 +14,6 @@
 
  Basic Usage:
  	TODO: UPDATE USAGE
- Version:
-	 1.1.0
  */
 (function () {
 	/**
@@ -58,18 +56,36 @@
 			this.socketio = require( 'socket.io' ).listen( server );
 
 			var that = this;
-			this.socketio.on( 'connection', function ( client ) {
-				console.log(client);
-				that.onSocketConnection( client )
-			} );
-			this.socketio.on( 'clientMessage', function ( data, client ) {
-				console.log(data)
-				that.onSocketMessage( data, client )
-			} );
-			this.socketio.on( 'clientDisconnect', function ( client ) {
-				console.log(client)
-				that.onSocketClosed( client )
-			} );
+            this.socketio.configure('production', function () {
+                that.socketio.enable('browser client etag');
+                that.socketio.set('log level', 1);
+
+                that.socketio.set('transports', [
+                    'websocket'
+                    , 'flashsocket'
+                    , 'htmlfile'
+                    , 'xhr-polling'
+                    , 'jsonp-polling'
+                ]);
+            });
+
+            this.socketio.configure('development', function () {
+                that.socketio.set('transports', ['websocket']);
+            });
+
+            this.socketio.on('connection', function (socket) {
+                console.log(socket);
+                that.onSocketConnection(socket)
+
+                socket.on('message', function (data) {
+                    console.log(data)
+                    that.onSocketMessage(data, socket)
+                });
+                socket.on('disconnect', function () {
+                    console.log("disconnecting...");
+                    that.onSocketClosed(socket)
+                });
+            });
 		},
 
 		setupWSServer: function () {
@@ -91,7 +107,7 @@
 				// Send the first message back to the client, which gives them a clientid
 				var connectMessage = new RealtimeMultiplayerGame.model.NetChannelMessage( ++this.outgoingSequenceNumber, aClient.getClientid(), true, RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT, { gameClock: that.delegate.getGameClock() } );
 				connectMessage.messageTime = that.delegate.getGameClock();
-				aClient.getConnection().send( RealtimeMultiplayerGame.modules.bison.encode( connectMessage ) );
+				aClient.getConnection().json.send( RealtimeMultiplayerGame.modules.bison.encode( connectMessage ) );
 
 				// Add to our list of connected users
 				that.clients.setObjectForKey( aClient, aClient.getSessionId() );
@@ -164,7 +180,7 @@
 			// Send the first message back to the client, which gives them a clientid
 			var connectMessage = new RealtimeMultiplayerGame.model.NetChannelMessage( ++this.outgoingSequenceNumber, aClient.getClientid(), true, RealtimeMultiplayerGame.Constants.CMDS.SERVER_CONNECT, { gameClock: this.delegate.getGameClock() } );
 			connectMessage.messageTime = this.delegate.getGameClock();
-			aClient.getConnection().send( connectMessage );
+			aClient.getConnection().json.send( connectMessage );
 
 			// Add to our list of connected users
 			this.clients.setObjectForKey( aClient, aClient.getSessionId() );
@@ -225,7 +241,7 @@
 		onPlayerJoined: function ( client, data ) {
 			console.log( client.getClientid() + " joined the game!" );
 			this.delegate.shouldAddPlayer( client.getClientid(), data );
-			client.getConnection().send( data );
+			client.getConnection().json.send( data );
 		},
 
 		/*************

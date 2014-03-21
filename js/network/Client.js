@@ -17,8 +17,6 @@ Basic Usage:
 	for( var clientid in this.clients ) {
 		this.clients[clientid].sendMessage(encodedMessage);
 	}
-Version:
-	1.0
 */
 (function(){
 
@@ -152,7 +150,7 @@ Version:
 //			this.outgoingMessageBuffer[messageIndex] = anEncodedMessage;
 
 			// Send and increment our message count
-			this.connection.send( anEncodedMessage );
+			this.connection.json.send( anEncodedMessage );
 			this.outgoingSequenceNumber++;
 		},
 

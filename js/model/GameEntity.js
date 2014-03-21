@@ -11,9 +11,6 @@ Basic Usage:
 
  	var badGuy = new RealtimeMultiplayerGame.GameEntity();
  	badGuy.position.x += 1;
-
-Version:
-	1.0
 */
 (function(){
 	RealtimeMultiplayerGame.namespace("RealtimeMultiplayerGame.model");

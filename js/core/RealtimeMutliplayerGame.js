@@ -10,8 +10,6 @@ Abstract:
 
 Basic Usage:
  	This class is not instantiated
-Version:
-	1.0
 */
 RealtimeMultiplayerGame = (typeof RealtimeMultiplayerGame === 'undefined') ? {} : RealtimeMultiplayerGame;
 /**

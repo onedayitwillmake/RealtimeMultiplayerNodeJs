@@ -1,0 +1,23 @@
+{
+  "name": "RealtimeMultiplayerNodeJs",
+  "version": "1.1.0",
+  "description": "RealtimeMultiplayerNodeJS is a framework specifically for building HTML5 multiplayer games with the Client / Server model",
+  "main": "js/BubbleDots/server.js",
+  "dependencies": {
+    "socket.io": "~0.9.16"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onedayitwillmake/RealtimeMultiplayerNodeJs.git"
+  },
+  "author": "Mario Gonzalez",
+  "license": "-",
+  "bugs": {
+    "url": "https://github.com/onedayitwillmake/RealtimeMultiplayerNodeJs/issues"
+  },
+  "homepage": "https://github.com/onedayitwillmake/RealtimeMultiplayerNodeJs"
+}

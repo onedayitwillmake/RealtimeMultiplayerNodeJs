@@ -152,7 +152,7 @@ Version:
 //			this.outgoingMessageBuffer[messageIndex] = anEncodedMessage;
 
 			// Send and increment our message count
-			this.connection.send( anEncodedMessage );
+			this.connection.json.send( anEncodedMessage );
 			this.outgoingSequenceNumber++;
 		},
 

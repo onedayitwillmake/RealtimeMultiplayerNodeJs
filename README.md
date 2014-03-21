@@ -7,9 +7,9 @@ https://vimeo.com/24149718
 1. Download this repo
 2. In the terminal, navigate to the root directory of the repo
 3. Run "npm install"
-4. Run "node js/BubbleDots/server.js"
+4. Run "node js/DemoBox2D/server.js"
 5. Within another terminal, navigate to the root directory and run "python -m SimpleHTTPServer"
-6. From the browser, open "http://127.0.0.1:8000/DemoBubbleDots.html"
+6. From the browser, open "http://127.0.0.1:8000/DemoBox2DApp.html"
 
 [![DemoBox2D](http://farm6.static.flickr.com/5105/5694643562_fffce8b9cf_z.jpg)](http://farm6.static.flickr.com/5105/5694643562_53e54993dd_o.png)
          

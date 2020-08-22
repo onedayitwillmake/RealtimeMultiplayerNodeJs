@@ -1,13 +1,13 @@
 __RealtimeMultiplayerNodeJS is a framework specifically for building HTML5 multiplayer games with the Client / Server model__  
 
-#### Status:
+## Status:
 
 This repository is not in active development, unfortunately.
 However I do think there are still not enough good resources for learning how to do this on the client side so this respostory will remain preserved to perhaps give people something to poke around in and borrow concepts from.
 
-### JSConf talk
+## JSConf talk
 
-**This repo was made to coincide with this  talk**
+> **This repo was made to coincide with this  talk**
 
 https://www.youtube.com/watch?v=z1_QpUkX2Gg
 
